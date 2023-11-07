@@ -28,9 +28,4 @@ public class CustomSecurityConfig {
 
     return http.build();
   }
-
-  @Bean
-  CustomUserDetailsService customUserDetailsService() {
-    return new CustomUserDetailsService();
-  }
 }
