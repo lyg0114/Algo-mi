@@ -12,6 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * @author : iyeong-gyo
+ * @package : com.sportedu.sporteduplatform
+ * @since : 07.11.23
+ * @Ref : https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password/user-details-service/custom-user/src/test/java/example
+ */
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class SportEduPlatformApplicationTests {
