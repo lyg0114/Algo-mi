@@ -57,6 +57,7 @@ class SportEduPlatformApplicationTests {
         .andExpect(jsonPath("$.id", equalTo(1)));
     // @formatter:on
   }
+
   /**
    * WithMockCustomUser is a little more code then using {@link WithUserDetails}, but we
    * don't need to ensure that the
@@ -88,5 +89,4 @@ class SportEduPlatformApplicationTests {
         .andExpect(jsonPath("$.email", equalTo("admin@example.com")));
     // @formatter:on
   }
-
 }
