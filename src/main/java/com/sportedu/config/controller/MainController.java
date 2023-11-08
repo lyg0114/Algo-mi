@@ -1,6 +1,5 @@
 package com.sportedu.config.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -9,12 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @package : com.sportedu.config.controller
  * @since : 08.11.23
  */
-@Slf4j
 @Controller
-public class LoginController {
+public class MainController {
 
-  @GetMapping("/login")
-  String login() {
-    return "custom-login";
+  @GetMapping("user-access")
+  public String test() {
+    return "user-access";
   }
+
+  @GetMapping("admin-access")
+  public String test2() {
+    return "admin-access";
+  }
+
 }

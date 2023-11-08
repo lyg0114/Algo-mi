@@ -42,13 +42,22 @@ public class CustomUserDetailsService implements UserDetailsService {
             AuthorityUtils.createAuthorityList("ROLE_USER")
         );
 
+    private static final List<GrantedAuthority> ROLE_ADMIN = Collections
+        .unmodifiableList(
+            AuthorityUtils.createAuthorityList("ROLE_ADMIN")
+        );
+
     CustomUserDetails(CustomUser customUser) {
       super(customUser.getId(), customUser.getEmail(), customUser.getPassword());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-      return ROLE_USER;
+      long id = this.getId();
+      if (id == 1) {
+        return ROLE_USER;
+      }
+      return ROLE_ADMIN;
     }
 
     @Override

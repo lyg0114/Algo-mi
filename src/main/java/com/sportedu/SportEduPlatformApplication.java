@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 public class SportEduPlatformApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(SportEduPlatformApplication.class, args);
+   SpringApplication.run(SportEduPlatformApplication.class, args);
   }
 
   @Bean
@@ -26,9 +26,11 @@ public class SportEduPlatformApplication {
     // the raw password is "password"
     String encodedPassword = "{bcrypt}$2a$10$h/AJueu7Xt9yh3qYuAXtk.WZJ544Uc2kdOKlHu2qQzCh/A3rq46qm";
 
-    CustomUser customUser = new CustomUser(1L, "user@example.com", encodedPassword);
     Map<String, CustomUser> emailToCustomUser = new HashMap<>();
-    emailToCustomUser.put(customUser.getEmail(), customUser);
+    CustomUser customUser1 = new CustomUser(1L, "user@example.com", encodedPassword);
+    CustomUser customAdmin1 = new CustomUser(2L, "admin@example.com", encodedPassword);
+    emailToCustomUser.put(customUser1.getEmail(), customUser1);
+    emailToCustomUser.put(customAdmin1.getEmail(), customAdmin1);
     return new MapCustomUserRepository(emailToCustomUser);
   }
 }
