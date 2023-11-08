@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-  @GetMapping("user-access")
-  public String test() {
+  @GetMapping("/main-dashboard")
+  public String mainDashBoard() {
+    return "main-dashboard";
+  }
+
+  @GetMapping("/user-access")
+  public String userAccess() {
     return "user-access";
   }
 
-  @GetMapping("admin-access")
-  public String test2() {
+  @GetMapping("/admin-access")
+  public String adminAccess() {
     return "admin-access";
   }
 

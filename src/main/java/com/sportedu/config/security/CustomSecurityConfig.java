@@ -26,13 +26,15 @@ public class CustomSecurityConfig {
     http
         .formLogin(form -> form
             .loginPage("/login")
+            .defaultSuccessUrl("/main-dashboard")
         )
     ;
     http
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(antMatcher("/login")).permitAll()
             .requestMatchers(antMatcher("/user-access")).hasRole("USER")
-            .requestMatchers(antMatcher("admin-access")).hasRole("ADMIN")
+            .requestMatchers(antMatcher("/admin-access")).hasRole("ADMIN")
+            .requestMatchers(antMatcher("/main-dashboard")).hasAnyRole("USER", "ADMIN")
             .anyRequest().authenticated()
         );
     return http.build();
