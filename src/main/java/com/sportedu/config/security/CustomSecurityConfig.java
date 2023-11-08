@@ -25,6 +25,11 @@ public class CustomSecurityConfig {
         .formLogin(form -> form
             .loginPage("/login")
         )
+        .authorizeHttpRequests((auth) -> auth
+            .requestMatchers("/resource/**")
+            .hasAuthority("USER")
+            .anyRequest().authenticated()
+        )
     ;
 
     return http.build();
