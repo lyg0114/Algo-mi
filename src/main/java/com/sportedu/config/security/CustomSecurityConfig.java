@@ -35,7 +35,8 @@ public class CustomSecurityConfig {
             .requestMatchers(antMatcher("/user-access")).hasRole("USER")
             .requestMatchers(antMatcher("/admin-access")).hasRole("ADMIN")
             .requestMatchers(antMatcher("/main-dashboard")).hasAnyRole("USER", "ADMIN")
-            .anyRequest().authenticated()
+            .anyRequest()
+            .authenticated()
         );
     return http.build();
   }

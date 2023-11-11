@@ -13,17 +13,16 @@ public class MainController {
 
   @GetMapping("/main-dashboard")
   public String mainDashBoard() {
-    return "main-dashboard";
+    return "customer/main-dashboard";
   }
 
   @GetMapping("/user-access")
   public String userAccess() {
-    return "user-access";
+    return "customer/user-access";
   }
 
   @GetMapping("/admin-access")
   public String adminAccess() {
-    return "admin-access";
+    return "admin/admin-access";
   }
-
 }
