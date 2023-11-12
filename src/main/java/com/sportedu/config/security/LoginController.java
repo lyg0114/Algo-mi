@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author : iyeong-gyo
- * @package : com.sportedu.config.controller
+ * @package : com.sportedu.controller
  * @since : 08.11.23
  */
 @Slf4j
