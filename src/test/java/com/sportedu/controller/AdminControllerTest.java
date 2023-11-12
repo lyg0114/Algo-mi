@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.sportedu.sporteduplatform.WithUser;
+import com.sportedu.sporteduplatform.WithAdmin;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,16 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-class MainControllerTest {
+class AdminControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
-  @WithUser
-  void testMainDashBoardHtml() throws Exception {
-    mockMvc.perform(get("/main-dashboard"))
+  @WithAdmin
+  void testAdminHtml() throws Exception {
+    mockMvc.perform(get("/admin/main"))
         .andExpect(status().isOk())
-        .andExpect(view().name("main-dashboard"));
+        .andExpect(view().name("admin/main"));
   }
 }

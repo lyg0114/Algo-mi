@@ -2,6 +2,7 @@ package com.sportedu.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author : iyeong-gyo
@@ -9,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since : 08.11.23
  */
 @Controller
-public class MainController {
+@RequestMapping("/admin")
+public class AdminController {
 
-  @GetMapping("/main-dashboard")
-  public String mainDashBoard() {
-    return "main-dashboard";
+  @GetMapping("/main")
+  public String adminAccess() {
+    return "admin/main";
   }
-
 }

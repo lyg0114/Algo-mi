@@ -18,16 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-class MainControllerTest {
+class CustomerControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
   @WithUser
-  void testMainDashBoardHtml() throws Exception {
-    mockMvc.perform(get("/main-dashboard"))
+  void testCustomerHtml() throws Exception {
+    mockMvc.perform(get("/customer/group-oneday-class"))
         .andExpect(status().isOk())
-        .andExpect(view().name("main-dashboard"));
+        .andExpect(view().name("customer/group-oneday-class"));
   }
 }
