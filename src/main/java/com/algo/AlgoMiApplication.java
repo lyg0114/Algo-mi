@@ -1,7 +1,7 @@
-package com.sportedu;
+package com.algo;
 
-import com.sportedu.config.security.CustomUser;
-import com.sportedu.config.security.MapCustomUserRepository;
+import com.algo.config.security.CustomUser;
+import com.algo.config.security.MapCustomUserRepository;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SportEduPlatformApplication {
+public class AlgoMiApplication {
 
   public static void main(String[] args) {
-   SpringApplication.run(SportEduPlatformApplication.class, args);
+    SpringApplication.run(AlgoMiApplication.class, args);
   }
 
   @Bean

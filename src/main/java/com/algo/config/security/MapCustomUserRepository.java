@@ -1,4 +1,4 @@
-package com.sportedu.config.security;
+package com.algo.config.security;
 
 import lombok.RequiredArgsConstructor;
 import java.util.Map;

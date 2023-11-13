@@ -1,4 +1,4 @@
-package com.sportedu.config.security;
+package com.algo.config.security;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 

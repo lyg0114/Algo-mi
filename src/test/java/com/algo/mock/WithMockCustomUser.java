@@ -1,4 +1,4 @@
-package com.sportedu.sporteduplatform;
+package com.algo.mock;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

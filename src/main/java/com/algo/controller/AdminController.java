@@ -1,4 +1,4 @@
-package com.sportedu.controller;
+package com.algo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

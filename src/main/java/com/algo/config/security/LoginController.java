@@ -1,4 +1,4 @@
-package com.sportedu.config.security;
+package com.algo.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.sportedu.sporteduplatform;
+package com.algo.mock;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,13 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * @author : iyeong-gyo
  * @package : com.sportedu.sporteduplatform
+ * @Ref :
+ * https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password/user-details-service/custom-user/src/test/java/example
  * @since : 07.11.23
- * @Ref : https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password/user-details-service/custom-user/src/test/java/example
  */
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SportEduPlatformApplicationTests {
+class AlgoMiApplicationTests {
 
   @Autowired
   private MockMvc mockMvc;
@@ -35,10 +36,10 @@ class SportEduPlatformApplicationTests {
   }
 
   /**
-   * WithUserDetails looks up the user from the UserDetailsService. The advantage is
-   * this is easy to use. The disadvantage, is that the user must exist so it relies our
-   * our data being set up properly. Alternatively, consider using a custom annotation
-   * like {@link #userWhenWithMockCustomUserThenOk()}.
+   * WithUserDetails looks up the user from the UserDetailsService. The advantage is this is easy to
+   * use. The disadvantage, is that the user must exist so it relies our our data being set up
+   * properly. Alternatively, consider using a custom annotation like
+   * {@link #userWhenWithMockCustomUserThenOk()}.
    */
   @Test
   @WithUserDetails("user@example.com")
@@ -52,8 +53,8 @@ class SportEduPlatformApplicationTests {
   }
 
   /**
-   * WithUser is annotated with WithUserDetails to create a concrete persona for our
-   * testing. It is a little extra code, but makes it less error prone.
+   * WithUser is annotated with WithUserDetails to create a concrete persona for our testing. It is
+   * a little extra code, but makes it less error prone.
    */
   @Test
   @WithUser
@@ -66,10 +67,9 @@ class SportEduPlatformApplicationTests {
   }
 
   /**
-   * WithMockCustomUser is a little more code then using {@link WithUserDetails}, but we
-   * don't need to ensure that the
-   * {@link org.springframework.security.core.userdetails.UserDetails} is defined. The
-   * {@link CustomUser} with email "admin@example.com" is not setup, but we can still
+   * WithMockCustomUser is a little more code then using {@link WithUserDetails}, but we don't need
+   * to ensure that the {@link org.springframework.security.core.userdetails.UserDetails} is
+   * defined. The {@link CustomUser} with email "admin@example.com" is not setup, but we can still
    * use it for testing here.
    */
   @Test
@@ -83,9 +83,8 @@ class SportEduPlatformApplicationTests {
   }
 
   /**
-   * {@link WithMockCustomAdmin} is annotated with {@link WithMockCustomUser} to create
-   * a concrete persona for our testing. This is a little extra code, but it is less
-   * error prone.
+   * {@link WithMockCustomAdmin} is annotated with {@link WithMockCustomUser} to create a concrete
+   * persona for our testing. This is a little extra code, but it is less error prone.
    */
   @Test
   @WithMockCustomUser(email = "admin@example.com")

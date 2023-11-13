@@ -1,4 +1,4 @@
-package com.sportedu.sporteduplatform;
+package com.algo.mock;
 
 /**
  * @author : iyeong-gyo

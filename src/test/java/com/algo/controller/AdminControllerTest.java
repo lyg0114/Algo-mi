@@ -1,10 +1,10 @@
-package com.sportedu.controller;
+package com.algo.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.sportedu.sporteduplatform.WithUser;
+import com.algo.mock.WithAdmin;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,16 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-class CustomerControllerTest {
+class AdminControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
-  @WithUser
-  void testCustomerHtml() throws Exception {
-    mockMvc.perform(get("/customer/group-oneday-class"))
+  @WithAdmin
+  void testAdminHtml() throws Exception {
+    mockMvc.perform(get("/admin/main"))
         .andExpect(status().isOk())
-        .andExpect(view().name("customer/group-oneday-class"));
+        .andExpect(view().name("admin/main"));
   }
 }

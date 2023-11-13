@@ -1,4 +1,4 @@
-package com.sportedu.config.security;
+package com.algo.config.security;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

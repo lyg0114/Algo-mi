@@ -1,4 +1,4 @@
-package com.sportedu.config.security;
+package com.algo.config.security;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

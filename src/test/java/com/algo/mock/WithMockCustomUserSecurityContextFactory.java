@@ -1,8 +1,8 @@
-package com.sportedu.sporteduplatform;
+package com.algo.mock;
 
-import com.sportedu.config.security.CustomUser;
-import com.sportedu.config.security.CustomUserDetailsService;
-import com.sportedu.config.security.CustomUserRepository;
+import com.algo.config.security.CustomUser;
+import com.algo.config.security.CustomUserDetailsService;
+import com.algo.config.security.CustomUserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
