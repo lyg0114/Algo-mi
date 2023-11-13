@@ -32,9 +32,8 @@ public class CustomSecurityConfig {
     http
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(antMatcher("/login")).permitAll()
-            .requestMatchers(antMatcher("/customer/group-oneday-class")).hasAnyRole("USER", "ADMIN")
-            .requestMatchers(antMatcher("/main-dashboard")).hasAnyRole("USER", "ADMIN")
-            .requestMatchers(antMatcher("/admin/main")).hasRole("ADMIN")
+            .requestMatchers(antMatcher("/customer/**")).hasAnyRole("USER", "ADMIN")
+            .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
             .anyRequest()
             .authenticated()
         );

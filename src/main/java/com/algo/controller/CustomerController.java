@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/customer")
 public class CustomerController {
 
-  @GetMapping("/group-oneday-class")
+  @GetMapping("/main-dashboard")
   public String userAccess() {
-    return "customer/group-oneday-class";
+    return "customer/main-dashboard";
   }
 }

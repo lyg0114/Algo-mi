@@ -25,9 +25,9 @@ class CustomerControllerTest {
 
   @Test
   @WithUser
-  void testCustomerHtml() throws Exception {
-    mockMvc.perform(get("/customer/group-oneday-class"))
+  void testMainDashBoardHtml() throws Exception {
+    mockMvc.perform(get("/customer/main-dashboard"))
         .andExpect(status().isOk())
-        .andExpect(view().name("customer/group-oneday-class"));
+        .andExpect(view().name("customer/main-dashboard"));
   }
 }
