@@ -1,4 +1,4 @@
-package com.algo.config.security;
+package com.algo.config.security.userinfo;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

@@ -1,5 +1,6 @@
-package com.algo.config.security;
+package com.algo.config.security.userinfo;
 
+import com.algo.config.security.CustomUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
