@@ -8,33 +8,70 @@
 .header {
   width: 100%;
   height: 50px;
-  background-color: aquamarine;
 }
 
-.login {
+.logout {
   display: inline-block;
   float: right;
   margin-right: 45px;
   margin-top: 13px;
 }
 
+.sumit-btn {
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .left-menu {
   width: 20%;
   height: 800px;
-  background-color: cornflowerblue;
   float: left;
+}
+
+.left-menu-container {
+  width: 98%;
+  height: 95%;
+  border: 2px solid black;
+  border-radius: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
 
 .right {
   width: 80%;
   height: 800px;
-  background-color: coral;
   float: left;
+}
+
+.right-container {
+  width: 90%;
+  height: 95%;
+  border: 2px solid black;
+  border-radius: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
 
 .footer {
   width: 100%;
   height: 100px;
-  background-color: gray;
   clear: both;
+}
+
+.footer-container {
+  width: 25%;
+  height: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  font-weight: bold;
 }

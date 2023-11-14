@@ -2,6 +2,7 @@
 <html th:fragment="layout (template)">
 
 <head>
+  <link rel="stylesheet" type="text/css" href="../../static/resources/css/algomi.css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,15 +16,24 @@
 
 <div class="container">
   <div class="header">
-    <div class="login">
+    <div class="logout">
       <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Log out"/>
+        <input class="sumit-btn" type="submit" value="LOG OUT"/>
       </form>
     </div>
   </div>
-  <div class="left-menu"></div>
-  <th:block th:insert="${template}"/>
-  <div class="footer"></div>
+  <div class="left-menu">
+    <div class="left-menu-container">
+    </div>
+  </div>
+  <div class="right">
+    <th:block th:insert="${template}"/>
+  </div>
+  <div class="footer">
+    <div class="footer-container">
+      All rights reserved : younggyo0114@gmail.com
+    </div>
+  </div>
 </div>
 </body>
 </html>
