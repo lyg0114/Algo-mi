@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password
  * @since : 07.11.23
  */
+@Profile("!ui")
 @Slf4j
 @RequiredArgsConstructor
 @Service
