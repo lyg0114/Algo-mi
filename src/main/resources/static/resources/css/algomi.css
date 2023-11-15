@@ -21,7 +21,7 @@
 .sumit-btn {
   background-color: white;
   border: 2px solid black;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
   padding-left: 15px;
   padding-right: 15px;
@@ -37,7 +37,7 @@
   width: 98%;
   height: 95%;
   border: 2px solid black;
-  border-radius: 10px;
+  border-radius: 5px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -54,7 +54,7 @@
   width: 90%;
   height: 95%;
   border: 2px solid black;
-  border-radius: 10px;
+  border-radius: 5px;
   display: block;
   margin-left: auto;
   margin-right: auto;

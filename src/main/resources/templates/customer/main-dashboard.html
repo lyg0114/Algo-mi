@@ -2,6 +2,9 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body})}">
 
+<head>
+  <link rel="stylesheet" type="text/css" href="../../static/resources/css/main-dashboard.css"/>
+</head>
 <body>
 <div class="left-menu">
   <div class="left-menu-container">
@@ -9,12 +12,62 @@
 </div>
 <div class="right">
   <div class="right-container">
+
     <div class="top-container">
       <div class="search-container">
         <input class="search-input" type="text" id="search" name="search" placeholder="검색어를 입력하세요">
         <button class="search-btn">검색</button>
       </div>
     </div>
+
+    <div class="contents-container">
+      <div class="table-container">
+        <table>
+          <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>문제유형</th>
+            <th>출처</th>
+            <th>복습</th>
+            <th>등록일</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          <tr> <td class="small-width">1</td> <td>문제제목 - 1</td> <td>greedy</td> <td>leetcode</td> <td class="small-width">3</td> <td>2023.11.15</td></tr>
+          </tbody>
+        </table>
+
+        <div class="pagination-container">
+          <ul class="pagination">
+            <!-- 페이지 번호는 여기에 동적으로 추가될 것입니다 -->
+            <li > <a href="#"> < </a></li>
+            <li class="number"> <a href="#">1</a></li>
+            <li class="number"> <a href="#">2</a></li>
+            <li class="number"> <a href="#">3</a></li>
+            <li class="number"> <a href="#">4</a></li>
+            <li class="number"> <a href="#">5</a></li>
+            <li class="number"> <a href="#">6</a></li>
+            <li class="number"> <a href="#">7</a></li>
+            <li class="number"> <a href="#">8</a></li>
+            <li class="number"> <a href="#">9</a></li>
+            <li class="number"> <a href="#">10</a></li>
+            <li > <a href="#"> > </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 </body>
