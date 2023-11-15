@@ -1,5 +1,6 @@
 .container {
   width: 1400px;
+  height: 1500px;
   display: block;
   margin-left: auto;
   margin-right: auto
@@ -13,7 +14,7 @@
 .logout {
   display: inline-block;
   float: right;
-  margin-right: 45px;
+  margin-right: 60px;
   margin-top: 13px;
 }
 
@@ -28,7 +29,7 @@
 
 .left-menu {
   width: 20%;
-  height: 800px;
+  height: 62%;
   float: left;
 }
 
@@ -45,7 +46,7 @@
 
 .right {
   width: 80%;
-  height: 800px;
+  height: 62%;
   float: left;
 }
 

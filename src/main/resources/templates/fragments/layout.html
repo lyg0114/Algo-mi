@@ -2,14 +2,14 @@
 <html th:fragment="layout (template)">
 
 <head>
-  <link rel="stylesheet" type="text/css" href="../../static/resources/css/algomi.css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" type="image/x-icon" th:href="@{/resources/images/favicon.png}">
   <title>ALGO-MI</title>
-  <link rel="stylesheet" th:href="@{/resources/css/algomi.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/resources/css/algomi.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/resources/css/main-dashboard.css}"/>
 </head>
 
 <body>
@@ -22,13 +22,7 @@
       </form>
     </div>
   </div>
-  <div class="left-menu">
-    <div class="left-menu-container">
-    </div>
-  </div>
-  <div class="right">
-    <th:block th:insert="${template}"/>
-  </div>
+  <th:block th:insert="${template}"/>
   <div class="footer">
     <div class="footer-container">
       All rights reserved : younggyo0114@gmail.com
