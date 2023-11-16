@@ -2,12 +2,10 @@
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout (~{::body})}">
 <head>
-  <link rel="stylesheet" type="text/css" href="../../static/resources/css/main-dashboard.css"/>
 </head>
 <body>
 <div class="left-menu">
   <div class="left-menu-container">
-
     <div class="condition-container">
       <div class="seach-condition">
         <label for="problem-type">문제유형 : </label>
@@ -155,5 +153,6 @@
     </div>
   </div>
 </div>
+<script th:src="@{/resources/js/main-dashboard.js}"></script>
 </body>
 </html>

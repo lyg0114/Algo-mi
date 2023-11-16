@@ -6,13 +6,18 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" type="image/x-icon" th:href="@{/resources/images/favicon.png}">
   <title>ALGO-MI</title>
+  <script th:src="@{/resources/npm/node_modules/jquery/dist/jquery.min.js}"></script>
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/resources/images/favicon.png}">
   <link rel="stylesheet" type="text/css" th:href="@{/resources/css/algomi.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/resources/css/main-dashboard.css}"/>
 </head>
-
 <body>
+<script type="text/javascript">
+  $(function () {
+    doAction();
+  });
+</script>
 
 <div class="container">
   <div class="header">
