@@ -7,18 +7,31 @@
   margin-right: auto
 }
 
-.condition-container .seach-condition {
-  margin-top: 40px;
-  margin-left: 30px;
+.condition-table {
+  border-collapse: separate;
+  border-spacing: 10px;
 }
 
-.condition-container select {
+.condition-table, .condition-table th, .condition-table td {
+  border: none;
+}
+
+.condition-table td.condition-label {
+  text-align: left;
+}
+
+.condition-table td.condition-content {
+  text-align: right;
+}
+
+.condition-table select {
   background-color: white;
   border: 2px solid black;
   border-radius: 5px;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 120px;
+  height: 37px;
 }
 
 .top-container {
