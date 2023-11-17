@@ -1,0 +1,64 @@
+
+.modal-add-question {
+  width: 300px;
+  height: 250px;
+  /*background: aquamarine;*/
+}
+
+.modal-add-question .modal-add-question-container {
+  border: 2px solid black;
+  border-radius: 5px;
+  width: 100%;
+  height: 90%;
+  /*background: red;*/
+  margin-top: 9px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.input-table {
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
+.input-table, .input-table th, .input-table td {
+  border: none;
+}
+
+.input-table td.input-label {
+  text-align: right;
+}
+
+.input-table td.input-content {
+  text-align: left;
+}
+
+.input-table select {
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 120px;
+  height: 37px;
+}
+
+.modal-add-question .modal-add-btn-area {
+  width: 100%;
+  height: 50px;
+  /*background: blue;*/
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-add-question .add-question-btn {
+  margin-top: 10px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  float: right;
+  margin-right: 12px;
+}

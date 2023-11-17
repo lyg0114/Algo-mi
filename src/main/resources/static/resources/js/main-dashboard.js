@@ -3,7 +3,7 @@ function doAction() {
 }
 
 function showModal() {
-  let $addQuestionBtn = $("#add-question-btn");
+  let $addQuestionBtn = $("#show-add-question-modal-btn");
   $addQuestionBtn.on('click', () => {
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();

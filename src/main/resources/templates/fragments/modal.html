@@ -1,12 +1,46 @@
 <!doctype html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html>
 <body>
-<div id="modal-add-question" class="modal" style="display: none">
-  모달창입니다.
-  모달창입니다.
-  모달창입니다.
+
+<div id="modal-add-question" class="modal-add-question" style="display: none">
+  <div class="modal-add-question-container">
+    <form>
+      <div class="modal-add-input-area">
+        <table class="input-table">
+          <tr class="input-tr">
+            <td class="input-label">
+              <label for="input-question-type">문제유형 : </label>
+            </td>
+            <td class="input-content">
+              <select id="input-question-type" name="questionType">
+                <option value="">선택</option>
+                <option value="1">greedy</option>
+                <option value="2">DP</option>
+                <option value="3">BFS</option>
+                <option value="4">DFS</option>
+              </select>
+            </td>
+          </tr>
+          <tr class="input-tr">
+            <td class="input-label">
+              <label for="input-question-reference">출처 : </label>
+            </td>
+            <td class="input-content">
+              <select id="input-question-reference" name="questionReference">
+                <option value="">선택</option>
+                <option value="1">greedy</option>
+                <option value="2">DP</option>
+                <option value="3">BFS</option>
+                <option value="4">DFS</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-add-btn-area">
+        <button class="add-question-btn" type="submit">제출</button>
+      </div>
+    </form>
+  </div>
 </div>
 </body>
-
-
-

@@ -6,16 +6,14 @@
 <body>
 <div class="left-menu">
   <div class="left-menu-container">
-
     <div class="condition-container">
-
       <table class="condition-table">
         <tr class="condition-tr">
           <td class="condition-label">
-            <label for="question-type">문제유형 : </label>
+            <label for="search-question-type">문제유형 : </label>
           </td>
           <td class="condition-content">
-            <select id="question-type" name="question-type">
+            <select id="search-question-type" name="questionType">
               <option value="">선택</option>
               <option value="1">greedy</option>
               <option value="2">DP</option>
@@ -26,10 +24,10 @@
         </tr>
         <tr class="condition-tr">
           <td class="condition-label">
-            <label for="question-reference">출처 : </label>
+            <label for="search-question-reference">출처 : </label>
           </td>
           <td class="condition-content">
-            <select id="question-reference" name="question-reference">
+            <select id="search-question-reference" name="questionReference">
               <option value="">선택</option>
               <option value="1">greedy</option>
               <option value="2">DP</option>
@@ -50,7 +48,7 @@
 
       <div class="top-container">
         <div class="search-container">
-          <input class="search-input" type="text" name="search" placeholder="검색어를 입력하세요">
+          <input class="search-input" type="text" name="searchKeyWord" placeholder="검색어를 입력하세요">
           <button id="search" class="search-btn">검색</button>
         </div>
       </div>
@@ -168,7 +166,7 @@
         </div>
         <div class="bottom-btn-container">
           <div class="bottom-btn">
-            <button id="add-question-btn" class="add-question-btn">등록</button>
+            <button id="show-add-question-modal-btn" class="show-add-question-modal-btn">등록</button>
           </div>
         </div>
       </div>
