@@ -13,7 +13,7 @@ class AuditEntityListener {
 
   @PrePersist
   public void setCreatedAt(BaseEntity entity) {
-    entity.setCreatedAt(LocalDateTime.now());
+    entity.setCreatedDt(LocalDateTime.now());
     entity.setUpdatedAt(LocalDateTime.now());
   }
 

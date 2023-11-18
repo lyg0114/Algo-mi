@@ -24,12 +24,15 @@ public class BaseEntity implements Serializable {
   private Long id;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  @Column(name = "created_dt", nullable = false, updatable = false)
+  private LocalDateTime createdDt;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  @Column(name = "updated_dt", nullable = false)
+  private LocalDateTime updatedDt;
+
+  @Column(name = "is_delete", nullable = false)
+  private boolean isDelete = false;
 
   public boolean isNew() {
     return this.id == null;
