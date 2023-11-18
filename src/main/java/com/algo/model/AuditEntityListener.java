@@ -14,11 +14,11 @@ class AuditEntityListener {
   @PrePersist
   public void setCreatedAt(BaseEntity entity) {
     entity.setCreatedDt(LocalDateTime.now());
-    entity.setUpdatedAt(LocalDateTime.now());
+    entity.setUpdatedDt(LocalDateTime.now());
   }
 
   @PreUpdate
   public void setUpdatedAt(BaseEntity entity) {
-    entity.setUpdatedAt(LocalDateTime.now());
+    entity.setUpdatedDt(LocalDateTime.now());
   }
 }
