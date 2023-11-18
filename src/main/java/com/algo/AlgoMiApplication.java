@@ -2,13 +2,16 @@ package com.algo;
 
 import com.algo.config.security.CustomUser;
 import com.algo.config.security.MapCustomUserRepository;
+import jakarta.persistence.PrePersist;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class AlgoMiApplication {
 
   public static void main(String[] args) {
@@ -33,4 +36,7 @@ public class AlgoMiApplication {
     emailToCustomUser.put(customAdmin1.getEmail(), customAdmin1);
     return new MapCustomUserRepository(emailToCustomUser);
   }
+
 }
+
+
