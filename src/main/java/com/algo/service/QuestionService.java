@@ -1,10 +1,9 @@
 package com.algo.service;
 
 import com.algo.model.Question;
-import com.algo.repository.QuestionRepository;
+import com.algo.repository.querydsl.QuestionCustomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionService {
 
-  private final QuestionRepository questionRepository;
+  private final QuestionCustomRepository questionCustomRepository;
 
-  public Page<Question> findPaginatedForQuestions(int page, int size, Question owner) {
-    Pageable pageable = PageRequest.of(page - 1, size);
-    return questionRepository.findAll(pageable);
+  public Page<Question> findPaginatedForQuestions(Question owner, Pageable pageable) {
+    return questionCustomRepository.findAll(owner, pageable);
   }
 }
