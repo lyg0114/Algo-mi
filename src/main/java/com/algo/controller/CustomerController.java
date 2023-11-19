@@ -5,11 +5,12 @@ import com.algo.service.QuestionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author : iyeong-gyo
@@ -25,13 +26,11 @@ public class CustomerController {
 
   @GetMapping("/main-dashboard")
   public String mainDashBoard(
-      @RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "10") int size,
-      Question owner, Model model
+      @PageableDefault Pageable pageable, Question owner, Model model
   ) {
-    Page<Question> ownersResults = questionService.findPaginatedForQuestions(page, size, owner);
+    Page<Question> ownersResults = questionService.findPaginatedForQuestions(owner, pageable);
     List<Question> listOwners = ownersResults.getContent();
-    model.addAttribute("currentPage", page);
+    model.addAttribute("currentPage", pageable.getPageNumber());
     model.addAttribute("totalPages", ownersResults.getTotalPages());
     model.addAttribute("totalItems", ownersResults.getTotalElements());
     model.addAttribute("listOwners", listOwners);
