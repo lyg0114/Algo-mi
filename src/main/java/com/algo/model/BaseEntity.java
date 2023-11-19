@@ -19,10 +19,6 @@ import lombok.Setter;
 @EntityListeners(AuditEntityListener.class)
 public class BaseEntity implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "created_dt", nullable = false, updatable = false)
   private LocalDateTime createdDt;
@@ -33,8 +29,4 @@ public class BaseEntity implements Serializable {
 
   @Column(name = "is_delete", nullable = false)
   private boolean isDelete = false;
-
-  public boolean isNew() {
-    return this.id == null;
-  }
 }
