@@ -1,6 +1,6 @@
 package com.algo.repository;
 
-import com.algo.model.Question;
+import com.algo.model.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

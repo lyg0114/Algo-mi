@@ -1,6 +1,6 @@
 package com.algo.repository.querydsl;
 
-import com.algo.model.Question;
+import com.algo.model.entity.Question;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ public class QuestionCustomRepository {
 
   private final JPAQueryFactory queryFactory;
 
-  public Page<Question> findAll(Question owner, Pageable pageable) {
+  public Page<Question> findPaginatedForQuestions(Question question, Pageable pageable) {
     return null;
   }
 }

@@ -1,9 +1,11 @@
 package com.algo.model.dto;
 
+import com.algo.model.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 /**
  * @author : iyeong-gyo
@@ -20,4 +22,8 @@ public class QuestionDto {
   private String url;
   private String fromSource;
   private Integer reviewCount;
+
+  public Question convertToEntity(ModelMapper modelMapper) {
+    return modelMapper.map(this, Question.class);
+  }
 }
