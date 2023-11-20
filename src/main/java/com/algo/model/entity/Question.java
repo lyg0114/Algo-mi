@@ -1,5 +1,6 @@
 package com.algo.model.entity;
 
+import com.algo.model.dto.QuestionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.style.ToStringCreator;
 
 /**
@@ -51,5 +53,9 @@ public class Question extends BaseEntity {
         .append("fromSource", this.getFromSource())
         .append("reviewCount", this.getReviewCount())
         .toString();
+  }
+
+  public QuestionDto converToDto(ModelMapper modelMapper) {
+    return modelMapper.map(this, QuestionDto.class);
   }
 }
