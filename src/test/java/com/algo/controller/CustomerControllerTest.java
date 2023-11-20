@@ -26,7 +26,10 @@ class CustomerControllerTest {
   @Test
   @WithUser
   void testMainDashBoardHtml() throws Exception {
-    mockMvc.perform(get("/customer/main-dashboard"))
+    mockMvc.perform(
+            get("/customer/main-dashboard?page=2&size=5")
+                .param("title", "DFS-Question")
+        )
         .andExpect(status().isOk())
         .andExpect(view().name("customer/main-dashboard"));
   }

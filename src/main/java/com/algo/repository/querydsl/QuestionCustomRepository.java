@@ -1,8 +1,9 @@
 package com.algo.repository.querydsl;
 
-import com.algo.model.entity.Question;
+import com.algo.model.dto.QuestionDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -17,8 +18,9 @@ import org.springframework.stereotype.Repository;
 public class QuestionCustomRepository {
 
   private final JPAQueryFactory queryFactory;
+  private final ModelMapper modelMapper;
 
-  public Page<Question> findPaginatedForQuestions(Question question, Pageable pageable) {
+  public Page<QuestionDto> findPaginatedForQuestions(QuestionDto questionDto, Pageable pageable) {
     return null;
   }
 }

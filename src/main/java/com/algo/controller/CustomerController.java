@@ -1,6 +1,7 @@
 package com.algo.controller;
 
-import com.algo.model.Question;
+import com.algo.model.dto.QuestionDto;
+import com.algo.model.entity.Question;
 import com.algo.service.QuestionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,15 @@ public class CustomerController {
 
   @GetMapping("/main-dashboard")
   public String mainDashBoard(
-      @PageableDefault Pageable pageable, Question owner, Model model
+      @PageableDefault Pageable pageable, QuestionDto questionDto, Model model
   ) {
-    Page<Question> ownersResults = questionService.findPaginatedForQuestions(owner, pageable);
-    List<Question> listOwners = ownersResults.getContent();
+    Page<QuestionDto> paginatedQuestions = questionService.findPaginatedForQuestions(questionDto,
+        pageable);
+    List<QuestionDto> listQuestions = paginatedQuestions.getContent();
     model.addAttribute("currentPage", pageable.getPageNumber());
-    model.addAttribute("totalPages", ownersResults.getTotalPages());
-    model.addAttribute("totalItems", ownersResults.getTotalElements());
-    model.addAttribute("listOwners", listOwners);
+    model.addAttribute("totalPages", paginatedQuestions.getTotalPages());
+    model.addAttribute("totalItems", paginatedQuestions.getTotalElements());
+    model.addAttribute("itemList", listQuestions);
     return "customer/main-dashboard";
   }
 }
