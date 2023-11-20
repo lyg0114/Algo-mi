@@ -22,8 +22,4 @@ public class QuestionDto {
   private String url;
   private String fromSource;
   private Integer reviewCount;
-
-  public Question convertToEntity(ModelMapper modelMapper) {
-    return modelMapper.map(this, Question.class);
-  }
 }

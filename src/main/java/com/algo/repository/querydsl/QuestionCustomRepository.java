@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,7 @@ import org.thymeleaf.util.StringUtils;
  * @package : com.algo.repository.querydsl
  * @since : 19.11.23
  */
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class QuestionCustomRepository {

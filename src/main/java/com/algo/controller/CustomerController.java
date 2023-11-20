@@ -5,6 +5,7 @@ import com.algo.model.entity.Question;
 import com.algo.service.QuestionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @package : com.sportedu.controller
  * @since : 08.11.23
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/customer")
