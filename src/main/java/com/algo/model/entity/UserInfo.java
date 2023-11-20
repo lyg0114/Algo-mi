@@ -1,4 +1,4 @@
-package com.algo.model;
+package com.algo.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
