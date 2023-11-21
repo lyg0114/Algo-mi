@@ -1,4 +1,4 @@
-package com.algo.mock;
+package com.algo.mock.security;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

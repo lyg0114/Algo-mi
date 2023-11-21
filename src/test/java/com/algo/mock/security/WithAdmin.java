@@ -1,4 +1,4 @@
-package com.algo.mock;
+package com.algo.mock.security;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

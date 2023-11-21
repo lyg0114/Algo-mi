@@ -1,4 +1,4 @@
-package com.algo.mock;
+package com.algo.mock.security;
 
 import com.algo.config.security.CustomUser;
 import com.algo.config.security.CustomUserDetailsService;

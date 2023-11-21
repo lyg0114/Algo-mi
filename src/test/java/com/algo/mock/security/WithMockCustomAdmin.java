@@ -1,4 +1,4 @@
-package com.algo.mock;
+package com.algo.mock.security;
 
 /**
  * @author : iyeong-gyo
