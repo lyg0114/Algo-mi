@@ -4,12 +4,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.algo.mock.sample.CreateSampleData;
 import com.algo.mock.security.WithUser;
+import com.algo.model.entity.Question;
+import com.algo.model.entity.UserInfo;
+import com.algo.repository.QuestionRepository;
+import com.algo.repository.UserInfoRepository;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author : iyeong-gyo
@@ -22,6 +30,30 @@ class CustomerControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+  @Autowired
+  private QuestionRepository questionRepository;
+  @Autowired
+  private UserInfoRepository userInfoRepository;
+
+  @BeforeEach
+  void before() {
+    userInfoRepository.saveAll(CreateSampleData.makeSampleUserInfo());
+    questionRepository.saveAll(CreateSampleData.makeSampleQuestion());
+  }
+
+  @Transactional
+  @Test
+  public void test() {
+    Iterable<UserInfo> userinfos = userInfoRepository.findAll();
+    Iterable<Question> questions = questionRepository.findAll();
+    for (UserInfo userInfo : userinfos) {
+      System.out.println("userInfo = " + userInfo);
+      List<Question> questionsByUsers = userInfo.getQuestions();
+      for (Question questionByUser : questionsByUsers) {
+        System.out.println("question = " + questionByUser);
+      }
+    }
+  }
 
   @Test
   @WithUser
