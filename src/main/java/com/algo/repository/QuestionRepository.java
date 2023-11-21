@@ -1,11 +1,7 @@
 package com.algo.repository;
 
 import com.algo.model.entity.Question;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author : iyeong-gyo
@@ -13,9 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
  * @since : 18.11.23
  */
 public interface QuestionRepository extends CrudRepository<Question, Long> {
-
-  @Query("SELECT question FROM Question question")
-  @Transactional(readOnly = true)
-  Page<Question> findAll(Pageable pageable);
 
 }
