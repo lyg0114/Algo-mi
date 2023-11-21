@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -22,14 +20,12 @@ public class BaseEntity implements Serializable {
 
   @CreatedDate
   @JsonIgnore
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "created_dt", nullable = false, updatable = false)
-  private LocalDateTime createdDt;
+  @Column(name = "created_dt", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+  private LocalDateTime createdDt = LocalDateTime.now();
 
   @LastModifiedBy
   @JsonIgnore
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "updated_dt", nullable = false)
+  @Column(name = "updated_dt", columnDefinition = "TIMESTAMP")
   private LocalDateTime updatedDt;
 
   @Column(name = "is_delete", nullable = false)

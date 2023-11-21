@@ -6,12 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -19,6 +22,9 @@ import lombok.NoArgsConstructor;
  * @package : com.algo.model
  * @since : 20.11.23
  */
+@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "user_info")
@@ -30,7 +36,7 @@ public class UserInfo extends BaseEntity {
   private Long userId;
 
   @NotBlank
-  @Column(updatable = false, nullable = false)
+  @Column(name = "email", updatable = false, nullable = false)
   private String email;
 
   @NotBlank
@@ -38,10 +44,21 @@ public class UserInfo extends BaseEntity {
   private String userName;
 
   @JsonIgnore
-  @Column(nullable = false)
+  @Column(name = "passwd", nullable = false)
   private String passwd;
 
-  @OneToMany
-  @JoinColumn(name = "question_id")
+  @Default
+  @OneToMany(mappedBy = "userInfo")
   private List<Question> questions = new ArrayList<>();
+
+  @Override
+  public String toString() {
+    return "UserInfo{" +
+        "userId=" + userId +
+        ", email='" + email + '\'' +
+        ", userName='" + userName + '\'' +
+        ", passwd='" + passwd + '\'' +
+        ", questions=" + questions +
+        '}';
+  }
 }
