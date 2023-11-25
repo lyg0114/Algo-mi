@@ -7,10 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.algo.mock.sample.CreateSampleData;
 import com.algo.mock.security.WithUser;
 import com.algo.model.entity.Question;
-import com.algo.model.entity.UserInfo;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +41,12 @@ class CustomerControllerTest {
 
   @Transactional
   @Test
-  public void test() {
-    Iterable<UserInfo> userinfos = userInfoRepository.findAll();
+  public void testSampleDataCreate() {
     Iterable<Question> questions = questionRepository.findAll();
-    for (UserInfo userInfo : userinfos) {
-      System.out.println("userInfo = " + userInfo);
-      List<Question> questionsByUsers = userInfo.getQuestions();
-      for (Question questionByUser : questionsByUsers) {
-        System.out.println("question = " + questionByUser);
-      }
+    for (Question question : questions) {
+      System.out.println("question.getTitle() = " + question.getTitle());
+      System.out.println(
+          "question.getUserInfo().getUserName() = " + question.getUserInfo().getUserName());
     }
   }
 
