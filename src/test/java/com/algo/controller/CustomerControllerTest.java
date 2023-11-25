@@ -35,8 +35,8 @@ class CustomerControllerTest {
 
   @BeforeEach
   void before() {
-    userInfoRepository.saveAll(CreateSampleData.makeSampleUserInfo());
-    questionRepository.saveAll(CreateSampleData.makeSampleQuestion());
+    questionRepository.deleteAll();
+    userInfoRepository.deleteAll();
   }
 
   @Transactional
