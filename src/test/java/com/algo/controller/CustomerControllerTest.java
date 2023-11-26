@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.algo.mock.sample.CreateSampleData;
 import com.algo.mock.security.WithUser;
 import com.algo.model.entity.Question;
 import com.algo.repository.QuestionRepository;
