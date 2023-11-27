@@ -2,7 +2,6 @@ package com.algo;
 
 import com.algo.config.security.CustomUser;
 import com.algo.config.security.MapCustomUserRepository;
-import jakarta.persistence.PrePersist;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
@@ -36,7 +35,6 @@ public class AlgoMiApplication {
     emailToCustomUser.put(customAdmin1.getEmail(), customAdmin1);
     return new MapCustomUserRepository(emailToCustomUser);
   }
-
 }
 
 
