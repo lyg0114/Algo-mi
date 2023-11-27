@@ -1,7 +1,8 @@
 package com.algo.service;
 
-import com.algo.model.entity.Question;
-import com.algo.model.entity.UserInfo;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.algo.model.dto.QuestionDto;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
 import java.util.List;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -22,9 +25,9 @@ class QuestionServiceTest {
   @Autowired
   private QuestionService questionService;
   @Autowired
-  private QuestionRepository questionRepository;
+  protected QuestionRepository questionRepository;
   @Autowired
-  private UserInfoRepository userInfoRepository;
+  protected UserInfoRepository userInfoRepository;
 
   @BeforeEach
   void before() {
@@ -34,30 +37,47 @@ class QuestionServiceTest {
 
   @Transactional
   @Test
-  public void findPaginatedForQuestionsTest() {
+  public void findPaginatedForQuestionsBy_Title_Test() {
+    //given
     SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    //when
+    Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
+        QuestionDto.builder().title("title-2").build(),
+        PageRequest.of(0, 10)
+    );
+    List<QuestionDto> questions = pageQuestion.getContent();
+    //then
+    assertThat(questions).isNotNull();
+    assertThat(questions).hasSize(1);
+    assertThat(questions.get(0).getTitle()).isEqualTo("title-2");
   }
 
-  static class SampleData {
-    public static void createSamplefindPaginatedForQuestionsTest(
-        QuestionRepository questionRepository, UserInfoRepository userInfoRepository
-    ) {
-      userInfoRepository.saveAll(List.of(
-          UserInfo.builder().userName("user-1").email("user-1@example.com").passwd("passowrd-1").build(),
-          UserInfo.builder().userName("user-2").email("user-2@example.com").passwd("passowrd-2").build())
-      );
-      UserInfo user1 = userInfoRepository.findById(1L).get();
-      UserInfo user2 = userInfoRepository.findById(2L).get();
-      questionRepository.saveAll(
-          List.of(
-              Question.builder().title("titld-1").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-              Question.builder().title("titld-2").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-              Question.builder().title("titld-3").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-              Question.builder().title("titld-4").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user2).build(),
-              Question.builder().title("titld-5").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user2).build(),
-              Question.builder().title("titld-6").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user2).build()
-          )
-      );
-    }
+  @Transactional
+  @Test
+  public void findPaginatedForQuestionsBy_URL_Test() {
+  }
+
+  @Transactional
+  @Test
+  public void findPaginatedForQuestionsBy_FromSource_Test() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    //when
+    Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
+        QuestionDto.builder().fromSource("leetCode").build(),
+        PageRequest.of(0, 10)
+    );
+    List<QuestionDto> questions = pageQuestion.getContent();
+    //then
+    assertThat(questions).isNotNull();
+    assertThat(questions).hasSize(3);
+    questions.forEach(
+        question -> assertThat(question.getFromSource()).isEqualTo("leetCode")
+    );
+  }
+
+  @Transactional
+  @Test
+  public void findPaginatedForQuestionsBy_ReviewCount_Test() {
   }
 }

@@ -1,11 +1,9 @@
 package com.algo.model.dto;
 
-import com.algo.model.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 
 /**
  * @author : iyeong-gyo
