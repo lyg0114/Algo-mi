@@ -3,6 +3,7 @@ package com.algo.config.security;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,9 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@ConditionalOnProperty(name = "algomi.security.enable", havingValue = "true")
 public class CustomSecurityConfig {
 
-  @Profile("!ui")
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http)
       throws Exception {
