@@ -19,17 +19,18 @@ public class WithMockCustomUserSecurityContextFactory implements
 
   @Override
   public SecurityContext createSecurityContext(WithMockCustomUser mockCustomUser) {
-    String username = mockCustomUser.email();
-    // a stub CustomUserRepository that returns the user defined in the annotation
-    CustomUserRepository userRepository = (email) -> new CustomUser(mockCustomUser.id(), username, "");
-    // CustomUserRepositoryUserDetailsService ensures our UserDetails is consistent
-    // with our production application
-    CustomUserDetailsService userDetailsService = new CustomUserDetailsService(userRepository);
-    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-    securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(
-        userDetails, userDetails.getPassword(), userDetails.getAuthorities())
-    );
-    return securityContext;
+//    String username = mockCustomUser.email();
+//    // a stub CustomUserRepository that returns the user defined in the annotation
+//    CustomUserRepository userRepository = (email) -> new CustomUser(mockCustomUser.id(), username, "");
+//    // CustomUserRepositoryUserDetailsService ensures our UserDetails is consistent
+//    // with our production application
+//    CustomUserDetailsService userDetailsService = new CustomUserDetailsService(userRepository);
+//    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//    securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(
+//        userDetails, userDetails.getPassword(), userDetails.getAuthorities())
+//    );
+//    return securityContext;
+    return null;
   }
 }

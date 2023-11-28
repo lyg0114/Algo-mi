@@ -1,5 +1,6 @@
 package com.algo.model.entity;
 
+import com.algo.config.security.CustomUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,5 +61,9 @@ public class UserInfo extends BaseEntity {
         ", passwd='" + passwd + '\'' +
         ", questions=" + questions +
         '}';
+  }
+
+  public CustomUser converToCustomUser(){
+    return new CustomUser(userId, email,passwd);
   }
 }

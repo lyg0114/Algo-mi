@@ -1,5 +1,6 @@
 package com.algo.config.security;
 
+import com.algo.repository.UserInfoRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,34 +21,26 @@ import org.springframework.stereotype.Service;
  * https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password
  * @since : 07.11.23
  */
-@Profile("!ui")
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private final CustomUserRepository userRepository;
+  private final UserInfoRepository userInfoRepository;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    CustomUser customUser = this.userRepository.findCustomUserByEmail(username);
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    CustomUser customUser = this.userInfoRepository.findUserInfoByEmail(email).converToCustomUser();
     if (customUser == null) {
-      throw new UsernameNotFoundException("username " + username + " is not found");
+      throw new UsernameNotFoundException("username " + email + " is not found");
     }
     return new CustomUserDetails(customUser);
   }
 
   static final class CustomUserDetails extends CustomUser implements UserDetails {
 
-    private static final List<GrantedAuthority> ROLE_USER = Collections
-        .unmodifiableList(
-            AuthorityUtils.createAuthorityList("ROLE_USER")
-        );
-
-    private static final List<GrantedAuthority> ROLE_ADMIN = Collections
-        .unmodifiableList(
-            AuthorityUtils.createAuthorityList("ROLE_ADMIN")
-        );
+    private static final List<GrantedAuthority> ROLE_USER =
+        Collections.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_USER"));
 
     CustomUserDetails(CustomUser customUser) {
       super(customUser.getId(), customUser.getEmail(), customUser.getPassword());
@@ -55,11 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-      long id = this.getId();
-      if (id == 1) {
-        return ROLE_USER;
-      }
-      return ROLE_ADMIN;
+      return ROLE_USER;
     }
 
     @Override
@@ -86,6 +75,5 @@ public class CustomUserDetailsService implements UserDetailsService {
     public boolean isEnabled() {
       return true;
     }
-
   }
 }
