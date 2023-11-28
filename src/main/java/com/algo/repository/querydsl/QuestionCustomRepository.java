@@ -54,13 +54,13 @@ public class QuestionCustomRepository {
       booleanBuilder.and(question.title.like("%" + questionDto.getTitle() + "%"));
     }
     if (!StringUtils.isEmpty(questionDto.getUrl())) {
-      booleanBuilder.and(question.fromSource.like("%" + questionDto.getUrl() + "%"));
+      booleanBuilder.and(question.url.like("%" + questionDto.getUrl() + "%"));
     }
     if (!StringUtils.isEmpty(questionDto.getFromSource())) {
       booleanBuilder.and(question.fromSource.like("%" + questionDto.getFromSource() + "%"));
     }
     if (questionDto.getReviewCount() > 0) {
-      booleanBuilder.and(question.fromSource.eq(String.valueOf(questionDto.getReviewCount())));
+      booleanBuilder.and(question.reviewCount.eq(questionDto.getReviewCount()));
     }
     return booleanBuilder;
   }

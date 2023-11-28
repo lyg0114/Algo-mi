@@ -24,12 +24,12 @@ class SampleData {
     UserInfo user2 = userInfos.get(1);
     questionRepository.saveAll(
         List.of(
-            Question.builder().title("title-1").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-            Question.builder().title("title-2").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-            Question.builder().title("title-3").url("http://localhost/leetcode/url").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
-            Question.builder().title("title-4").url("http://localhost/leetcode/url").fromSource("Codility").reviewCount(0).userInfo(user2).build(),
-            Question.builder().title("title-5").url("http://localhost/leetcode/url").fromSource("Codility").reviewCount(0).userInfo(user2).build(),
-            Question.builder().title("title-6").url("http://localhost/leetcode/url").fromSource("Codility").reviewCount(0).userInfo(user2).build()
+            Question.builder().title("title-1").url("http://localhost/leetcode/url/1").fromSource("leetCode").reviewCount(4).userInfo(user1).build(),
+            Question.builder().title("title-2").url("http://localhost/leetcode/url/2").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
+            Question.builder().title("title-3").url("http://localhost/leetcode/url/3").fromSource("leetCode").reviewCount(0).userInfo(user1).build(),
+            Question.builder().title("title-4").url("http://localhost/leetcode/url/4").fromSource("Codility").reviewCount(0).userInfo(user2).build(),
+            Question.builder().title("title-5").url("http://localhost/leetcode/url/5").fromSource("Codility").reviewCount(0).userInfo(user2).build(),
+            Question.builder().title("title-6").url("http://localhost/leetcode/url/6").fromSource("Codility").reviewCount(0).userInfo(user2).build()
         )
     );
   }

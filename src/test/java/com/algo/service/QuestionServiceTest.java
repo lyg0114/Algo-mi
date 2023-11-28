@@ -55,6 +55,21 @@ class QuestionServiceTest {
   @Transactional
   @Test
   public void findPaginatedForQuestionsBy_URL_Test() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    //when
+    Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
+        QuestionDto.builder().url("http://localhost/leetcode/url/1").build(),
+        PageRequest.of(0, 10)
+    );
+    //then
+    List<QuestionDto> questions = pageQuestion.getContent();
+    assertThat(questions).isNotNull();
+    assertThat(questions).hasSize(1);
+    questions.forEach(
+        question -> assertThat(
+            question.getUrl()).isEqualTo("http://localhost/leetcode/url/1"
+        ));
   }
 
   @Transactional
@@ -79,5 +94,19 @@ class QuestionServiceTest {
   @Transactional
   @Test
   public void findPaginatedForQuestionsBy_ReviewCount_Test() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    //when
+    Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
+        QuestionDto.builder().reviewCount(4).build(),
+        PageRequest.of(0, 10)
+    );
+    List<QuestionDto> questions = pageQuestion.getContent();
+    //then
+    assertThat(questions).isNotNull();
+    assertThat(questions).hasSize(1);
+    questions.forEach(
+        question -> assertThat(question.getReviewCount()).isEqualTo(4)
+    );
   }
 }
