@@ -19,5 +19,6 @@ public class QuestionDto {
   private String title;
   private String url;
   private String fromSource;
-  private Integer reviewCount;
+  @Builder.Default
+  private Integer reviewCount = 0;
 }
