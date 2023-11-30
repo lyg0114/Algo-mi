@@ -1,6 +1,5 @@
 package com.algo.model.entity;
 
-import com.algo.config.security.CustomUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +51,19 @@ public class UserInfo extends BaseEntity {
   @OneToMany(mappedBy = "userInfo")
   private List<Question> questions = new ArrayList<>();
 
+  @Column(name = "role")
+  private String role;
+
+  public UserInfo(
+      long userId, String email, String userName, String passwd, String role
+  ) {
+    this.userId = userId;
+    this.email = email;
+    this.userName = userName;
+    this.passwd = passwd;
+    this.role = role;
+  }
+
   @Override
   public String toString() {
     return "UserInfo{" +
@@ -60,10 +72,7 @@ public class UserInfo extends BaseEntity {
         ", userName='" + userName + '\'' +
         ", passwd='" + passwd + '\'' +
         ", questions=" + questions +
+        ", role=" + role +
         '}';
-  }
-
-  public CustomUser converToCustomUser(){
-    return new CustomUser(userId, email,passwd);
   }
 }
