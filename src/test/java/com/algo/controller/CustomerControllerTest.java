@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.algo.mock.security.WithMockCustomUser;
 import com.algo.mock.security.WithUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ class CustomerControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  @WithUser
+  @WithMockCustomUser
   void testMainDashBoardHtml() throws Exception {
     mockMvc.perform(
             get("/customer/main-dashboard?page=2&size=5")

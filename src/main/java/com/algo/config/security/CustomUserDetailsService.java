@@ -1,11 +1,13 @@
 package com.algo.config.security;
 
+import com.algo.model.entity.UserInfo;
+import com.algo.repository.UserInfoRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,46 +22,37 @@ import org.springframework.stereotype.Service;
  * https://github.com/spring-projects/spring-security-samples/tree/main/servlet/spring-boot/java/authentication/username-password
  * @since : 07.11.23
  */
-@Profile("!ui")
 @Slf4j
 @RequiredArgsConstructor
+@Primary
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private final CustomUserRepository userRepository;
+  private final UserInfoRepository userInfoRepository;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    CustomUser customUser = this.userRepository.findCustomUserByEmail(username);
-    if (customUser == null) {
-      throw new UsernameNotFoundException("username " + username + " is not found");
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    UserInfo userInfo = this.userInfoRepository.findUserInfoByEmail(email);
+    if (userInfo == null) {
+      throw new UsernameNotFoundException("username " + email + " is not found");
     }
-    return new CustomUserDetails(customUser);
+    return new CustomUserDetails(userInfo);
   }
 
   static final class CustomUserDetails extends CustomUser implements UserDetails {
 
-    private static final List<GrantedAuthority> ROLE_USER = Collections
-        .unmodifiableList(
-            AuthorityUtils.createAuthorityList("ROLE_USER")
-        );
+    private final List<GrantedAuthority> ROLE;
 
-    private static final List<GrantedAuthority> ROLE_ADMIN = Collections
-        .unmodifiableList(
-            AuthorityUtils.createAuthorityList("ROLE_ADMIN")
-        );
-
-    CustomUserDetails(CustomUser customUser) {
-      super(customUser.getId(), customUser.getEmail(), customUser.getPassword());
+    public CustomUserDetails(UserInfo userInfo) {
+      super(userInfo.getUserId(), userInfo.getEmail(), userInfo.getPasswd());
+      ROLE = Collections.unmodifiableList(
+          AuthorityUtils.createAuthorityList(userInfo.getRole())
+      );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-      long id = this.getId();
-      if (id == 1) {
-        return ROLE_USER;
-      }
-      return ROLE_ADMIN;
+      return ROLE;
     }
 
     @Override
@@ -86,6 +79,5 @@ public class CustomUserDetailsService implements UserDetailsService {
     public boolean isEnabled() {
       return true;
     }
-
   }
 }
