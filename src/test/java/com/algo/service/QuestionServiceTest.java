@@ -3,6 +3,7 @@ package com.algo.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.algo.model.dto.QuestionDto;
+import com.algo.model.entity.Question;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @package : com.algo.service
  * @since : 27.11.23
  */
+@Transactional
 @SpringBootTest
 class QuestionServiceTest {
 
@@ -35,7 +37,24 @@ class QuestionServiceTest {
     userInfoRepository.deleteAll();
   }
 
-  @Transactional
+  @Test
+  public void fidQuestionById_Test() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
+        null, PageRequest.of(0, 10)
+    );
+    QuestionDto questionDto = pageQuestion.getContent().get(0);
+    //when
+    Question question = questionService.findQuestionById(questionDto.getId());
+    //then
+    assertThat(question).isNotNull();
+    assertThat(question.getTitle()).isEqualTo(questionDto.getTitle());
+    assertThat(question.getUrl()).isEqualTo(questionDto.getUrl());
+    assertThat(question.getFromSource()).isEqualTo(questionDto.getFromSource());
+    assertThat(question.getReviewCount()).isEqualTo(questionDto.getReviewCount());
+  }
+
   @Test
   public void findPaginatedForQuestionsBy_Title_Test() {
     //given
@@ -52,7 +71,6 @@ class QuestionServiceTest {
     assertThat(questions.get(0).getTitle()).isEqualTo("title-2");
   }
 
-  @Transactional
   @Test
   public void findPaginatedForQuestionsBy_URL_Test() {
     //given
@@ -72,7 +90,6 @@ class QuestionServiceTest {
         ));
   }
 
-  @Transactional
   @Test
   public void findPaginatedForQuestionsBy_FromSource_Test() {
     //given
@@ -91,7 +108,6 @@ class QuestionServiceTest {
     );
   }
 
-  @Transactional
   @Test
   public void findPaginatedForQuestionsBy_ReviewCount_Test() {
     //given
