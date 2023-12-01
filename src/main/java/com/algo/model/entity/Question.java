@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.style.ToStringCreator;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * @author : iyeong-gyo
@@ -71,5 +72,20 @@ public class Question extends BaseEntity {
     QuestionDto map = modelMapper.map(this, QuestionDto.class);
     map.setId(this.questionId);
     return map;
+  }
+
+  public void update(Question willUpdateQuestion) {
+    if (!StringUtils.isEmpty(willUpdateQuestion.getTitle())) {
+      this.title = willUpdateQuestion.getTitle();
+    }
+    if (!StringUtils.isEmpty(willUpdateQuestion.getUrl())) {
+      this.url = willUpdateQuestion.getUrl();
+    }
+    if (!StringUtils.isEmpty(willUpdateQuestion.getFromSource())) {
+      this.fromSource = willUpdateQuestion.getFromSource();
+    }
+    if (willUpdateQuestion.getReviewCount() > 0) {
+      this.reviewCount = willUpdateQuestion.getReviewCount();
+    }
   }
 }

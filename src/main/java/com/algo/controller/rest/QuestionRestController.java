@@ -58,26 +58,35 @@ public class QuestionRestController {
   public ResponseEntity<QuestionDto> addQuestion(QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
     Question question = questionDto.converTnEntity(modelMapper);
-    QuestionDto savedQuestionDto = questionService.addQuestion(question);
+    QuestionDto addQuestionDto = questionService.addQuestion(question);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
-        .buildAndExpand(savedQuestionDto.getId())
+        .buildAndExpand(addQuestionDto.getId())
         .toUri());
-    return new ResponseEntity<>(savedQuestionDto, headers, HttpStatus.CREATED);
+    return new ResponseEntity<>(addQuestionDto, headers, HttpStatus.CREATED);
   }
 
   @PutMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<Question> updatePet(long questionId, QuestionDto questionDto) {
+  public ResponseEntity<QuestionDto> updatePet(long questionId, QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
     Question question = questionDto.converTnEntity(modelMapper);
-    return null;
+    QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, question);
+    if (updateQuestionDto == null) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    headers.setLocation(UriComponentsBuilder
+        .newInstance()
+        .path("/question/{id}")
+        .buildAndExpand(updateQuestionDto.getId())
+        .toUri());
+    return new ResponseEntity<>(updateQuestionDto, headers, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<Question> deletePet(long questionId) {
+  public ResponseEntity<QuestionDto> deletePet(long questionId) {
     return null;
   }
 }

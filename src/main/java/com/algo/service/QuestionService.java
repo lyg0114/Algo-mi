@@ -5,13 +5,10 @@ import com.algo.model.entity.Question;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.querydsl.QuestionCustomRepository;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +47,17 @@ public class QuestionService {
     return questionRepository.save(question)
         .converToDto(modelMapper)
         ;
+  }
+
+  @Transactional
+  public QuestionDto updateQuestion(long questionId, Question question) {
+    Question target = null;
+    try {
+      target = questionRepository.findById(questionId).orElseThrow();
+      target.update(question);
+      return target.converToDto(modelMapper);
+    } catch (NoSuchElementException e) {
+      return null;
+    }
   }
 }
