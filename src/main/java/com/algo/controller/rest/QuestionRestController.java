@@ -6,6 +6,8 @@ import com.algo.service.QuestionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,11 +31,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionRestController {
 
   private final QuestionService questionService;
+  private final ModelMapper modelMapper;
 
   @GetMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> getQuestion(long questionId) {
-    return null;
+    Question question = questionService.findQuestionById(questionId);
+    if (question == null) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(
+        question.converToDto(modelMapper), HttpStatus.OK)
+        ;
   }
 
   @GetMapping
