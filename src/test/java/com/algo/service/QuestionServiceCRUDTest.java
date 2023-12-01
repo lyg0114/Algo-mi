@@ -34,6 +34,34 @@ class QuestionServiceCRUDTest {
     userInfoRepository.deleteAll();
   }
 
+  @Transactional
+  @Test
+  public void shouldUpdateQuestion() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    QuestionDto questionDto = questionService
+        .findPaginatedForQuestions(null, PageRequest.of(0, 1))
+        .getContent()
+        .get(0);
+    long targetId = questionDto.getId();
+    Question willUpdateQuestion = Question
+        .builder()
+        .title("Update new Question")
+        .url("http://localhost/sample/url/7")
+        .fromSource("Codility")
+        .reviewCount(10)
+        .build();
+    //when
+    QuestionDto updateQuestion = questionService.updateQuestion(targetId, willUpdateQuestion);
+    //then
+    assertThat(updateQuestion).isNotNull();
+    assertThat(updateQuestion.getTitle()).isEqualTo(willUpdateQuestion.getTitle());
+    assertThat(updateQuestion.getUrl()).isEqualTo(willUpdateQuestion.getUrl());
+    assertThat(updateQuestion.getFromSource()).isEqualTo(willUpdateQuestion.getFromSource());
+    assertThat(updateQuestion.getReviewCount()).isEqualTo(willUpdateQuestion.getReviewCount());
+  }
+
+  @Transactional
   @Test
   public void shouldInsertQuestion() {
     //given

@@ -69,19 +69,13 @@ public class QuestionRestController {
 
   @PutMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> updatePet(long questionId, QuestionDto questionDto) {
-    HttpHeaders headers = new HttpHeaders();
+  public ResponseEntity<QuestionDto> updateQuestion(long questionId, QuestionDto questionDto) {
     Question question = questionDto.converTnEntity(modelMapper);
     QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, question);
     if (updateQuestionDto == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    headers.setLocation(UriComponentsBuilder
-        .newInstance()
-        .path("/question/{id}")
-        .buildAndExpand(updateQuestionDto.getId())
-        .toUri());
-    return new ResponseEntity<>(updateQuestionDto, headers, HttpStatus.CREATED);
+    return new ResponseEntity<>(updateQuestionDto, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{questionId}")
