@@ -8,6 +8,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,17 +51,19 @@ public class QuestionCustomRepository {
 
   private static BooleanBuilder getConditionBuilder(QuestionDto questionDto) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
-    if (!StringUtils.isEmpty(questionDto.getTitle())) {
-      booleanBuilder.and(question.title.like("%" + questionDto.getTitle() + "%"));
-    }
-    if (!StringUtils.isEmpty(questionDto.getUrl())) {
-      booleanBuilder.and(question.url.like("%" + questionDto.getUrl() + "%"));
-    }
-    if (!StringUtils.isEmpty(questionDto.getFromSource())) {
-      booleanBuilder.and(question.fromSource.like("%" + questionDto.getFromSource() + "%"));
-    }
-    if (questionDto.getReviewCount() > 0) {
-      booleanBuilder.and(question.reviewCount.eq(questionDto.getReviewCount()));
+    if (Objects.nonNull(questionDto)) {
+      if (!StringUtils.isEmpty(questionDto.getTitle())) {
+        booleanBuilder.and(question.title.like("%" + questionDto.getTitle() + "%"));
+      }
+      if (!StringUtils.isEmpty(questionDto.getUrl())) {
+        booleanBuilder.and(question.url.like("%" + questionDto.getUrl() + "%"));
+      }
+      if (!StringUtils.isEmpty(questionDto.getFromSource())) {
+        booleanBuilder.and(question.fromSource.like("%" + questionDto.getFromSource() + "%"));
+      }
+      if (questionDto.getReviewCount() > 0) {
+        booleanBuilder.and(question.reviewCount.eq(questionDto.getReviewCount()));
+      }
     }
     return booleanBuilder;
   }
