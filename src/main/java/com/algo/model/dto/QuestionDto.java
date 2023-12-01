@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class QuestionDto {
 
+  private Long id;
   private String title;
   private String url;
   private String fromSource;
