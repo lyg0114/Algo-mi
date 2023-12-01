@@ -58,7 +58,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionDto> addQuestion(QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
     Question question = questionDto.converTnEntity(modelMapper);
-    QuestionDto savedQuestionDto = questionService.saveQuestion(question);
+    QuestionDto savedQuestionDto = questionService.addQuestion(question);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
@@ -70,6 +70,8 @@ public class QuestionRestController {
   @PutMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<Question> updatePet(long questionId, QuestionDto questionDto) {
+    HttpHeaders headers = new HttpHeaders();
+    Question question = questionDto.converTnEntity(modelMapper);
     return null;
   }
 

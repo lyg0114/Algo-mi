@@ -45,7 +45,7 @@ class QuestionServiceCRUDTest {
         .reviewCount(5)
         .build();
     //when
-    QuestionDto questionDto = questionService.saveQuestion(question);
+    QuestionDto questionDto = questionService.addQuestion(question);
     //then
     assertThat(questionDto).isNotNull();
     assertThat(questionDto.getTitle()).isEqualTo(question.getTitle());

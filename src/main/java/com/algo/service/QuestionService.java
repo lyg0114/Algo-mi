@@ -46,7 +46,7 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionDto saveQuestion(Question question) {
+  public QuestionDto addQuestion(Question question) {
     return questionRepository.save(question)
         .converToDto(modelMapper)
         ;
