@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author : iyeong-gyo
@@ -33,6 +35,12 @@ public class QuestionRestController {
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
 
+  @GetMapping
+  @PreAuthorize("hasRole(@roles.USER)")
+  public ResponseEntity<List<QuestionDto>> listQuestion(QuestionDto questionDto) {
+    return null;
+  }
+
   @GetMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> getQuestion(long questionId) {
@@ -45,16 +53,18 @@ public class QuestionRestController {
         ;
   }
 
-  @GetMapping
-  @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<List<QuestionDto>> listQuestion(QuestionDto questionDto) {
-    return null;
-  }
-
   @PostMapping
   @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> addQuestion(QuestionDto questionDto) {
-    return null;
+    HttpHeaders headers = new HttpHeaders();
+    Question question = questionDto.converTnEntity(modelMapper);
+    QuestionDto savedQuestionDto = questionService.saveQuestion(question);
+    headers.setLocation(UriComponentsBuilder
+        .newInstance()
+        .path("/question/{id}")
+        .buildAndExpand(savedQuestionDto.getId())
+        .toUri());
+    return new ResponseEntity<>(savedQuestionDto, headers, HttpStatus.CREATED);
   }
 
   @PutMapping("/{questionId}")

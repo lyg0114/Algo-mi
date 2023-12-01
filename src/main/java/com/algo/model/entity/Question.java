@@ -68,6 +68,8 @@ public class Question extends BaseEntity {
   }
 
   public QuestionDto converToDto(ModelMapper modelMapper) {
-    return modelMapper.map(this, QuestionDto.class);
+    QuestionDto map = modelMapper.map(this, QuestionDto.class);
+    map.setId(this.questionId);
+    return map;
   }
 }

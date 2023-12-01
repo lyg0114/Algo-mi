@@ -7,6 +7,7 @@ import com.algo.repository.querydsl.QuestionCustomRepository;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,8 @@ public class QuestionService {
 
   private final QuestionCustomRepository questionCustomRepository;
   private final QuestionRepository questionRepository;
+  private final ModelMapper modelMapper;
+
 
   @Transactional(readOnly = true)
   public Page<QuestionDto> findPaginatedForQuestions(QuestionDto questionDto, Pageable pageable) {
@@ -40,5 +43,12 @@ public class QuestionService {
       return null;
     }
     return Queston;
+  }
+
+  @Transactional
+  public QuestionDto saveQuestion(Question question) {
+    return questionRepository.save(question)
+        .converToDto(modelMapper)
+        ;
   }
 }
