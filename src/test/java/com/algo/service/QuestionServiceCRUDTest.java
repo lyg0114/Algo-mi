@@ -24,14 +24,39 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class QuestionServiceCRUDTest {
 
-  @Autowired private QuestionService questionService;
-  @Autowired protected QuestionRepository questionRepository;
-  @Autowired protected UserInfoRepository userInfoRepository;
+  @Autowired
+  private QuestionService questionService;
+  @Autowired
+  protected QuestionRepository questionRepository;
+  @Autowired
+  protected UserInfoRepository userInfoRepository;
 
   @BeforeEach
   void before() {
     questionRepository.deleteAll();
     userInfoRepository.deleteAll();
+  }
+
+  @Transactional
+  @Test
+  public void shouldDeleteQuestion() {
+    //given
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    QuestionDto questionDto = questionService
+        .findPaginatedForQuestions(null, PageRequest.of(0, 1))
+        .getContent()
+        .get(0);
+    long targetId = questionDto.getId();
+    //when
+    questionService.deleteQuestion(targetId);
+    //then
+    Question targetQuestion;
+    try {
+      targetQuestion = questionService.findQuestionById(targetId);
+    } catch (Exception e) {
+      targetQuestion = null;
+    }
+    assertThat(targetQuestion).isNull();
   }
 
   @Transactional
