@@ -80,7 +80,12 @@ public class QuestionRestController {
 
   @DeleteMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> deletePet(long questionId) {
-    return null;
+  public ResponseEntity<QuestionDto> deleteQuestion(long questionId) {
+    Question question = questionService.findQuestionById(questionId);
+    if (question == null) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    questionService.deleteQuestion(questionId);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

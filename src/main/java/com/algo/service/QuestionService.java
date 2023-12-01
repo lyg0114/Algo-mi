@@ -60,4 +60,9 @@ public class QuestionService {
       return null;
     }
   }
+
+  @Transactional
+  public void deleteQuestion(long questionId) {
+    questionRepository.deleteById(questionId);
+  }
 }
