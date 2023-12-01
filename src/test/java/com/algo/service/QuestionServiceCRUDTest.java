@@ -24,12 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class QuestionServiceCRUDTest {
 
-  @Autowired
-  private QuestionService questionService;
-  @Autowired
-  protected QuestionRepository questionRepository;
-  @Autowired
-  protected UserInfoRepository userInfoRepository;
+  @Autowired private QuestionService questionService;
+  @Autowired protected QuestionRepository questionRepository;
+  @Autowired protected UserInfoRepository userInfoRepository;
 
   @BeforeEach
   void before() {
@@ -108,7 +105,7 @@ class QuestionServiceCRUDTest {
   }
 
   @Test
-  public void fidQuestionById_Test() {
+  public void shouldFindQuestion() {
     //given
     SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
     Page<QuestionDto> pageQuestion = questionService.findPaginatedForQuestions(
