@@ -38,6 +38,26 @@ class QuestionServiceTest {
   }
 
   @Test
+  public void shouldInsertQuestion() {
+    //given
+    Question question = Question
+        .builder()
+        .title("Add new Question")
+        .url("http://localhost/sample/url/1")
+        .fromSource("leetcode")
+        .reviewCount(5)
+        .build();
+    //when
+    QuestionDto questionDto = questionService.saveQuestion(question);
+    //then
+    assertThat(questionDto).isNotNull();
+    assertThat(questionDto.getTitle()).isEqualTo(question.getTitle());
+    assertThat(questionDto.getUrl()).isEqualTo(question.getUrl());
+    assertThat(questionDto.getFromSource()).isEqualTo(question.getFromSource());
+    assertThat(questionDto.getReviewCount()).isEqualTo(question.getReviewCount());
+  }
+
+  @Test
   public void fidQuestionById_Test() {
     //given
     SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
