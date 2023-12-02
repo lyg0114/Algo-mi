@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ConditionalOnProperty(name = "algomi.security.enable", havingValue = "true")
 public class BasicAuthenticationConfig {
 
@@ -34,8 +36,6 @@ public class BasicAuthenticationConfig {
     http
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(antMatcher("/login")).permitAll()
-            .requestMatchers(antMatcher("/customer/**")).hasAnyRole("USER", "ADMIN")
-            .requestMatchers(antMatcher("/admin/**")).hasRole("ADMIN")
             .anyRequest()
             .authenticated()
         );

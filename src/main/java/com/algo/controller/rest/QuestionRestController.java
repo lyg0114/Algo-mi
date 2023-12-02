@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +42,9 @@ public class QuestionRestController {
     return null;
   }
 
-  @GetMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> getQuestion(long questionId) {
+  @GetMapping("/{questionId}")
+  public ResponseEntity<QuestionDto> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +70,9 @@ public class QuestionRestController {
 
   @PutMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> updateQuestion(long questionId, QuestionDto questionDto) {
+  public ResponseEntity<QuestionDto> updateQuestion(
+      @PathVariable long questionId, QuestionDto questionDto
+  ) {
     Question question = questionDto.converTnEntity(modelMapper);
     QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, question);
     if (updateQuestionDto == null) {
@@ -80,7 +83,7 @@ public class QuestionRestController {
 
   @DeleteMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> deleteQuestion(long questionId) {
+  public ResponseEntity<QuestionDto> deleteQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
