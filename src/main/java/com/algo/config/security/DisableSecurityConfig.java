@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -34,16 +36,12 @@ public class DisableSecurityConfig {
 
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user")
-        .password("password")
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    UserDetails user = User.builder()
+        .username("user@example.com")
+        .password(passwordEncoder.encode("password"))
         .roles("USER")
         .build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-        .username("admin")
-        .password("admin")
-        .roles("ADMIN")
-        .build();
-    return new InMemoryUserDetailsManager(user, admin);
+    return new InMemoryUserDetailsManager(user);
   }
 }
