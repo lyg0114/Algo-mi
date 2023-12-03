@@ -2,11 +2,11 @@ package com.algo.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.algo.mock.security.WithMockCustomUser;
 import com.algo.model.dto.QuestionDto;
 import com.algo.model.entity.Question;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,9 +83,11 @@ class QuestionServiceCRUDTest {
     assertThat(updateQuestion.getReviewCount()).isEqualTo(willUpdateQuestion.getReviewCount());
   }
 
+  @WithMockCustomUser
   @Transactional
   @Test
   public void shouldInsertQuestion() {
+    SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
     //given
     QuestionDto questionDto = QuestionDto
         .builder()
@@ -96,12 +98,16 @@ class QuestionServiceCRUDTest {
         .build();
     //when
     QuestionDto savedQuestionDto = questionService.addQuestion(questionDto);
+    Long id = savedQuestionDto.getId();
+    Question byId = questionRepository.findById(id).get();
     //then
-    assertThat(savedQuestionDto).isNotNull();
-    assertThat(savedQuestionDto.getTitle()).isEqualTo(questionDto.getTitle());
-    assertThat(savedQuestionDto.getUrl()).isEqualTo(questionDto.getUrl());
-    assertThat(savedQuestionDto.getFromSource()).isEqualTo(questionDto.getFromSource());
-    assertThat(savedQuestionDto.getReviewCount()).isEqualTo(questionDto.getReviewCount());
+    assertThat(byId).isNotNull();
+    assertThat(byId.getTitle()).isEqualTo(questionDto.getTitle());
+    assertThat(byId.getUrl()).isEqualTo(questionDto.getUrl());
+    assertThat(byId.getFromSource()).isEqualTo(questionDto.getFromSource());
+    assertThat(byId.getReviewCount()).isEqualTo(questionDto.getReviewCount());
+    assertThat(byId.getUserInfo().getEmail()).isEqualTo("user@example.com");
+    assertThat(byId.getUserInfo().getUserName()).isEqualTo("kyle");
   }
 
   @Test

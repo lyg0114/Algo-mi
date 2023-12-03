@@ -57,18 +57,6 @@ public class Question extends BaseEntity {
   @JoinColumn(name = "user_id")
   private UserInfo userInfo;
 
-  @Override
-  public String toString() {
-    return new ToStringCreator(this)
-        .append("id", this.getQuestionId())
-        .append("title", this.getTitle())
-        .append("url", this.getUrl())
-        .append("fromSource", this.getFromSource())
-        .append("reviewCount", this.getReviewCount())
-        .append("user_id", getUserId())
-        .toString();
-  }
-
   private Long getUserId() {
     if (userInfo == null) {
       return null;
@@ -80,6 +68,10 @@ public class Question extends BaseEntity {
     QuestionDto map = modelMapper.map(this, QuestionDto.class);
     map.setId(this.questionId);
     return map;
+  }
+
+  public void setUserInfo(UserInfo userInfo) {
+    this.userInfo = userInfo;
   }
 
   public void update(Question willUpdateQuestion) {
@@ -95,5 +87,18 @@ public class Question extends BaseEntity {
     if (willUpdateQuestion.getReviewCount() > 0) {
       this.reviewCount = willUpdateQuestion.getReviewCount();
     }
+
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringCreator(this)
+        .append("id", this.getQuestionId())
+        .append("title", this.getTitle())
+        .append("url", this.getUrl())
+        .append("fromSource", this.getFromSource())
+        .append("reviewCount", this.getReviewCount())
+        .append("user_id", getUserId())
+        .toString();
   }
 }

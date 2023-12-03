@@ -33,11 +33,11 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
   private UserInfoRepository getMockUserInfoRepository() {
     return new UserInfoRepository() {
       @Override public UserInfo findUserInfoByEmail(String email) {
-        return new UserInfo(1,"user@example.com","kyle","password","ROLE_USER");
+        return new UserInfo(3,"user@example.com","kyle","password","ROLE_USER");
       }
       @Override public List<UserInfo> findUserInfos() {
         return List.of(
-            new UserInfo(1,"user@example.com","kyle","password","ROLE_USER")
+            new UserInfo(3,"user@example.com","kyle","password","ROLE_USER")
         );
       }
       @Override public <S extends UserInfo> S save(S entity) {return null;}

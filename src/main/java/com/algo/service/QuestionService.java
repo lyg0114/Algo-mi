@@ -1,8 +1,11 @@
 package com.algo.service;
 
+import com.algo.config.security.AuthenticationUtil;
 import com.algo.model.dto.QuestionDto;
 import com.algo.model.entity.Question;
+import com.algo.model.entity.UserInfo;
 import com.algo.repository.QuestionRepository;
+import com.algo.repository.UserInfoRepository;
 import com.algo.repository.querydsl.QuestionCustomRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ public class QuestionService {
 
   private final QuestionCustomRepository questionCustomRepository;
   private final QuestionRepository questionRepository;
+  private final UserInfoRepository userInfoRepository;
   private final ModelMapper modelMapper;
 
 
@@ -43,9 +47,14 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionDto addQuestion(QuestionDto questionDto) {
+  public QuestionDto addQuestion(QuestionDto addQuestionDto) {
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(
+        AuthenticationUtil.getUserName()
+    );
+    Question addQuestion = addQuestionDto.converTnEntity(modelMapper);
+    addQuestion.setUserInfo(userInfo);
     return questionRepository
-        .save(questionDto.converTnEntity(modelMapper))
+        .save(addQuestion)
         .converToDto(modelMapper)
         ;
   }
