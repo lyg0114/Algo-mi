@@ -1,6 +1,7 @@
 package com.algo.controller.rest;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -12,8 +13,6 @@ import com.algo.controller.rest.advice.ExceptionControllerAdvice;
 import com.algo.mock.security.WithMockCustomUser;
 import com.algo.model.dto.QuestionDto;
 import com.algo.model.entity.Question;
-import com.algo.model.entity.UserInfo;
-import com.algo.repository.QuestionRepository;
 import com.algo.service.QuestionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,15 +123,40 @@ class QuestionRestControllerTest {
         .build();
     given(questionService.updateQuestion(1L, updateQuestionDto))
         .willReturn(QuestionDto.builder()
+            .id(1L)
+            .title("update Title")
+            .url("http://localhost/update/url/1")
+            .fromSource("updateLeetCode")
+            .reviewCount(3)
             .build());
     ObjectMapper mapper = new ObjectMapper();
     String updateQuestionDtoAsJSON = mapper.writeValueAsString(updateQuestionDto);
     mockMvc.perform(put("/question/1")
-        .content(updateQuestionDtoAsJSON)
-        .accept(MediaType.APPLICATION_JSON_VALUE)
-        .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .content(updateQuestionDtoAsJSON)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.title").value("update Title"))
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+    ;
+  }
+
+  @Test
+  @WithMockCustomUser
+  void testDeleteQuestionSuccess() throws Exception {
+    given(questionService.findQuestionById(1))
+        .willReturn(Question.builder()
+            .questionId(1L)
+            .title("sample-title")
+            .url("http://sample.url.com")
+            .fromSource("leetcode")
+            .reviewCount(5)
+            .build()
+        );
+    mockMvc.perform(delete("/question/1")
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNoContent())
     ;
   }
 }
