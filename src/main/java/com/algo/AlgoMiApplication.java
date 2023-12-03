@@ -1,6 +1,8 @@
 package com.algo;
 
+import com.algo.model.entity.Question;
 import com.algo.model.entity.UserInfo;
+import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
@@ -20,17 +22,29 @@ public class AlgoMiApplication {
 
   @Bean
   public CommandLineRunner initData(
-      UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder
+      UserInfoRepository userInfoRepository,
+      QuestionRepository questionRepository,
+      PasswordEncoder passwordEncoder
   ) {
     return args -> {
-      userInfoRepository.saveAll(List.of(
-          UserInfo.builder().userId(1L).userName("user-1").email("user-1@example.com")
-              .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build(),
-          UserInfo.builder().userId(2L).userName("user-2").email("user-2@example.com")
-              .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build(),
-          UserInfo.builder().userId(3L).userName("kyle").email("user@example.com")
-              .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build())
-      );
+      userInfoRepository.saveAll(
+          List.of(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
+              .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build()));
+
+      for (int i = 0; i < 20; i++) {
+        questionRepository.save(
+            Question.builder()
+                .title("title-" + i)
+                .url("http://sample-url/" + i)
+                .reviewCount(3)
+                .fromSource("leetcode")
+                .userInfo(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
+                    .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build())
+                .build()
+        );
+      }
+
+
     };
   }
 }
