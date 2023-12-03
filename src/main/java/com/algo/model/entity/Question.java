@@ -59,13 +59,21 @@ public class Question extends BaseEntity {
 
   @Override
   public String toString() {
-    return new ToStringCreator(this).append("id", this.getQuestionId())
+    return new ToStringCreator(this)
+        .append("id", this.getQuestionId())
         .append("title", this.getTitle())
         .append("url", this.getUrl())
         .append("fromSource", this.getFromSource())
         .append("reviewCount", this.getReviewCount())
-        .append("user_id", this.userInfo.getUserId())
+        .append("user_id", getUserId())
         .toString();
+  }
+
+  private Long getUserId() {
+    if (userInfo == null) {
+      return null;
+    }
+    return this.userInfo.getUserId();
   }
 
   public QuestionDto converToDto(ModelMapper modelMapper) {

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.modelmapper.ModelMapper;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * @author : iyeong-gyo
@@ -28,6 +29,11 @@ public class QuestionDto {
   private Integer reviewCount = 0;
 
   public Question converTnEntity(ModelMapper modelMapper) {
-    return modelMapper.map(this, Question.class);
+    Question.QuestionBuilder builder = Question.builder();
+    if (!StringUtils.isEmpty(this.title)) { builder.title(this.title); }
+    if (!StringUtils.isEmpty(this.url)) { builder.url(this.url); }
+    if (!StringUtils.isEmpty(this.fromSource)) { builder.fromSource(this.fromSource); }
+    if (this.reviewCount > 0) { builder.reviewCount(this.reviewCount); }
+    return builder.build();
   }
 }
