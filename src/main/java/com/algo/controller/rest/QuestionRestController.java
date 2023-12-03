@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -42,8 +43,8 @@ public class QuestionRestController {
     return null;
   }
 
-  @PreAuthorize("hasRole(@roles.USER)")
   @GetMapping("/{questionId}")
+  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
@@ -56,10 +57,9 @@ public class QuestionRestController {
 
   @PostMapping
   @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<QuestionDto> addQuestion(QuestionDto questionDto) {
+  public ResponseEntity<QuestionDto> addQuestion(@RequestBody QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
-    Question question = questionDto.converTnEntity(modelMapper);
-    QuestionDto addQuestionDto = questionService.addQuestion(question);
+    QuestionDto addQuestionDto = questionService.addQuestion(questionDto);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")

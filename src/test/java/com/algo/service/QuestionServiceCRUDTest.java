@@ -87,7 +87,7 @@ class QuestionServiceCRUDTest {
   @Test
   public void shouldInsertQuestion() {
     //given
-    Question question = Question
+    QuestionDto questionDto = QuestionDto
         .builder()
         .title("Add new Question")
         .url("http://localhost/sample/url/1")
@@ -95,13 +95,13 @@ class QuestionServiceCRUDTest {
         .reviewCount(5)
         .build();
     //when
-    QuestionDto questionDto = questionService.addQuestion(question);
+    QuestionDto savedQuestionDto = questionService.addQuestion(questionDto);
     //then
-    assertThat(questionDto).isNotNull();
-    assertThat(questionDto.getTitle()).isEqualTo(question.getTitle());
-    assertThat(questionDto.getUrl()).isEqualTo(question.getUrl());
-    assertThat(questionDto.getFromSource()).isEqualTo(question.getFromSource());
-    assertThat(questionDto.getReviewCount()).isEqualTo(question.getReviewCount());
+    assertThat(savedQuestionDto).isNotNull();
+    assertThat(savedQuestionDto.getTitle()).isEqualTo(questionDto.getTitle());
+    assertThat(savedQuestionDto.getUrl()).isEqualTo(questionDto.getUrl());
+    assertThat(savedQuestionDto.getFromSource()).isEqualTo(questionDto.getFromSource());
+    assertThat(savedQuestionDto.getReviewCount()).isEqualTo(questionDto.getReviewCount());
   }
 
   @Test
