@@ -57,7 +57,6 @@
         <table>
           <thead>
           <tr>
-            <th>번호</th>
             <th>제목</th>
             <th>문제유형</th>
             <th>출처</th>
@@ -66,84 +65,11 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
-            <td>2023.11.15</td>
-          </tr>
-          <tr>
-            <td class="small-width">1</td>
-            <td>문제제목 - 1</td>
-            <td>greedy</td>
-            <td>leetcode</td>
-            <td class="small-width">3</td>
+          <tr th:each="question : ${listQuestions}">
+            <td th:text="${question.title}"/>
+            <td th:text="greedy"/>
+            <td th:text="${question.fromSource}"/>
+            <td th:class="small-width" th:text="${question.reviewCount}"/>
             <td>2023.11.15</td>
           </tr>
           </tbody>
