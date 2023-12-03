@@ -61,12 +61,13 @@ class QuestionServiceCRUDTest {
   public void shouldUpdateQuestion() {
     //given
     SampleData.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
-    QuestionDto questionDto = questionService
+    long targetId = questionService
         .findPaginatedForQuestions(null, PageRequest.of(0, 1))
         .getContent()
-        .get(0);
-    long targetId = questionDto.getId();
-    Question willUpdateQuestion = Question
+        .get(0)
+        .getId()
+        ;
+    QuestionDto willUpdateQuestionDto = QuestionDto
         .builder()
         .title("Update new Question")
         .url("http://localhost/sample/url/7")
@@ -74,13 +75,13 @@ class QuestionServiceCRUDTest {
         .reviewCount(10)
         .build();
     //when
-    QuestionDto updateQuestion = questionService.updateQuestion(targetId, willUpdateQuestion);
+    QuestionDto updateQuestion = questionService.updateQuestion(targetId, willUpdateQuestionDto);
     //then
     assertThat(updateQuestion).isNotNull();
-    assertThat(updateQuestion.getTitle()).isEqualTo(willUpdateQuestion.getTitle());
-    assertThat(updateQuestion.getUrl()).isEqualTo(willUpdateQuestion.getUrl());
-    assertThat(updateQuestion.getFromSource()).isEqualTo(willUpdateQuestion.getFromSource());
-    assertThat(updateQuestion.getReviewCount()).isEqualTo(willUpdateQuestion.getReviewCount());
+    assertThat(updateQuestion.getTitle()).isEqualTo(willUpdateQuestionDto.getTitle());
+    assertThat(updateQuestion.getUrl()).isEqualTo(willUpdateQuestionDto.getUrl());
+    assertThat(updateQuestion.getFromSource()).isEqualTo(willUpdateQuestionDto.getFromSource());
+    assertThat(updateQuestion.getReviewCount()).isEqualTo(willUpdateQuestionDto.getReviewCount());
   }
 
   @WithMockCustomUser

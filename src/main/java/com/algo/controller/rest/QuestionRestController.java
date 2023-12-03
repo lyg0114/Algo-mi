@@ -11,8 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,10 +71,9 @@ public class QuestionRestController {
   @PutMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> updateQuestion(
-      @PathVariable long questionId, QuestionDto questionDto
+      @PathVariable long questionId, @RequestBody QuestionDto questionDto
   ) {
-    Question question = questionDto.converTnEntity(modelMapper);
-    QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, question);
+    QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, questionDto);
     if (updateQuestionDto == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

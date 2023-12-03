@@ -3,6 +3,7 @@ package com.algo.controller.rest;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,6 +12,8 @@ import com.algo.controller.rest.advice.ExceptionControllerAdvice;
 import com.algo.mock.security.WithMockCustomUser;
 import com.algo.model.dto.QuestionDto;
 import com.algo.model.entity.Question;
+import com.algo.model.entity.UserInfo;
+import com.algo.repository.QuestionRepository;
 import com.algo.service.QuestionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,16 +98,41 @@ class QuestionRestControllerTest {
     given(this.questionService.addQuestion(newQuestionDto))
         .willReturn(newQuestionDto);
     ObjectMapper mapper = new ObjectMapper();
-    String newOwnerAsJSON = mapper.writeValueAsString(newQuestionDto);
+    String newQuestionDtoAsJSON = mapper.writeValueAsString(newQuestionDto);
     mockMvc.perform(post("/question")
-            .content(newOwnerAsJSON)
+            .content(newQuestionDtoAsJSON)
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isCreated())
-        .andExpect(content().contentType("application/json"))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(jsonPath("$.title").value("sample-title"))
         .andExpect(jsonPath("$.url").value("http://sample.url.com"))
         .andExpect(jsonPath("$.fromSource").value("leetcode"))
-        .andExpect(jsonPath("$.reviewCount").value(5));
+        .andExpect(jsonPath("$.reviewCount").value(5))
+    ;
+  }
+
+  @Test
+  @WithMockCustomUser
+  void testUpdateQuestionSuccess() throws Exception {
+    QuestionDto updateQuestionDto = QuestionDto.builder()
+        .id(1L)
+        .title("update Title")
+        .url("http://localhost/update/url/1")
+        .fromSource("updateLeetCode")
+        .reviewCount(3)
+        .build();
+    given(questionService.updateQuestion(1L, updateQuestionDto))
+        .willReturn(QuestionDto.builder()
+            .build());
+    ObjectMapper mapper = new ObjectMapper();
+    String updateQuestionDtoAsJSON = mapper.writeValueAsString(updateQuestionDto);
+    mockMvc.perform(put("/question/1")
+        .content(updateQuestionDtoAsJSON)
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isCreated())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+    ;
   }
 }

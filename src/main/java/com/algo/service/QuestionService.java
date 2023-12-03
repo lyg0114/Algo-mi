@@ -60,12 +60,13 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionDto updateQuestion(long questionId, Question question) {
-    Question target = null;
+  public QuestionDto updateQuestion(long questionId, QuestionDto questionDto) {
+    Question question = questionDto.converTnEntity(modelMapper);
+    Question targetQuestion = null;
     try {
-      target = questionRepository.findById(questionId).orElseThrow();
-      target.update(question);
-      return target.converToDto(modelMapper);
+      targetQuestion = questionRepository.findById(questionId).orElseThrow();
+      targetQuestion.update(question);
+      return targetQuestion.converToDto(modelMapper);
     } catch (NoSuchElementException e) {
       return null;
     }
