@@ -34,10 +34,11 @@ public class QuestionCustomRepository {
 
   public Page<QuestionDto> findPaginatedForQuestions(QuestionDto questionDto, Pageable pageable) {
     JPAQuery<Question> jpaQuery = findQuestions(questionDto);
+    long totalCount = getTotalCount(jpaQuery);
     return new PageImpl<>(
         getQuestionDtoList(jpaQuery, pageable),
         pageable,
-        getTotalCount(jpaQuery)
+        totalCount
     );
   }
 
@@ -70,7 +71,7 @@ public class QuestionCustomRepository {
 
   private List<QuestionDto> getQuestionDtoList(JPAQuery<Question> jpaQuery, Pageable pageable) {
     return jpaQuery
-        .offset(pageable.getOffset())
+        .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
         .limit(pageable.getPageSize())
         .fetch()
         .stream()

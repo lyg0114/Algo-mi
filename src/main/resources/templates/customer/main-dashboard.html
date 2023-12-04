@@ -75,8 +75,11 @@
           </tbody>
         </table>
         <div th:if="${totalPages > 0}" th:class="pagination-container">
-          <ul th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="pagination">
-            <li>[[${i}]]</li>
+          <ul th:class="pagination">
+            <li th:each="i: ${#numbers.sequence(1, totalPages)}">
+              <a th:if="${currentPage != i}" th:href="@{'/customer/main-dashboard?page=' + ${i}}">[[${i}]]</a>
+              <a th:if="${currentPage == i}" href="#">[[${i}]]</a>
+            </li>
           </ul>
         </div>
 
