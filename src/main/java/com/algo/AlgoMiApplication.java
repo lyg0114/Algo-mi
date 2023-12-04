@@ -21,7 +21,7 @@ public class AlgoMiApplication {
     SpringApplication.run(AlgoMiApplication.class, args);
   }
 
-  @Bean
+//  @Bean
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository,
       QuestionRepository questionRepository,
@@ -44,7 +44,6 @@ public class AlgoMiApplication {
                 .build()
         );
       }
-
     };
   }
 

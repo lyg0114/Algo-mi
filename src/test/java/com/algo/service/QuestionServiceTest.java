@@ -2,8 +2,8 @@ package com.algo.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.algo.mock.sample.SampleData;
 import com.algo.model.dto.QuestionDto;
-import com.algo.model.entity.Question;
 import com.algo.repository.QuestionRepository;
 import com.algo.repository.UserInfoRepository;
 import java.util.List;

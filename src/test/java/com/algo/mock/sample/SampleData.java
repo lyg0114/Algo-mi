@@ -1,4 +1,4 @@
-package com.algo.service;
+package com.algo.mock.sample;
 
 import com.algo.model.entity.Question;
 import com.algo.model.entity.UserInfo;
@@ -11,7 +11,7 @@ import java.util.List;
  * @package : com.algo.service
  * @since : 27.11.23
  */
-class SampleData {
+public class SampleData {
   public static void createSamplefindPaginatedForQuestionsTest(
       QuestionRepository questionRepository, UserInfoRepository userInfoRepository
   ) {

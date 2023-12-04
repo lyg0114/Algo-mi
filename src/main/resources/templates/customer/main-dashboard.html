@@ -70,26 +70,33 @@
             <td th:text="greedy"/>
             <td th:text="${question.fromSource}"/>
             <td th:class="small-width" th:text="${question.reviewCount}"/>
-            <td>2023.11.15</td>
+            <td>2023.11.22</td>
           </tr>
           </tbody>
         </table>
-        <div class="pagination-container">
-          <ul class="pagination">
-            <li><a href="#"> < </a></li>
-            <li class="number"><a href="#">1</a></li>
-            <li class="number"><a href="#">2</a></li>
-            <li class="number"><a href="#">3</a></li>
-            <li class="number"><a href="#">4</a></li>
-            <li class="number"><a href="#">5</a></li>
-            <li class="number"><a href="#">6</a></li>
-            <li class="number"><a href="#">7</a></li>
-            <li class="number"><a href="#">8</a></li>
-            <li class="number"><a href="#">9</a></li>
-            <li class="number"><a href="#">10</a></li>
-            <li><a href="#"> > </a></li>
+        <div th:if="${totalPages > 0}" th:class="pagination-container">
+          <ul th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="pagination">
+            <li>[[${i}]]</li>
           </ul>
         </div>
+
+        <!--        <div th:if="${totalPages > 1}" th:class="pagination-container">-->
+        <!--          <ul th:class="pagination">-->
+        <!--            <li><a href="#"> < </a></li>-->
+        <!--            <li class="number"><a href="#">1</a></li>-->
+        <!--            <li class="number"><a href="#">2</a></li>-->
+        <!--            <li class="number"><a href="#">3</a></li>-->
+        <!--            <li class="number"><a href="#">4</a></li>-->
+        <!--            <li class="number"><a href="#">5</a></li>-->
+        <!--            <li class="number"><a href="#">6</a></li>-->
+        <!--            <li class="number"><a href="#">7</a></li>-->
+        <!--            <li class="number"><a href="#">8</a></li>-->
+        <!--            <li class="number"><a href="#">9</a></li>-->
+        <!--            <li class="number"><a href="#">10</a></li>-->
+        <!--            <li><a href="#"> > </a></li>-->
+        <!--          </ul>-->
+        <!--        </div>-->
+
         <div class="bottom-btn-container">
           <div class="bottom-btn">
             <button id="show-add-question-modal-btn" class="show-add-question-modal-btn">등록</button>
