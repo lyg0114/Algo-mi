@@ -37,18 +37,18 @@ class QuestionServicePageNationTest {
     System.out.println("pageQuestion.hasNext() = " + pageQuestion.hasNext());
     System.out.println("pageQuestion.getTotalPages() = " + pageQuestion.getTotalPages());
     System.out.println("pageQuestion.getNumber() = " + pageQuestion.getNumber());
-    System.out.println("startPage = " + calculateStartPage(pageQuestion.getNumber()));
-    System.out.println( "endPage = " + calculateEndPage(calculateStartPage(pageQuestion.getNumber()), pageQuestion.getTotalPages())) ;
+    System.out.println("startNumber = " + calculateStartNumber(pageQuestion.getNumber()));
+    System.out.println("endNumber = " + calculateEndNumber(calculateStartNumber(pageQuestion.getNumber()), pageQuestion.getTotalPages())) ;
     System.out.println("pageQuestion.getTotalElements() = " + pageQuestion.getTotalElements());
     System.out.println("pageQuestion.getNumberOfElements() = " + pageQuestion.getNumberOfElements());
   }
 
-  private int calculateStartPage(int input) {
+  private int calculateStartNumber(int input) {
     int adjustedValue = (input / 10) * 10;
     return adjustedValue + 1;
   }
 
-  private int calculateEndPage(int start, int totalPage) {
+  private int calculateEndNumber(int start, int totalPage) {
     int endPage = start + 9;
     return Math.min(totalPage - 1, endPage);
   }
