@@ -71,7 +71,7 @@ public class QuestionCustomRepository {
 
   private List<QuestionDto> getQuestionDtoList(JPAQuery<Question> jpaQuery, Pageable pageable) {
     return jpaQuery
-        .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
+        .offset((long) (pageable.getPageNumber()) * pageable.getPageSize())
         .limit(pageable.getPageSize())
         .fetch()
         .stream()
