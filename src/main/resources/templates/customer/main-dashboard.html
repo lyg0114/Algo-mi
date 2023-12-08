@@ -65,7 +65,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="question : ${listQuestions}">
+          <tr th:each="question : ${contents}">
             <td th:text="${question.title}"/>
             <td th:text="greedy"/>
             <td th:text="${question.fromSource}"/>
@@ -76,29 +76,23 @@
         </table>
         <div th:if="${totalPages > 0}" th:class="pagination-container">
           <ul th:class="pagination">
-            <li th:each="i: ${#numbers.sequence(1, totalPages)}">
-              <a th:if="${currentPage != i}" th:href="@{'/customer/main-dashboard?page=' + ${i}}">[[${i}]]</a>
-              <a th:if="${currentPage == i}" href="#">[[${i}]]</a>
+            <li th:if="${!isStartNumberPeriod}">
+              <a th:href="@{'/customer/main-dashboard?page=' + ${startNumber - 2}}"> << </a>
+            </li>
+            <li th:if="${hasPrevious}">
+              <a th:href="@{'/customer/main-dashboard?page=' + ${currentPage - 1}}"> < </a>
+            </li>
+            <li th:each="i: ${#numbers.sequence(startNumber, endNumber)}">
+              <a th:href="@{'/customer/main-dashboard?page=' + ${i - 1}}">[[${i}]]</a>
+            </li>
+            <li th:if="${hasNext}">
+              <a th:href="@{'/customer/main-dashboard?page=' + ${currentPage + 1}}"> > </a>
+            </li>
+            <li th:if="${!isEndNumberPeriod}">
+              <a th:href="@{'/customer/main-dashboard?page=' + ${endNumber + 1}}"> >> </a>
             </li>
           </ul>
         </div>
-
-        <!--        <div th:if="${totalPages > 1}" th:class="pagination-container">-->
-        <!--          <ul th:class="pagination">-->
-        <!--            <li><a href="#"> < </a></li>-->
-        <!--            <li class="number"><a href="#">1</a></li>-->
-        <!--            <li class="number"><a href="#">2</a></li>-->
-        <!--            <li class="number"><a href="#">3</a></li>-->
-        <!--            <li class="number"><a href="#">4</a></li>-->
-        <!--            <li class="number"><a href="#">5</a></li>-->
-        <!--            <li class="number"><a href="#">6</a></li>-->
-        <!--            <li class="number"><a href="#">7</a></li>-->
-        <!--            <li class="number"><a href="#">8</a></li>-->
-        <!--            <li class="number"><a href="#">9</a></li>-->
-        <!--            <li class="number"><a href="#">10</a></li>-->
-        <!--            <li><a href="#"> > </a></li>-->
-        <!--          </ul>-->
-        <!--        </div>-->
 
         <div class="bottom-btn-container">
           <div class="bottom-btn">

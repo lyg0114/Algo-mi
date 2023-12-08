@@ -31,12 +31,16 @@ public class PageResponseDto<T> {
     this.numberSize = numberSize - 1;
   }
 
-    /**
+  public int getNumberSize() {
+    return this.numberSize;
+  }
+
+  /**
    * 현재 Number 기준으로 시작 Number를 반환한다.
    * <p>
    * ex) Number = 3 일 경우 startNumber는 1
    * ex) Number = 13 일 경우 startNumber는 11
-   * ex) Number = 23 일 경우 * startNumber는 21
+   * ex) Number = 23 일 경우  startNumber는 21
    * ex) Number = 123 경우 startNumber는 121
    */
   public int getStartNumber() {
@@ -48,11 +52,11 @@ public class PageResponseDto<T> {
    * <p>
    * ex) Number = 3 일 경우 startNumber는 10
    * ex) Number = 13 일 경우 startNumber는 20
-   * ex) Number = 23 일 경우 * startNumber는 30
+   * ex) Number = 23 일 경우 startNumber는 30
    * ex) Number = 123 경우 startNumber는 130
    */
   public int getEndNumber() {
-    return Math.min(pageable.getTotalPages() - 1, getStartNumber() + numberSize);
+    return Math.min(pageable.getTotalPages(), getStartNumber() + numberSize);
   }
 
   /**
@@ -78,14 +82,6 @@ public class PageResponseDto<T> {
     return pageable.getContent();
   }
 
-  public boolean isFirst() {
-    return pageable.isFirst();
-  }
-
-  public boolean isLast() {
-    return pageable.isLast();
-  }
-
   public boolean hasNext() {
     return pageable.hasNext();
   }
@@ -96,5 +92,15 @@ public class PageResponseDto<T> {
 
   public long getTotalElements() {
     return pageable.getTotalElements();
+  }
+
+  public boolean isStartNumberPeriod() {
+    return getNumber() >= 0 && getNumber() <= numberSize;
+  }
+
+  public boolean isEndNumberPeriod() {
+    int lastNumber = pageable.getTotalPages();
+    int endNumber = getEndNumber();
+    return lastNumber == endNumber;
   }
 }

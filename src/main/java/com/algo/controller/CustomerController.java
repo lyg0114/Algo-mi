@@ -1,11 +1,10 @@
 package com.algo.controller;
 
+import com.algo.model.dto.PageResponseDto;
 import com.algo.model.dto.QuestionDto;
 import com.algo.service.QuestionService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -30,13 +29,18 @@ public class CustomerController {
   public String mainDashBoard(
       @PageableDefault Pageable pageable, QuestionDto questionDto, Model model
   ) {
-    Page<QuestionDto> paginatedQuestions = questionService
-        .findPaginatedForQuestions(questionDto, pageable);
-    List<QuestionDto> listQuestions = paginatedQuestions.getContent();
-    model.addAttribute("currentPage", pageable.getPageNumber());
-    model.addAttribute("totalPages", paginatedQuestions.getTotalPages());
-    model.addAttribute("totalItems", paginatedQuestions.getTotalElements());
-    model.addAttribute("listQuestions", listQuestions);
+    PageResponseDto<QuestionDto> responseDto = PageResponseDto.of(
+        questionService.findPaginatedForQuestions(questionDto, pageable)
+    );
+    model.addAttribute("contents", responseDto.getContent());
+    model.addAttribute("totalPages", responseDto.getTotalPages());
+    model.addAttribute("isStartNumberPeriod", responseDto.isStartNumberPeriod());
+    model.addAttribute("isEndNumberPeriod", responseDto.isEndNumberPeriod());
+    model.addAttribute("startNumber", responseDto.getStartNumber());
+    model.addAttribute("endNumber", responseDto.getEndNumber());
+    model.addAttribute("hasPrevious", responseDto.hasPrevious());
+    model.addAttribute("hasNext", responseDto.hasNext());
+    model.addAttribute("currentPage", responseDto.getNumber());
     return "customer/main-dashboard";
   }
 }
