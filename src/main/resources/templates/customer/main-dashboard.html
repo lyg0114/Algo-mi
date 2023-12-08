@@ -82,9 +82,12 @@
             <li th:if="${hasPrevious}">
               <a th:href="@{'/customer/main-dashboard?page=' + ${currentPage - 1}}"> < </a>
             </li>
+
             <li th:each="i: ${#numbers.sequence(startNumber, endNumber)}">
-              <a th:href="@{'/customer/main-dashboard?page=' + ${i - 1}}">[[${i}]]</a>
+              <a th:class="${currentPage == (i - 1) ? 'active' : 'inactive'}"
+                 th:href="@{'/customer/main-dashboard?page=' + ${i - 1}}">[[${i}]]</a>
             </li>
+
             <li th:if="${hasNext}">
               <a th:href="@{'/customer/main-dashboard?page=' + ${currentPage + 1}}"> > </a>
             </li>
@@ -99,6 +102,7 @@
             <button id="show-add-question-modal-btn" class="show-add-question-modal-btn">등록</button>
           </div>
         </div>
+
       </div>
     </div>
   </div>
