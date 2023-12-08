@@ -29,18 +29,9 @@ public class CustomerController {
   public String mainDashBoard(
       @PageableDefault Pageable pageable, QuestionDto questionDto, Model model
   ) {
-    PageResponseDto<QuestionDto> responseDto = PageResponseDto.of(
-        questionService.findPaginatedForQuestions(questionDto, pageable)
-    );
-    model.addAttribute("contents", responseDto.getContent());
-    model.addAttribute("totalPages", responseDto.getTotalPages());
-    model.addAttribute("isStartNumberPeriod", responseDto.isStartNumberPeriod());
-    model.addAttribute("isEndNumberPeriod", responseDto.isEndNumberPeriod());
-    model.addAttribute("startNumber", responseDto.getStartNumber());
-    model.addAttribute("endNumber", responseDto.getEndNumber());
-    model.addAttribute("hasPrevious", responseDto.hasPrevious());
-    model.addAttribute("hasNext", responseDto.hasNext());
-    model.addAttribute("currentPage", responseDto.getNumber());
+    PageResponseDto
+        .of(questionService.findPaginatedForQuestions(questionDto, pageable))
+        .createResults(model);
     return "customer/main-dashboard";
   }
 }

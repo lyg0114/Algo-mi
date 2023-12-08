@@ -2,6 +2,7 @@ package com.algo.model.dto;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.ui.Model;
 
 /**
  * @author : iyeong-gyo
@@ -39,9 +40,6 @@ public class PageResponseDto<T> {
    * 현재 Number 기준으로 시작 Number를 반환한다.
    * <p>
    * ex) Number = 3 일 경우 startNumber는 1
-   * ex) Number = 13 일 경우 startNumber는 11
-   * ex) Number = 23 일 경우  startNumber는 21
-   * ex) Number = 123 경우 startNumber는 121
    */
   public int getStartNumber() {
     return ((pageable.getNumber() / 10) * 10) + 1;
@@ -51,9 +49,6 @@ public class PageResponseDto<T> {
    * 현재 Number 기준으로 마지막 Number를 반환한다.
    * <p>
    * ex) Number = 3 일 경우 startNumber는 10
-   * ex) Number = 13 일 경우 startNumber는 20
-   * ex) Number = 23 일 경우 startNumber는 30
-   * ex) Number = 123 경우 startNumber는 130
    */
   public int getEndNumber() {
     return Math.min(pageable.getTotalPages(), getStartNumber() + numberSize);
@@ -102,5 +97,17 @@ public class PageResponseDto<T> {
     int lastNumber = pageable.getTotalPages();
     int endNumber = getEndNumber();
     return lastNumber == endNumber;
+  }
+
+  public void createResults(Model model) {
+    model.addAttribute("contents", this.getContent());
+    model.addAttribute("totalPages", this.getTotalPages());
+    model.addAttribute("isStartNumberPeriod", this.isStartNumberPeriod());
+    model.addAttribute("isEndNumberPeriod", this.isEndNumberPeriod());
+    model.addAttribute("startNumber", this.getStartNumber());
+    model.addAttribute("endNumber", this.getEndNumber());
+    model.addAttribute("hasPrevious", this.hasPrevious());
+    model.addAttribute("hasNext", this.hasNext());
+    model.addAttribute("currentPage", this.getNumber());
   }
 }
