@@ -11,7 +11,18 @@ import org.springframework.ui.Model;
  */
 public class PageResponseDto<T> {
 
+  /**
+   * client 에서 넘어오는 페이지 넘버는 -1 을 해줘야 한다.
+   * <p> ex) 화면에서 1 페이지를 클릭했을때 실제 넘어오는 page 값은 0 이다.
+   * <p> Page 내부적으로 0 페이지가 첫번째 페이지라 인식하고 페이지네이션 계산 진행.
+   */
   private final Page<T> pageable;
+
+  /**
+   * 한번에 보여지는 number의 size
+   * <p> ex) numberSize = 10 일경우 하단의 number는 1부터 10 까지 출력 </p>
+   * <p> 하단에 표시되는 number가 10개이면 실제 numberSize에 저장되는 값은 9 이다. </p>
+   */
   private final int numberSize;
 
   public static <T> PageResponseDto<T> of(Page<T> pageable) {
@@ -30,10 +41,6 @@ public class PageResponseDto<T> {
   public PageResponseDto(Page<T> pageable, int numberSize) {
     this.pageable = pageable;
     this.numberSize = numberSize - 1;
-  }
-
-  public int getNumberSize() {
-    return this.numberSize;
   }
 
   /**
@@ -65,14 +72,6 @@ public class PageResponseDto<T> {
     return pageable.getTotalPages();
   }
 
-  public int getSize() {
-    return pageable.getSize();
-  }
-
-  public int getNumberOfElements() {
-    return pageable.getNumberOfElements();
-  }
-
   public List<T> getContent() {
     return pageable.getContent();
   }
@@ -83,10 +82,6 @@ public class PageResponseDto<T> {
 
   public boolean hasPrevious() {
     return pageable.hasPrevious();
-  }
-
-  public long getTotalElements() {
-    return pageable.getTotalElements();
   }
 
   public boolean isStartNumberPeriod() {
