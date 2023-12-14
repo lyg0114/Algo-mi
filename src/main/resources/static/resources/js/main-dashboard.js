@@ -3,9 +3,38 @@ function doAction() {
 }
 
 function showModal() {
-  let $addQuestionBtn = $("#show-add-question-modal-btn");
-  $addQuestionBtn.on('click', () => {
+  let $addQuestionModalBtn = $("#show-add-question-modal-btn");
+  $addQuestionModalBtn.on('click', () => {
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
+  });
+
+  let $addQuestionBtn = $("#add-question-btn");
+  $addQuestionBtn.on('click', () => {
+    var form = document.getElementById("saveQuestionForm");
+    var $formData = new FormData(form);
+    var jsonData = {};
+    $formData.forEach(function (value, key) {
+      jsonData[key] = value;
+    });
+    submitForm(jsonData);
+  });
+}
+
+function submitForm(jsonData) {
+  var csrfToken = $("meta[name='_csrf']").attr("content");
+  var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+  $.ajax({
+    url: '/question/test',
+    type: 'POST',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(jsonData),
+    success: function (response) {
+      console.log(response);
+    },
+    error: function (error) {
+      console.error(error);
+    }
   });
 }
