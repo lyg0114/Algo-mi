@@ -3,7 +3,6 @@ package com.algo.controller.rest;
 import com.algo.model.dto.QuestionDto;
 import com.algo.model.entity.Question;
 import com.algo.service.QuestionService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -36,16 +35,6 @@ public class QuestionRestController {
 
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
-
-  @GetMapping("/test")
-  @PreAuthorize("hasRole(@roles.ADMIN)")
-  public String listQuestion() {
-    System.out.println("###################################");
-    System.out.println("###################################");
-    System.out.println("###################################");
-    System.out.println("###################################");
-    return "SUCCESS";
-  }
 
   @GetMapping("/{questionId}")
   @PreAuthorize("hasRole(@roles.USER)")
