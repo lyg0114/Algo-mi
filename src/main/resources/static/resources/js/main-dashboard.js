@@ -22,8 +22,7 @@ function showModal() {
 }
 
 function submitForm(jsonData) {
-  var csrfToken = $("meta[name='_csrf']").attr("content");
-  var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+  console.log(jsonData);
 
   $.ajax({
     url: '/question/test',

@@ -37,10 +37,14 @@ public class QuestionRestController {
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
 
-  @GetMapping
-  @PreAuthorize("hasRole(@roles.USER)")
-  public ResponseEntity<List<QuestionDto>> listQuestion(QuestionDto questionDto) {
-    return null;
+  @GetMapping("/test")
+  @PreAuthorize("hasRole(@roles.ADMIN)")
+  public String listQuestion() {
+    System.out.println("###################################");
+    System.out.println("###################################");
+    System.out.println("###################################");
+    System.out.println("###################################");
+    return "SUCCESS";
   }
 
   @GetMapping("/{questionId}")
