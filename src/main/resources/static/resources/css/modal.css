@@ -1,8 +1,7 @@
 
 .modal-add-question {
-  width: 300px;
-  height: 250px;
-  /*background: aquamarine;*/
+  width: 500px;
+  height: 337px;
 }
 
 .modal-add-question .modal-add-question-container {
@@ -10,10 +9,13 @@
   border-radius: 5px;
   width: 100%;
   height: 90%;
-  /*background: red;*/
   margin-top: 9px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.modal-add-question .modal-add-question-container .modal-add-input-area{
+  margin-top: 5px;
 }
 
 .input-table {

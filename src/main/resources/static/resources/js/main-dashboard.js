@@ -22,10 +22,8 @@ function showModal() {
 }
 
 function submitForm(jsonData) {
-  console.log(jsonData);
-
   $.ajax({
-    url: '/question/test',
+    url: '/question',
     type: 'POST',
     contentType: 'application/json; charset=utf-8',
     data: JSON.stringify(jsonData),
@@ -37,3 +35,4 @@ function submitForm(jsonData) {
     }
   });
 }
+
