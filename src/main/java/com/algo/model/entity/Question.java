@@ -50,8 +50,9 @@ public class Question extends BaseEntity {
   private String fromSource;
 
   @NotNull
+  @Builder.Default
   @Column(name = "review_count")
-  private Integer reviewCount;
+  private Integer reviewCount = 0;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
