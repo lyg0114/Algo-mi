@@ -9,6 +9,22 @@
         <table class="input-table">
           <tr class="input-tr">
             <td class="input-label">
+              <label for="input-question-title">제목 : </label>
+            </td>
+            <td class="input-content">
+              <input id="input-question-title" class="search-input" type="text" name="title" >
+            </td>
+          </tr>
+          <tr class="input-tr">
+            <td class="input-label">
+              <label for="input-question-url">URL : </label>
+            </td>
+            <td class="input-content">
+              <input id="input-question-url" class="search-input" type="text" name="url" >
+            </td>
+          </tr>
+          <tr class="input-tr">
+            <td class="input-label">
               <label for="input-question-type">문제유형 : </label>
             </td>
             <td class="input-content">
@@ -26,7 +42,7 @@
               <label for="input-question-reference">출처 : </label>
             </td>
             <td class="input-content">
-              <select id="input-question-reference" name="questionReference">
+              <select id="input-question-reference" name="fromSource">
                 <option value="">선택</option>
                 <option value="1">greedy</option>
                 <option value="2">DP</option>
