@@ -31,6 +31,7 @@ public class DisableSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http)
       throws Exception {
     http.formLogin(AbstractHttpConfigurer::disable);
+    http.csrf(AbstractHttpConfigurer::disable);
     return http.build();
   }
 
