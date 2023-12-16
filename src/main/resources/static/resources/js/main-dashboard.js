@@ -1,34 +1,48 @@
 function doAction() {
-  showModal();
+  showModalEvent();
+  addQuestionEvent();
 }
 
-function showModal() {
+function showModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
   $addQuestionModalBtn.on('click', () => {
+    clearForm('saveQuestionForm');
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
   });
+}
 
-  let $addQuestionBtn = $("#add-question-btn");
-  $addQuestionBtn.on('click', () => {
-    var form = document.getElementById("saveQuestionForm");
-    var $formData = new FormData(form);
-    var jsonData = {};
-    $formData.forEach(function (value, key) {
-      jsonData[key] = value;
-    });
-    submitForm(jsonData);
+function clearForm(targetForm) {
+  var form = document.getElementById(targetForm);
+  var formElements = form.querySelectorAll('input, select');
+  formElements.forEach(function (ele) {
+    ele.value = '';
   });
 }
 
-function submitForm(jsonData) {
+function addQuestionEvent() {
+  let $addQuestionBtn = $("#add-question-btn");
+  $addQuestionBtn.on('click', () => {
+    var form = document.getElementById("saveQuestionForm");
+    var formData = new FormData(form);
+    var jsonData = {};
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+    addQuestion(jsonData);
+  });
+}
+
+function addQuestion(jsonData) {
   $.ajax({
     url: '/question',
     type: 'POST',
     contentType: 'application/json; charset=utf-8',
     data: JSON.stringify(jsonData),
     success: function (response) {
-      console.log(response);
+      $.modal.close();
+      alert("등록이 완료되었습니다.");
+      location.reload();
     },
     error: function (error) {
       console.error(error);
