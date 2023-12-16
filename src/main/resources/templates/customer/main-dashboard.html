@@ -15,24 +15,22 @@
           <td class="condition-content">
             <select id="search-question-type" name="questionType">
               <option value="">선택</option>
-              <option value="1">greedy</option>
-              <option value="2">DP</option>
-              <option value="3">BFS</option>
-              <option value="4">DFS</option>
+              <option value="GREEDY">GREEDY</option>
+              <option value="DP">DP</option>
+              <option value="BFS">BFS</option>
+              <option value="DFS">DFS</option>
             </select>
           </td>
         </tr>
         <tr class="condition-tr">
           <td class="condition-label">
-            <label for="search-question-reference">출처 : </label>
+            <label for="search-fromSource">출처 : </label>
           </td>
           <td class="condition-content">
-            <select id="search-question-reference" name="questionReference">
+            <select id="search-fromSource" name="fromSource">
               <option value="">선택</option>
-              <option value="1">greedy</option>
-              <option value="2">DP</option>
-              <option value="3">BFS</option>
-              <option value="4">DFS</option>
+              <option value="LEETCODE">LEETCODE</option>
+              <option value="BAEKJOON">BAEKJOON</option>
             </select>
           </td>
         </tr>
@@ -66,11 +64,11 @@
           </thead>
           <tbody>
           <tr th:each="question : ${contents}">
-            <td th:text="${question.title}"/>
-            <td th:text="greedy"/>
+            <td th:text="${question.title}" th:attr="id=${question.id}"/>
+            <td th:text="${question.questionType}"/>
             <td th:text="${question.fromSource}"/>
             <td th:class="small-width" th:text="${question.reviewCount}"/>
-            <td>2023.11.22</td>
+            <td th:text="${question.registDt}"/>
           </tr>
           </tbody>
         </table>

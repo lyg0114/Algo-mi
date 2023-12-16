@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,6 +50,10 @@ public class Question extends BaseEntity {
   @Column(name = "from_source")
   private String fromSource;
 
+  @NotBlank
+  @Column(name = "question_type")
+  private String questionType;
+
   @NotNull
   @Builder.Default
   @Column(name = "review_count")
@@ -66,9 +71,11 @@ public class Question extends BaseEntity {
   }
 
   public QuestionDto converToDto(ModelMapper modelMapper) {
-    QuestionDto map = modelMapper.map(this, QuestionDto.class);
-    map.setId(this.questionId);
-    return map;
+    QuestionDto result = modelMapper.map(this, QuestionDto.class);
+    result.setId(this.questionId);
+    result.setRegistDt(this.getCreatedDt().format(DateTimeFormatter
+        .ofPattern("yyyy-MM-dd")));
+    return result;
   }
 
   public void setUserInfo(UserInfo userInfo) {

@@ -28,6 +28,7 @@ public class QuestionDto {
   @Builder.Default
   private Integer reviewCount = 0;
   private String questionType;
+  private String registDt;
 
   public Question converTnEntity(ModelMapper modelMapper) {
     Question.QuestionBuilder builder = Question.builder();

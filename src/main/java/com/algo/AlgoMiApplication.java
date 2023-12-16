@@ -39,6 +39,7 @@ public class AlgoMiApplication {
                 .url("http://sample-url/" + i)
                 .reviewCount(3)
                 .fromSource("leetcode")
+                .questionType("greedy")
                 .userInfo(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
                     .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build())
                 .build()
