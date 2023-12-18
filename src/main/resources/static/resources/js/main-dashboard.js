@@ -1,6 +1,6 @@
 function doAction() {
   showAddModalEvent();
-  saveQuestionEvent();
+  crudQuestionEvent();
   showGetOneModalEvent();
   changeModalBtnStatusEvent();
 }
@@ -70,7 +70,7 @@ function clearForm(targetForm) {
   });
 }
 
-function saveQuestionEvent() {
+function crudQuestionEvent() {
   $("#add-question-btn").on('click', () => {
     var form = document.getElementById("saveQuestionForm");
     var formData = new FormData(form);
@@ -89,6 +89,27 @@ function saveQuestionEvent() {
       saveJsonData[key] = value;
     });
     saveQuestion(saveJsonData, "PUT", "/question/" + $("#question-id").val());
+  });
+
+  $("#delete-question-btn").on('click', () => {
+    if(confirm("정말 삭제하시겠습니까?")){
+      deleteQuestion($("#question-id").val());
+    }
+  });
+}
+
+function deleteQuestion(questionId) {
+  $.ajax({
+    url: "/question/" + questionId,
+    type: "DELETE",
+    success: function (response) {
+      $.modal.close();
+      alert("삭제가 완료되었습니다.");
+      location.reload();
+    },
+    error: function (error) {
+      console.error(error);
+    }
   });
 }
 
