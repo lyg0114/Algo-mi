@@ -11,6 +11,7 @@ function showAddModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
 
   function setAddBtn() {
+    $("#delete-question-btn").hide();
     $("#change-status-btn").hide();
     $("#update-question-btn").hide();
     $("#add-question-btn").show();
@@ -31,6 +32,7 @@ function showGetOneModalEvent() {
   function setModifyBtn() {
     $("#update-question-btn").hide();
     $("#add-question-btn").hide();
+    $("#delete-question-btn").show();
     $("#change-status-btn").show();
   }
 
@@ -51,8 +53,10 @@ function changeModalBtnStatusEvent() {
     function setUpdateBtn() {
       $("#add-question-btn").hide();
       $("#change-status-btn").hide();
+      $("#delete-question-btn").hide();
       $("#update-question-btn").show();
     }
+
     setFormReadOnly(false);
     setUpdateBtn();
   });
@@ -89,10 +93,6 @@ function saveQuestionEvent() {
 }
 
 function saveQuestion(saveJsonData, method, url) {
-  console.log(saveJsonData)
-  console.log(method)
-  console.log(url)
-
   $.ajax({
     url: url,
     type: method,
