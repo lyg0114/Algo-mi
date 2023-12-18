@@ -9,11 +9,17 @@ let targetForm = 'saveQuestionForm';
 
 function showAddModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
-  $addQuestionModalBtn.on('click', () => {
-    clearForm(targetForm);
+
+  function setAddBtn() {
     $("#change-status-btn").hide();
     $("#update-question-btn").hide();
     $("#add-question-btn").show();
+    setFormReadOnly(false);
+  }
+
+  $addQuestionModalBtn.on('click', () => {
+    clearForm(targetForm);
+    setAddBtn();
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
   });
@@ -21,11 +27,16 @@ function showAddModalEvent() {
 
 function showGetOneModalEvent() {
   let $td = $("#main-table tr > td:first-child");
+
+  function setModifyBtn() {
+    $("#update-question-btn").hide();
+    $("#add-question-btn").hide();
+    $("#change-status-btn").show();
+  }
+
   $td.on('click', function () {
         clearForm(targetForm);
-        $("#update-question-btn").hide();
-        $("#add-question-btn").hide();
-        $("#change-status-btn").show();
+        setModifyBtn();
         getQuestion($(this).attr("id"));
         $("#question-id").val($(this).attr("id"));
         let $modalAddQuestion = $("#modal-add-question");
@@ -37,10 +48,13 @@ function showGetOneModalEvent() {
 function changeModalBtnStatusEvent() {
   let $changeStatusBtn = $("#change-status-btn");
   $changeStatusBtn.on('click', () => {
+    function setUpdateBtn() {
+      $("#add-question-btn").hide();
+      $("#change-status-btn").hide();
+      $("#update-question-btn").show();
+    }
     setFormReadOnly(false);
-    $("#add-question-btn").hide();
-    $("#change-status-btn").hide();
-    $("#update-question-btn").show();
+    setUpdateBtn();
   });
 }
 
