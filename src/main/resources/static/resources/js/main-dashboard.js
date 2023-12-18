@@ -4,10 +4,12 @@ function doAction() {
   showGetOneModalEvent();
 }
 
+let targetForm = 'saveQuestionForm';
+
 function showAddModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
   $addQuestionModalBtn.on('click', () => {
-    clearForm('saveQuestionForm');
+    clearForm(targetForm);
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
   });
@@ -15,9 +17,14 @@ function showAddModalEvent() {
 
 function showGetOneModalEvent() {
   let $td = $("#main-table tr > td:first-child");
-  $td.on('click', () => {
-    alert("SUCCESS");
-  });
+  $td.on('click', function () {
+        clearForm(targetForm);
+        getQuestion($(this).attr("id"));
+        let $modalAddQuestion = $("#modal-add-question");
+        $modalAddQuestion.modal();
+      }
+  )
+  ;
 }
 
 function clearForm(targetForm) {
@@ -56,5 +63,31 @@ function addQuestion(jsonData) {
       console.error(error);
     }
   });
+}
+
+function getQuestion(targetId) {
+  $.ajax({
+    url: '/question/' + targetId,
+    type: 'GET',
+    success: function (response) {
+      console.log(response);
+      setFormValues(response);
+    },
+    error: function (error) {
+      console.error(error);
+    }
+  });
+}
+
+function setFormValues(response) {
+  for (let key in response) {
+    if (response.hasOwnProperty(key)) {
+      let value = response[key];
+      let $input = $(`#saveQuestionForm [name="${key}"]`);
+      if ($input.length > 0) {
+        $input.val(value);
+      }
+    }
+  }
 }
 
