@@ -1,14 +1,22 @@
 function doAction() {
-  showModalEvent();
+  showAddModalEvent();
   addQuestionEvent();
+  showGetOneModalEvent();
 }
 
-function showModalEvent() {
+function showAddModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
   $addQuestionModalBtn.on('click', () => {
     clearForm('saveQuestionForm');
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
+  });
+}
+
+function showGetOneModalEvent() {
+  let $td = $("#main-table tr > td:first-child");
+  $td.on('click', () => {
+    alert("SUCCESS");
   });
 }
 
