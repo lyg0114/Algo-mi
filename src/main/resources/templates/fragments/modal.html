@@ -4,7 +4,7 @@
 
 <div id="modal-add-question" class="modal-add-question" style="display: none">
   <div class="modal-add-question-container">
-    <form id="saveQuestionForm">
+    <form th:action="@{/question}" method="post" id="saveQuestionForm">
       <div class="modal-add-input-area">
         <table class="input-table">
           <tr class="input-tr">

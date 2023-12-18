@@ -79,16 +79,20 @@ input::placeholder {
   overflow: hidden;
 }
 
-table {
+.main-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-th, td {
+.main-table th, td {
   border: 1.5px solid black;
   padding-top: 1.5px;
   padding-bottom: 1.5px;
   text-align: center;
+}
+
+.main-table tr > td:first-child {
+  cursor: pointer;
 }
 
 .small-width {
