@@ -35,6 +35,7 @@ public class QuestionDto {
     if (!StringUtils.isEmpty(this.title)) { builder.title(this.title); }
     if (!StringUtils.isEmpty(this.url)) { builder.url(this.url); }
     if (!StringUtils.isEmpty(this.fromSource)) { builder.fromSource(this.fromSource); }
+    if (!StringUtils.isEmpty(this.questionType)) { builder.questionType(this.questionType); }
     if (this.reviewCount > 0) { builder.reviewCount(this.reviewCount); }
     return builder.build();
   }

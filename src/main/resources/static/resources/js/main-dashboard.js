@@ -1,7 +1,8 @@
 function doAction() {
   showAddModalEvent();
-  addQuestionEvent();
+  saveQuestionEvent();
   showGetOneModalEvent();
+  changeModalBtnStatusEvent();
 }
 
 let targetForm = 'saveQuestionForm';
@@ -10,6 +11,9 @@ function showAddModalEvent() {
   let $addQuestionModalBtn = $("#show-add-question-modal-btn");
   $addQuestionModalBtn.on('click', () => {
     clearForm(targetForm);
+    $("#change-status-btn").hide();
+    $("#update-question-btn").hide();
+    $("#add-question-btn").show();
     let $modalAddQuestion = $("#modal-add-question");
     $modalAddQuestion.modal();
   });
@@ -19,12 +23,25 @@ function showGetOneModalEvent() {
   let $td = $("#main-table tr > td:first-child");
   $td.on('click', function () {
         clearForm(targetForm);
+        $("#update-question-btn").hide();
+        $("#add-question-btn").hide();
+        $("#change-status-btn").show();
         getQuestion($(this).attr("id"));
+        $("#question-id").val($(this).attr("id"));
         let $modalAddQuestion = $("#modal-add-question");
         $modalAddQuestion.modal();
       }
-  )
-  ;
+  );
+}
+
+function changeModalBtnStatusEvent() {
+  let $changeStatusBtn = $("#change-status-btn");
+  $changeStatusBtn.on('click', () => {
+    setFormReadOnly(false);
+    $("#add-question-btn").hide();
+    $("#change-status-btn").hide();
+    $("#update-question-btn").show();
+  });
 }
 
 function clearForm(targetForm) {
@@ -35,28 +52,41 @@ function clearForm(targetForm) {
   });
 }
 
-function addQuestionEvent() {
-  let $addQuestionBtn = $("#add-question-btn");
-  $addQuestionBtn.on('click', () => {
+function saveQuestionEvent() {
+  $("#add-question-btn").on('click', () => {
     var form = document.getElementById("saveQuestionForm");
     var formData = new FormData(form);
-    var jsonData = {};
+    var saveJsonData = {};
     formData.forEach((value, key) => {
-      jsonData[key] = value;
+      saveJsonData[key] = value;
     });
-    addQuestion(jsonData);
+    saveQuestion(saveJsonData, "POST", "/question");
+  });
+
+  $("#update-question-btn").on('click', () => {
+    var form = document.getElementById("saveQuestionForm");
+    var formData = new FormData(form);
+    var saveJsonData = {};
+    formData.forEach((value, key) => {
+      saveJsonData[key] = value;
+    });
+    saveQuestion(saveJsonData, "PUT", "/question/" + $("#question-id").val());
   });
 }
 
-function addQuestion(jsonData) {
+function saveQuestion(saveJsonData, method, url) {
+  console.log(saveJsonData)
+  console.log(method)
+  console.log(url)
+
   $.ajax({
-    url: '/question',
-    type: 'POST',
+    url: url,
+    type: method,
     contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(jsonData),
+    data: JSON.stringify(saveJsonData),
     success: function (response) {
       $.modal.close();
-      alert("등록이 완료되었습니다.");
+      alert("작업이 완료되었습니다.");
       location.reload();
     },
     error: function (error) {
@@ -70,8 +100,8 @@ function getQuestion(targetId) {
     url: '/question/' + targetId,
     type: 'GET',
     success: function (response) {
-      console.log(response);
       setFormValues(response);
+      setFormReadOnly(true);
     },
     error: function (error) {
       console.error(error);
@@ -91,3 +121,9 @@ function setFormValues(response) {
   }
 }
 
+function setFormReadOnly(isTrue) {
+  $("#saveQuestionForm :input").prop("readonly", isTrue);
+  $("#saveQuestionForm select").each(function () {
+    $(this).prop("disabled", isTrue);
+  });
+}

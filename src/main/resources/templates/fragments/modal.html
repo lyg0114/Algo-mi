@@ -4,6 +4,7 @@
 
 <div id="modal-add-question" class="modal-add-question" style="display: none">
   <div class="modal-add-question-container">
+    <input type="hidden" id="question-id">
     <form th:action="@{/question}" method="post" id="saveQuestionForm">
       <div class="modal-add-input-area">
         <table class="input-table">
@@ -12,7 +13,7 @@
               <label for="input-question-title">제목 : </label>
             </td>
             <td class="input-content">
-              <input id="input-question-title" class="search-input" type="text" name="title" >
+              <input id="input-question-title" class="search-input" type="text" name="title">
             </td>
           </tr>
           <tr class="input-tr">
@@ -20,7 +21,7 @@
               <label for="input-question-url">URL : </label>
             </td>
             <td class="input-content">
-              <input id="input-question-url" class="search-input" type="text" name="url" >
+              <input id="input-question-url" class="search-input" type="text" name="url">
             </td>
           </tr>
           <tr class="input-tr">
@@ -53,7 +54,9 @@
       </div>
     </form>
     <div class="modal-add-btn-area">
-      <button id="add-question-btn" class="add-question-btn" >제출</button>
+      <button style="display: none" id="change-status-btn" class="add-question-btn">수정하기</button>
+      <button style="display: none" id="add-question-btn" class="add-question-btn">제출</button>
+      <button style="display: none" id="update-question-btn" class="add-question-btn">수정</button>
     </div>
   </div>
 </div>
