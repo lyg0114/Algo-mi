@@ -62,6 +62,9 @@ public class QuestionCustomRepository {
       if (!StringUtils.isEmpty(questionDto.getFromSource())) {
         booleanBuilder.and(question.fromSource.like("%" + questionDto.getFromSource() + "%"));
       }
+      if (!StringUtils.isEmpty(questionDto.getQuestionType())) {
+        booleanBuilder.and(question.questionType.like("%" + questionDto.getQuestionType() + "%"));
+      }
       if (questionDto.getReviewCount() > 0) {
         booleanBuilder.and(question.reviewCount.eq(questionDto.getReviewCount()));
       }

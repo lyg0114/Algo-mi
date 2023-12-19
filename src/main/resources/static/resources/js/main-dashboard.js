@@ -5,6 +5,21 @@ function doAction() {
   changeModalBtnStatusEvent();
 }
 
+function getList() {
+  var searchElements = document.querySelectorAll('.search');
+  var queryString = '';
+  searchElements.forEach(function (element) {
+    if (element.value !== '') {
+      queryString += encodeURIComponent(element.name) + '='
+          + encodeURIComponent(
+              element.value) + '&';
+    }
+  });
+  queryString = queryString.slice(0, -1);
+  console.log('Generated Query String:', queryString);
+  window.location.href = '/customer/main-dashboard?' + queryString;
+}
+
 let targetForm = 'saveQuestionForm';
 
 function showAddModalEvent() {
@@ -92,7 +107,7 @@ function crudQuestionEvent() {
   });
 
   $("#delete-question-btn").on('click', () => {
-    if(confirm("정말 삭제하시겠습니까?")){
+    if (confirm("정말 삭제하시겠습니까?")) {
       deleteQuestion($("#question-id").val());
     }
   });

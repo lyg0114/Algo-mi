@@ -13,7 +13,7 @@
             <label for="search-question-type">문제유형 : </label>
           </td>
           <td class="condition-content">
-            <select id="search-question-type" name="questionType">
+            <select class="search" id="search-question-type" name="questionType">
               <option value="">선택</option>
               <option value="GREEDY">GREEDY</option>
               <option value="DP">DP</option>
@@ -27,7 +27,7 @@
             <label for="search-fromSource">출처 : </label>
           </td>
           <td class="condition-content">
-            <select id="search-fromSource" name="fromSource">
+            <select class="search" id="search-fromSource" name="fromSource">
               <option value="">선택</option>
               <option value="LEETCODE">LEETCODE</option>
               <option value="BAEKJOON">BAEKJOON</option>
@@ -35,9 +35,7 @@
           </td>
         </tr>
       </table>
-
     </div>
-
   </div>
 </div>
 <div class="right">
@@ -46,8 +44,9 @@
 
       <div class="top-container">
         <div class="search-container">
-          <input class="search-input" type="text" name="searchKeyWord" placeholder="검색어를 입력하세요">
-          <button id="search" class="search-btn">검색</button>
+          <input class="search search-input" type="text" name="title"
+                 placeholder="검색어를 입력하세요">
+          <button id="search" class="search-btn" th:onclick="getList()">검색</button>
         </div>
       </div>
 
@@ -97,7 +96,8 @@
 
         <div class="bottom-btn-container">
           <div class="bottom-btn">
-            <button id="show-add-question-modal-btn" class="show-add-question-modal-btn">등록하기</button>
+            <button id="show-add-question-modal-btn" class="show-add-question-modal-btn">등록하기
+            </button>
           </div>
         </div>
 
