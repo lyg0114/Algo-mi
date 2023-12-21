@@ -9,6 +9,7 @@ import com.algo.repository.UserInfoRepository;
 import com.algo.repository.querydsl.QuestionCustomRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @package : com.algo.service
  * @since : 18.11.23
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class QuestionService {
