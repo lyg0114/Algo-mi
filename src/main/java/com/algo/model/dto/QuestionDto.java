@@ -1,6 +1,7 @@
 package com.algo.model.dto;
 
 import com.algo.model.entity.Question;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,8 @@ public class QuestionDto {
   private Integer reviewCount = 0;
   private String questionType;
   private String registDt;
+  private LocalDateTime fromDt;
+  private LocalDateTime toDt;
 
   public Question converTnEntity(ModelMapper modelMapper) {
     Question.QuestionBuilder builder = Question.builder();

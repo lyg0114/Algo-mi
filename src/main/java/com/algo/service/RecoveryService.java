@@ -1,8 +1,5 @@
 package com.algo.service;
 
-import com.algo.model.entity.Question;
-import java.util.List;
-
 /**
  * @author : iyeong-gyo
  * @package : com.algo.service
@@ -10,5 +7,5 @@ import java.util.List;
  */
 public interface RecoveryService {
 
-  List<Question> getRecoveryTargets();
+  void getRecoveryTargetsAndNoteToUser();
 }

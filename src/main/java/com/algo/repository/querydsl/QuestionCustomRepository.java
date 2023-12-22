@@ -53,6 +53,11 @@ public class QuestionCustomRepository {
   private static BooleanBuilder getConditionBuilder(QuestionDto questionDto) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
     if (Objects.nonNull(questionDto)) {
+      if (Objects.nonNull(questionDto.getFromDt()) && Objects.nonNull(questionDto.getToDt())) {
+        booleanBuilder.and(question.createdDt.between(
+            questionDto.getFromDt(), questionDto.getToDt())
+        );
+      }
       if (!StringUtils.isEmpty(questionDto.getTitle())) {
         booleanBuilder.and(question.title.like("%" + questionDto.getTitle() + "%"));
       }
