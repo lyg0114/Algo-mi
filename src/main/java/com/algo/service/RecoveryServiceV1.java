@@ -7,13 +7,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,16 +32,24 @@ public class RecoveryServiceV1 implements RecoveryService {
   private String slackWebHookUrl;
   private final QuestionCustomRepository questionCustomRepository;
   private final RestTemplate restTemplate;
+  private final ModelMapper modelMapper;
 
   @Override
-  @Scheduled(cron = "0 0 13 * * ?")
   public void getRecoveryTargetsAndNoteToUser() {
-    List<Question> targets = getRecoveryTarges();
+    List<Question> targets = getRecoveryQuestion();
     String messageJson = createMessageJson(targets);
     postInquiry(messageJson);
   }
 
-  private List<Question> getRecoveryTarges() {
+  @Override
+  public List<QuestionDto> getRecoveryTargets() {
+    List<Question> recoveryQuestion = getRecoveryQuestion();
+    return recoveryQuestion.stream()
+        .map(question -> question.converToDto(modelMapper))
+        .collect(Collectors.toList());
+  }
+
+  private List<Question> getRecoveryQuestion() {
     return questionCustomRepository
         .findQuestions(
             QuestionDto.builder()
