@@ -54,16 +54,6 @@ public class UserInfo extends BaseEntity {
   @Column(name = "role")
   private String role;
 
-  public UserInfo(
-      long userId, String email, String userName, String passwd, String role
-  ) {
-    this.userId = userId;
-    this.email = email;
-    this.userName = userName;
-    this.passwd = passwd;
-    this.role = role;
-  }
-
   @Override
   public String toString() {
     return "UserInfo{" +

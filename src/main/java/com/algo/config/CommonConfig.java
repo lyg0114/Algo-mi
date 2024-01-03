@@ -31,7 +31,7 @@ public class CommonConfig {
     return new RestTemplate();
   }
 
-  @Profile("dev")
+  @Profile("local")
   @Bean
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository,
@@ -41,7 +41,7 @@ public class CommonConfig {
     return args -> {
       userInfoRepository.saveAll(
           List.of(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
-              .passwd(passwordEncoder.encode("password")).role("ROLE_USER").build()));
+              .passwd(passwordEncoder.encode("password")).role("USER").build()));
 
       for (int i = 0; i < 20; i++) {
         questionRepository.save(

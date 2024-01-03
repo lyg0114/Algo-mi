@@ -9,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +36,6 @@ public class QuestionRestController {
   private final ModelMapper modelMapper;
 
   @GetMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
@@ -49,7 +47,6 @@ public class QuestionRestController {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> addQuestion(@RequestBody QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
     QuestionDto addQuestionDto = questionService.addQuestion(questionDto);
@@ -62,7 +59,6 @@ public class QuestionRestController {
   }
 
   @PutMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionDto questionDto
   ) {
@@ -74,7 +70,6 @@ public class QuestionRestController {
   }
 
   @DeleteMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> deleteQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {

@@ -7,20 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-/**
- * @author : iyeong-gyo
- * @package : com.sportedu.config
- * @since : 07.11.23
- */
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -33,16 +21,5 @@ public class DisableSecurityConfig {
     http.formLogin(AbstractHttpConfigurer::disable);
     http.csrf(AbstractHttpConfigurer::disable);
     return http.build();
-  }
-
-  @Bean
-  public UserDetailsService userDetailsService() {
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    UserDetails user = User.builder()
-        .username("user@example.com")
-        .password(passwordEncoder.encode("password"))
-        .roles("USER")
-        .build();
-    return new InMemoryUserDetailsManager(user);
   }
 }
