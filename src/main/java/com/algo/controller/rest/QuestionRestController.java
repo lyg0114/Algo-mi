@@ -37,7 +37,6 @@ public class QuestionRestController {
   private final ModelMapper modelMapper;
 
   @GetMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
@@ -49,7 +48,6 @@ public class QuestionRestController {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> addQuestion(@RequestBody QuestionDto questionDto) {
     HttpHeaders headers = new HttpHeaders();
     QuestionDto addQuestionDto = questionService.addQuestion(questionDto);
@@ -62,7 +60,6 @@ public class QuestionRestController {
   }
 
   @PutMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionDto questionDto
   ) {
@@ -74,7 +71,6 @@ public class QuestionRestController {
   }
 
   @DeleteMapping("/{questionId}")
-  @PreAuthorize("hasRole(@roles.USER)")
   public ResponseEntity<QuestionDto> deleteQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
