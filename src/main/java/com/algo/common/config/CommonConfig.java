@@ -1,4 +1,4 @@
-package com.algo.common;
+package com.algo.common.config;
 
 import com.algo.question.domain.Question;
 import com.algo.auth.domain.UserInfo;

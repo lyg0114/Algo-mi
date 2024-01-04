@@ -1,6 +1,6 @@
 package com.algo.auth.domain;
 
-import com.algo.common.BaseEntity;
+import com.algo.common.domain.BaseEntity;
 import com.algo.question.domain.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;

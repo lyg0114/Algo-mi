@@ -1,7 +1,7 @@
 package com.algo.question.domain;
 
 import com.algo.auth.domain.UserInfo;
-import com.algo.common.BaseEntity;
+import com.algo.common.domain.BaseEntity;
 import com.algo.question.dto.QuestionDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

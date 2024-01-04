@@ -1,4 +1,4 @@
-package com.algo.common;
+package com.algo.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;

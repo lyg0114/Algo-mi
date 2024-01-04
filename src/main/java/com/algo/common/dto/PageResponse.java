@@ -1,4 +1,4 @@
-package com.algo.others;
+package com.algo.common.dto;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
  * @package : com.algo.model.dto
  * @since : 07.12.23
  */
-public class PageResponseDto<T> {
+public class PageResponse<T> {
 
   /**
    * client 에서 넘어오는 페이지 넘버는 -1 을 해줘야 한다.
@@ -25,20 +25,20 @@ public class PageResponseDto<T> {
    */
   private final int numberSize;
 
-  public static <T> PageResponseDto<T> of(Page<T> pageable) {
-    return new PageResponseDto<>(pageable);
+  public static <T> PageResponse<T> of(Page<T> pageable) {
+    return new PageResponse<>(pageable);
   }
 
-  public static <T> PageResponseDto<T> of(Page<T> pageable, int numberSize) {
-    return new PageResponseDto<>(pageable, numberSize);
+  public static <T> PageResponse<T> of(Page<T> pageable, int numberSize) {
+    return new PageResponse<>(pageable, numberSize);
   }
 
-  public PageResponseDto(Page<T> pageable) {
+  public PageResponse(Page<T> pageable) {
     this.pageable = pageable;
     numberSize = 10 - 1;
   }
 
-  public PageResponseDto(Page<T> pageable, int numberSize) {
+  public PageResponse(Page<T> pageable, int numberSize) {
     this.pageable = pageable;
     this.numberSize = numberSize - 1;
   }

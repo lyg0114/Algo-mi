@@ -1,4 +1,4 @@
-package com.algo.common;
+package com.algo.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

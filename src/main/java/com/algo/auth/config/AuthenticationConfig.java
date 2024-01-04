@@ -1,4 +1,4 @@
-package com.algo.common;
+package com.algo.auth.config;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -31,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "algomi.security.enable", havingValue = "true")
-public class BasicAuthenticationConfig {
+public class AuthenticationConfig {
 
   private final CustomUserDetailsService userDetailsService;
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
