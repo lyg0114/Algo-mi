@@ -20,7 +20,7 @@ import org.thymeleaf.util.StringUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class QuestionDto {
+public class QuestionRequest {
 
   private Long id;
   private String title;

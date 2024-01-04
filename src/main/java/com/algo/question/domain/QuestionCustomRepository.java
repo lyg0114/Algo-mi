@@ -3,7 +3,7 @@ package com.algo.question.domain;
 
 import static com.algo.question.domain.QQuestion.question;
 
-import com.algo.question.dto.QuestionDto;
+import com.algo.question.dto.QuestionRequest;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,52 +32,52 @@ public class QuestionCustomRepository {
   private final JPAQueryFactory queryFactory;
   private final ModelMapper modelMapper;
 
-  public Page<QuestionDto> findPaginatedForQuestions(QuestionDto questionDto, Pageable pageable) {
-    JPAQuery<Question> jpaQuery = findQuestions(questionDto);
+  public Page<QuestionRequest> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+    JPAQuery<Question> jpaQuery = findQuestions(QuestionRequest);
     long totalCount = getTotalCount(jpaQuery);
     return new PageImpl<>(
-        getQuestionDtoList(jpaQuery, pageable),
+        getQuestionRequestList(jpaQuery, pageable),
         pageable,
         totalCount
     );
   }
 
-  public JPAQuery<Question> findQuestions(QuestionDto questionDto) {
+  public JPAQuery<Question> findQuestions(QuestionRequest QuestionRequest) {
     return queryFactory
         .select(question)
         .from(question)
-        .where(getConditionBuilder(questionDto))
+        .where(getConditionBuilder(QuestionRequest))
         ;
   }
 
-  private static BooleanBuilder getConditionBuilder(QuestionDto questionDto) {
+  private static BooleanBuilder getConditionBuilder(QuestionRequest QuestionRequest) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
-    if (Objects.nonNull(questionDto)) {
-      if (Objects.nonNull(questionDto.getFromDt()) && Objects.nonNull(questionDto.getToDt())) {
+    if (Objects.nonNull(QuestionRequest)) {
+      if (Objects.nonNull(QuestionRequest.getFromDt()) && Objects.nonNull(QuestionRequest.getToDt())) {
         booleanBuilder.and(question.createdDt.between(
-            questionDto.getFromDt(), questionDto.getToDt())
+            QuestionRequest.getFromDt(), QuestionRequest.getToDt())
         );
       }
-      if (!StringUtils.isEmpty(questionDto.getTitle())) {
-        booleanBuilder.and(question.title.like("%" + questionDto.getTitle() + "%"));
+      if (!StringUtils.isEmpty(QuestionRequest.getTitle())) {
+        booleanBuilder.and(question.title.like("%" + QuestionRequest.getTitle() + "%"));
       }
-      if (!StringUtils.isEmpty(questionDto.getUrl())) {
-        booleanBuilder.and(question.url.like("%" + questionDto.getUrl() + "%"));
+      if (!StringUtils.isEmpty(QuestionRequest.getUrl())) {
+        booleanBuilder.and(question.url.like("%" + QuestionRequest.getUrl() + "%"));
       }
-      if (!StringUtils.isEmpty(questionDto.getFromSource())) {
-        booleanBuilder.and(question.fromSource.like("%" + questionDto.getFromSource() + "%"));
+      if (!StringUtils.isEmpty(QuestionRequest.getFromSource())) {
+        booleanBuilder.and(question.fromSource.like("%" + QuestionRequest.getFromSource() + "%"));
       }
-      if (!StringUtils.isEmpty(questionDto.getQuestionType())) {
-        booleanBuilder.and(question.questionType.like("%" + questionDto.getQuestionType() + "%"));
+      if (!StringUtils.isEmpty(QuestionRequest.getQuestionType())) {
+        booleanBuilder.and(question.questionType.like("%" + QuestionRequest.getQuestionType() + "%"));
       }
-      if (questionDto.getReviewCount() > 0) {
-        booleanBuilder.and(question.reviewCount.eq(questionDto.getReviewCount()));
+      if (QuestionRequest.getReviewCount() > 0) {
+        booleanBuilder.and(question.reviewCount.eq(QuestionRequest.getReviewCount()));
       }
     }
     return booleanBuilder;
   }
 
-  private List<QuestionDto> getQuestionDtoList(JPAQuery<Question> jpaQuery, Pageable pageable) {
+  private List<QuestionRequest> getQuestionRequestList(JPAQuery<Question> jpaQuery, Pageable pageable) {
     return jpaQuery
         .offset((long) (pageable.getPageNumber()) * pageable.getPageSize())
         .limit(pageable.getPageSize())

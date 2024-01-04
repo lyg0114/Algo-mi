@@ -1,6 +1,6 @@
 package com.algo.recovery.ui;
 
-import com.algo.question.dto.QuestionDto;
+import com.algo.question.dto.QuestionResponse;
 import com.algo.recovery.application.RecoveryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,8 @@ public class RecoveryRestController {
   private final RecoveryService recoveryService;
 
   @GetMapping
-  public ResponseEntity<List<QuestionDto>> getRecoverys() {
-    List<QuestionDto> recoveryTargets = recoveryService.getRecoveryTargets();
+  public ResponseEntity<List<QuestionResponse>> getRecoverys() {
+    List<QuestionResponse> recoveryTargets = recoveryService.getRecoveryTargets();
     return new ResponseEntity<>(recoveryTargets, HttpStatus.OK);
   }
 

@@ -1,6 +1,6 @@
 package com.algo.recovery.application;
 
-import com.algo.question.dto.QuestionDto;
+import com.algo.question.dto.QuestionResponse;
 import java.util.List;
 
 /**
@@ -12,5 +12,5 @@ public interface RecoveryService {
 
   void getRecoveryTargetsAndNoteToUser();
 
-  List<QuestionDto> getRecoveryTargets();
+  List<QuestionResponse> getRecoveryTargets();
 }

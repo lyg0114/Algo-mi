@@ -1,8 +1,9 @@
 package com.algo.recovery.application;
 
-import com.algo.question.dto.QuestionDto;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionCustomRepository;
+import com.algo.question.dto.QuestionRequest;
+import com.algo.question.dto.QuestionResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,7 +43,7 @@ public class RecoveryServiceV1 implements RecoveryService {
   }
 
   @Override
-  public List<QuestionDto> getRecoveryTargets() {
+  public List<QuestionResponse> getRecoveryTargets() {
     List<Question> recoveryQuestion = getRecoveryQuestion();
     return recoveryQuestion.stream()
         .map(question -> question.converToDto(modelMapper))
@@ -52,7 +53,7 @@ public class RecoveryServiceV1 implements RecoveryService {
   private List<Question> getRecoveryQuestion() {
     return questionCustomRepository
         .findQuestions(
-            QuestionDto.builder()
+            QuestionRequest.builder()
                 .fromDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MIDNIGHT))
                 .toDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MAX))
                 .build()

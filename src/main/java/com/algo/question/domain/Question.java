@@ -2,7 +2,8 @@ package com.algo.question.domain;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.common.domain.BaseEntity;
-import com.algo.question.dto.QuestionDto;
+import com.algo.question.dto.QuestionRequest;
+import com.algo.question.dto.QuestionResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -72,8 +73,8 @@ public class Question extends BaseEntity {
     return this.userInfo.getUserId();
   }
 
-  public QuestionDto converToDto(ModelMapper modelMapper) {
-    QuestionDto result = modelMapper.map(this, QuestionDto.class);
+  public QuestionResponse converToDto(ModelMapper modelMapper) {
+    QuestionResponse result = modelMapper.map(this, QuestionResponse.class);
     result.setId(this.questionId);
     result.setRegistDt(this.getCreatedDt().format(DateTimeFormatter
         .ofPattern("yyyy-MM-dd")));

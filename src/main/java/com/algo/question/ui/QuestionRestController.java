@@ -1,8 +1,9 @@
 package com.algo.question.ui;
 
-import com.algo.question.dto.QuestionDto;
+import com.algo.question.dto.QuestionRequest;
 import com.algo.question.domain.Question;
 import com.algo.question.application.QuestionService;
+import com.algo.question.dto.QuestionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -36,7 +37,7 @@ public class QuestionRestController {
   private final ModelMapper modelMapper;
 
   @GetMapping("/{questionId}")
-  public ResponseEntity<QuestionDto> getQuestion(@PathVariable long questionId) {
+  public ResponseEntity<QuestionResponse> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,30 +48,30 @@ public class QuestionRestController {
   }
 
   @PostMapping
-  public ResponseEntity<QuestionDto> addQuestion(@RequestBody QuestionDto questionDto) {
+  public ResponseEntity<QuestionResponse> addQuestion(@RequestBody QuestionRequest QuestionRequest) {
     HttpHeaders headers = new HttpHeaders();
-    QuestionDto addQuestionDto = questionService.addQuestion(questionDto);
+    QuestionResponse addQuestionResponse = questionService.addQuestion(QuestionRequest);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
-        .buildAndExpand(addQuestionDto.getId())
+        .buildAndExpand(addQuestionResponse.getId())
         .toUri());
-    return new ResponseEntity<>(addQuestionDto, headers, HttpStatus.CREATED);
+    return new ResponseEntity<>(addQuestionResponse, headers, HttpStatus.CREATED);
   }
 
   @PutMapping("/{questionId}")
-  public ResponseEntity<QuestionDto> updateQuestion(
-      @PathVariable long questionId, @RequestBody QuestionDto questionDto
+  public ResponseEntity<QuestionResponse> updateQuestion(
+      @PathVariable long questionId, @RequestBody QuestionRequest QuestionRequest
   ) {
-    QuestionDto updateQuestionDto = questionService.updateQuestion(questionId, questionDto);
-    if (updateQuestionDto == null) {
+    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, QuestionRequest);
+    if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity<>(updateQuestionDto, HttpStatus.CREATED);
+    return new ResponseEntity<>(updateQuestionResponse, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{questionId}")
-  public ResponseEntity<QuestionDto> deleteQuestion(@PathVariable long questionId) {
+  public ResponseEntity<QuestionResponse> deleteQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
     if (question == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

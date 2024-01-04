@@ -1,12 +1,13 @@
 package com.algo.question.application;
 
 import com.algo.auth.infrastructure.AuthenticationUtil;
-import com.algo.question.dto.QuestionDto;
 import com.algo.question.domain.Question;
 import com.algo.auth.domain.UserInfo;
 import com.algo.question.domain.QuestionRepository;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.question.domain.QuestionCustomRepository;
+import com.algo.question.dto.QuestionRequest;
+import com.algo.question.dto.QuestionResponse;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,8 @@ public class QuestionService {
 
 
   @Transactional(readOnly = true)
-  public Page<QuestionDto> findPaginatedForQuestions(QuestionDto questionDto, Pageable pageable) {
-    return questionCustomRepository.findPaginatedForQuestions(questionDto, pageable);
+  public Page<QuestionRequest> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+    return questionCustomRepository.findPaginatedForQuestions(QuestionRequest, pageable);
   }
 
   @Transactional(readOnly = true)
@@ -49,11 +50,11 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionDto addQuestion(QuestionDto addQuestionDto) {
+  public QuestionResponse addQuestion(QuestionRequest addQuestionRequest) {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmail(
         AuthenticationUtil.getUserName()
     );
-    Question addQuestion = addQuestionDto.converTnEntity(modelMapper);
+    Question addQuestion = addQuestionRequest.converTnEntity(modelMapper);
     addQuestion.setUserInfo(userInfo);
     return questionRepository
         .save(addQuestion)
@@ -62,8 +63,8 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionDto updateQuestion(long questionId, QuestionDto questionDto) {
-    Question question = questionDto.converTnEntity(modelMapper);
+  public QuestionResponse updateQuestion(long questionId, QuestionRequest QuestionRequest) {
+    Question question = QuestionRequest.converTnEntity(modelMapper);
     Question targetQuestion = null;
     try {
       targetQuestion = questionRepository.findById(questionId).orElseThrow();
