@@ -4,6 +4,7 @@ package com.algo.question.domain;
 import static com.algo.question.domain.QQuestion.question;
 
 import com.algo.question.dto.QuestionRequest;
+import com.algo.question.dto.QuestionResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,7 +33,8 @@ public class QuestionCustomRepository {
   private final JPAQueryFactory queryFactory;
   private final ModelMapper modelMapper;
 
-  public Page<QuestionRequest> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest,
+      Pageable pageable) {
     JPAQuery<Question> jpaQuery = findQuestions(QuestionRequest);
     long totalCount = getTotalCount(jpaQuery);
     return new PageImpl<>(
@@ -53,7 +55,8 @@ public class QuestionCustomRepository {
   private static BooleanBuilder getConditionBuilder(QuestionRequest QuestionRequest) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
     if (Objects.nonNull(QuestionRequest)) {
-      if (Objects.nonNull(QuestionRequest.getFromDt()) && Objects.nonNull(QuestionRequest.getToDt())) {
+      if (Objects.nonNull(QuestionRequest.getFromDt()) && Objects.nonNull(
+          QuestionRequest.getToDt())) {
         booleanBuilder.and(question.createdDt.between(
             QuestionRequest.getFromDt(), QuestionRequest.getToDt())
         );
@@ -68,7 +71,8 @@ public class QuestionCustomRepository {
         booleanBuilder.and(question.fromSource.like("%" + QuestionRequest.getFromSource() + "%"));
       }
       if (!StringUtils.isEmpty(QuestionRequest.getQuestionType())) {
-        booleanBuilder.and(question.questionType.like("%" + QuestionRequest.getQuestionType() + "%"));
+        booleanBuilder.and(
+            question.questionType.like("%" + QuestionRequest.getQuestionType() + "%"));
       }
       if (QuestionRequest.getReviewCount() > 0) {
         booleanBuilder.and(question.reviewCount.eq(QuestionRequest.getReviewCount()));
@@ -77,7 +81,8 @@ public class QuestionCustomRepository {
     return booleanBuilder;
   }
 
-  private List<QuestionRequest> getQuestionRequestList(JPAQuery<Question> jpaQuery, Pageable pageable) {
+  private List<QuestionResponse> getQuestionRequestList(JPAQuery<Question> jpaQuery,
+      Pageable pageable) {
     return jpaQuery
         .offset((long) (pageable.getPageNumber()) * pageable.getPageSize())
         .limit(pageable.getPageSize())

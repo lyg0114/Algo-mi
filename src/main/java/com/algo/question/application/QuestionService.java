@@ -34,7 +34,7 @@ public class QuestionService {
 
 
   @Transactional(readOnly = true)
-  public Page<QuestionRequest> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
     return questionCustomRepository.findPaginatedForQuestions(QuestionRequest, pageable);
   }
 

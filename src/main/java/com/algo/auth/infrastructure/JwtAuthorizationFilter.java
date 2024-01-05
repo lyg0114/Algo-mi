@@ -1,6 +1,5 @@
 package com.algo.auth.infrastructure;
 
-import com.algo.auth.infrastructure.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
