@@ -1,9 +1,9 @@
 package com.algo.common.config;
 
-import com.algo.question.domain.Question;
 import com.algo.auth.domain.UserInfo;
-import com.algo.question.domain.QuestionRepository;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.question.domain.Question;
+import com.algo.question.domain.QuestionRepository;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -31,8 +31,8 @@ public class CommonConfig {
     return new RestTemplate();
   }
 
-  @Profile("local")
-  @Bean
+//  @Profile("local")
+//  @Bean
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository,
       QuestionRepository questionRepository,
