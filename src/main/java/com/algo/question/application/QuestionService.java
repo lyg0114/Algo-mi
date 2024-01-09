@@ -1,11 +1,10 @@
 package com.algo.question.application;
 
-import com.algo.auth.infrastructure.AuthenticationUtil;
-import com.algo.question.domain.Question;
 import com.algo.auth.domain.UserInfo;
-import com.algo.question.domain.QuestionRepository;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionCustomRepository;
+import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import java.util.NoSuchElementException;
@@ -34,7 +33,8 @@ public class QuestionService {
 
 
   @Transactional(readOnly = true)
-  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest,
+      Pageable pageable) {
     return questionCustomRepository.findPaginatedForQuestions(QuestionRequest, pageable);
   }
 
@@ -50,10 +50,8 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionResponse addQuestion(QuestionRequest addQuestionRequest) {
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(
-        AuthenticationUtil.getUserName()
-    );
+  public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
     Question addQuestion = addQuestionRequest.converTnEntity(modelMapper);
     addQuestion.setUserInfo(userInfo);
     return questionRepository

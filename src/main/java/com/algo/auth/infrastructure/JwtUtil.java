@@ -79,7 +79,8 @@ public class JwtUtil {
     }
   }
 
-  public String getEmail(Claims claims) {
+  public String getEmail(HttpServletRequest request) {
+    Claims claims = resolveClaims(request);
     return claims.getSubject();
   }
 

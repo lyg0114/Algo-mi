@@ -1,9 +1,12 @@
 package com.algo.question.ui;
 
-import com.algo.question.dto.QuestionRequest;
-import com.algo.question.domain.Question;
+import com.algo.auth.infrastructure.JwtUtil;
 import com.algo.question.application.QuestionService;
+import com.algo.question.domain.Question;
+import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,6 +36,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/question")
 public class QuestionRestController {
 
+  private final JwtUtil jwtUtil;
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
 
@@ -48,9 +52,13 @@ public class QuestionRestController {
   }
 
   @PostMapping
-  public ResponseEntity<QuestionResponse> addQuestion(@RequestBody QuestionRequest QuestionRequest) {
+  public ResponseEntity<QuestionResponse> addQuestion(
+      HttpServletRequest request,
+      @RequestBody QuestionRequest QuestionRequest
+  ) {
     HttpHeaders headers = new HttpHeaders();
-    QuestionResponse addQuestionResponse = questionService.addQuestion(QuestionRequest);
+    String email = jwtUtil.getEmail(request);
+    QuestionResponse addQuestionResponse = questionService.addQuestion(email, QuestionRequest);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
@@ -63,7 +71,8 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionRequest QuestionRequest
   ) {
-    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, QuestionRequest);
+    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId,
+        QuestionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
