@@ -1,12 +1,12 @@
 package com.algo.auth.dto;
 
 
-public class LoginReq {
+public class LoginRequest {
 
   private String email;
   private String password;
 
-  public LoginReq(String email, String password) {
+  public LoginRequest(String email, String password) {
     this.email = email;
     this.password = password;
   }

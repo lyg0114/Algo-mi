@@ -2,12 +2,12 @@ package com.algo.auth.dto;
 
 import org.springframework.http.HttpStatus;
 
-public class ErrorRes {
+public class ErrorRequest {
 
   HttpStatus httpStatus;
   String message;
 
-  public ErrorRes(HttpStatus httpStatus, String message) {
+  public ErrorRequest(HttpStatus httpStatus, String message) {
     this.httpStatus = httpStatus;
     this.message = message;
   }

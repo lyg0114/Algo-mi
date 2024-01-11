@@ -1,9 +1,9 @@
 package com.algo.auth.ui;
 
-import com.algo.auth.dto.ErrorRes;
+import com.algo.auth.dto.ErrorRequest;
 import com.algo.auth.infrastructure.JwtUtil;
-import com.algo.auth.dto.LoginReq;
-import com.algo.auth.dto.LoginRes;
+import com.algo.auth.dto.LoginRequest;
+import com.algo.auth.dto.LoginResponse;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,22 +32,22 @@ public class AuthController {
 
   @ResponseBody
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public ResponseEntity login(@RequestBody LoginReq loginReq) {
+  public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
     try {
       Authentication authentication =
           authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword()));
+              new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
       String email = authentication.getName();
       UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmail(email);
       String token = jwtUtil.createToken(userInfoByEmail);
-      LoginRes loginRes = new LoginRes(email, token);
-      return ResponseEntity.ok(loginRes);
+      LoginResponse loginResponse = new LoginResponse(email, token);
+      return ResponseEntity.ok(loginResponse);
 
     } catch (BadCredentialsException e) {
-      ErrorRes errorResponse = new ErrorRes(HttpStatus.BAD_REQUEST, "Invalid username or password");
+      ErrorRequest errorResponse = new ErrorRequest(HttpStatus.BAD_REQUEST, "Invalid username or password");
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     } catch (Exception e) {
-      ErrorRes errorResponse = new ErrorRes(HttpStatus.BAD_REQUEST, e.getMessage());
+      ErrorRequest errorResponse = new ErrorRequest(HttpStatus.BAD_REQUEST, e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
   }

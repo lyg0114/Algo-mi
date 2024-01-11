@@ -1,11 +1,11 @@
 package com.algo.auth.dto;
 
-public class LoginRes {
+public class LoginResponse {
 
   private String email;
   private String token;
 
-  public LoginRes(String email, String token) {
+  public LoginResponse(String email, String token) {
     this.email = email;
     this.token = token;
   }
