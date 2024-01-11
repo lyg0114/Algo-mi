@@ -7,39 +7,51 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.UUID;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class JwtUtil {
 
+  private static final long accessTokenValidity = 60;
+  private static final String TOKEN_HEADER = "Authorization";
+  private static final String TOKEN_PREFIX = "Bearer ";
+
+  public static final String TOKEN_TYPE = "JWT";
+  public static final String TOKEN_ISSUER = "order-api";
+  public static final String TOKEN_AUDIENCE = "order-app";
 
   private final String secret_key = "mysecretkey";
-  private long accessTokenValidity = 60 * 60 * 1000;
-
   private final JwtParser jwtParser;
-
-  private final String TOKEN_HEADER = "Authorization";
-  private final String TOKEN_PREFIX = "Bearer ";
 
   public JwtUtil() {
     this.jwtParser = Jwts.parser().setSigningKey(secret_key);
   }
 
   public String createToken(UserInfo user) {
-    Claims claims = Jwts.claims().setSubject(user.getEmail());
-    claims.put("userName", user.getUserName());
-    Date tokenCreateTime = new Date();
-    Date tokenValidity = new Date(
-        tokenCreateTime.getTime() + TimeUnit.MINUTES.toMillis(accessTokenValidity));
+    List<String> roles = new ArrayList<>();
+    roles.add(user.getRole());
     return Jwts.builder()
-        .setClaims(claims)
-        .setExpiration(tokenValidity)
+        .setHeaderParam("typ", TOKEN_TYPE)
         .signWith(SignatureAlgorithm.HS256, secret_key)
+        .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(accessTokenValidity).toInstant()))
+        .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+        .setId(UUID.randomUUID().toString())
+        .setIssuer(TOKEN_ISSUER)
+        .setAudience(TOKEN_AUDIENCE)
+        .setSubject(user.getEmail())
+        .claim("rol", roles)
+        .claim("name", user.getUserName())
+        .claim("preferred_username", user.getEmail())
+        .claim("email", user.getEmail())
         .compact();
+
   }
 
   private Claims parseJwtClaims(String token) {
@@ -87,6 +99,4 @@ public class JwtUtil {
   private List<String> getRoles(Claims claims) {
     return (List<String>) claims.get("roles");
   }
-
-
 }
