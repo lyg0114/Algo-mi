@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,5 +113,23 @@ class QuestionServiceTest {
     assertThat(byId.getReviewCount()).isEqualTo(questionDto.getReviewCount());
     assertThat(byId.getUserInfo().getEmail()).isEqualTo("user@example.com");
     assertThat(byId.getUserInfo().getUserName()).isEqualTo("kyle");
+  }
+
+  @Test
+  public void shouldFindQuestion() {
+    //given
+    QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(
+        null, PageRequest.of(0, 10)
+    );
+    QuestionResponse questionResponse = responses.getContent().get(0);
+    //when
+    Question question = questionService.findQuestionById(questionResponse.getId());
+    //then
+    assertThat(question).isNotNull();
+    assertThat(question.getTitle()).isEqualTo(questionResponse.getTitle());
+    assertThat(question.getUrl()).isEqualTo(questionResponse.getUrl());
+    assertThat(question.getFromSource()).isEqualTo(questionResponse.getFromSource());
+    assertThat(question.getReviewCount()).isEqualTo(questionResponse.getReviewCount());
   }
 }
