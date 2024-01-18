@@ -1,5 +1,5 @@
 <h2 align="middle">ALGOME</h2>
-<p align="middle">알고리즘 복습 서비스</p>
+<p align="middle">ALGOLITHM REVIEW</p>
 <p align="middle">
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ## 💡 Introduction
 
-- 알고리즘 복습 서비스
+- ALGOLITHM REVIEW SERVICE
 
 ## 📝 License
 This project is MIT licensed.
