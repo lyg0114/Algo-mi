@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,23 +35,34 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(exposedHeaders = "errors, content-type")
-@RequestMapping("/question")
+@CrossOrigin(origins = "*")
+@RequestMapping("/questions")
 public class QuestionRestController {
 
   private final JwtUtil jwtUtil;
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
 
+  @GetMapping
+  public ResponseEntity<Page<QuestionResponse>> getQuestions(QuestionRequest request, Pageable pageable) {
+    Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(request, pageable);
+
+    if (questions != null && !questions.isEmpty()) {
+      return new ResponseEntity<>(questions, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+  }
+
   @GetMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> getQuestion(@PathVariable long questionId) {
     Question question = questionService.findQuestionById(questionId);
-    if (question == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    if (question != null) {
+      return new ResponseEntity<>(
+          question.converToDto(modelMapper), HttpStatus.OK)
+          ;
     }
-    return new ResponseEntity<>(
-        question.converToDto(modelMapper), HttpStatus.OK)
-        ;
+    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @PostMapping
