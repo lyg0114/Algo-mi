@@ -32,8 +32,8 @@ public class CommonConfig {
   }
 
   // 샘플데이터로 구동시 주석 해제
-//  @Profile("local")
-//  @Bean
+  @Profile("local")
+  @Bean
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository,
       QuestionRepository questionRepository,
