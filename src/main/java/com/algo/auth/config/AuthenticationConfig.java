@@ -53,7 +53,7 @@ public class AuthenticationConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
-        .cors(AbstractHttpConfigurer::disable)
+        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
                 .anyRequest()
