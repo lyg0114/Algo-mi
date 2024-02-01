@@ -40,8 +40,7 @@ public class AuthenticationConfig {
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
   @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http,
-      PasswordEncoder encoder)
+  public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder)
       throws Exception {
     AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
         AuthenticationManagerBuilder.class);
@@ -54,10 +53,10 @@ public class AuthenticationConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
-        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+        .cors(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
-            .anyRequest()
+                .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
+                .anyRequest()
             .authenticated()
         )
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
