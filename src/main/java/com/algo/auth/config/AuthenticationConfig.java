@@ -53,11 +53,13 @@ public class AuthenticationConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
-        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+        .cors(AbstractHttpConfigurer::disable)
+//        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
-            .anyRequest()
-            .authenticated()
+                .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
+                .anyRequest()
+                .permitAll()
+//            .authenticated() //TODO : 추후 cors 문제 해결 후 주석 제거
         )
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
