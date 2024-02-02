@@ -53,13 +53,12 @@ public class AuthenticationConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
-        .cors(AbstractHttpConfigurer::disable)
-//        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
-                .anyRequest()
-                .permitAll()
-//            .authenticated() //TODO : 추후 cors 문제 해결 후 주석 제거
+            .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
+            .requestMatchers(antMatcher("/questions/**")).hasRole("USER")
+            .anyRequest()
+            .authenticated()
         )
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
@@ -67,7 +66,8 @@ public class AuthenticationConfig {
 
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTION"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
