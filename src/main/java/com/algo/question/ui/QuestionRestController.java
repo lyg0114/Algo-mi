@@ -44,7 +44,7 @@ public class QuestionRestController {
 
   @GetMapping
   public ResponseEntity<Page<QuestionResponse>> getQuestions(
-      QuestionRequest request,   @PageableDefault(size = 12) Pageable pageable
+      QuestionRequest request, @PageableDefault(size = 12) Pageable pageable
   ) {
     Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(request, pageable);
     if (questions != null && !questions.isEmpty()) {

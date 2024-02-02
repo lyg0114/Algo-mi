@@ -31,10 +31,10 @@ public class QuestionService {
   private final UserInfoRepository userInfoRepository;
   private final ModelMapper modelMapper;
 
-
   @Transactional(readOnly = true)
-  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest,
-      Pageable pageable) {
+  public Page<QuestionResponse> findPaginatedForQuestions(
+      QuestionRequest QuestionRequest, Pageable pageable
+  ) {
     return questionCustomRepository.findPaginatedForQuestions(QuestionRequest, pageable);
   }
 
