@@ -7,14 +7,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -51,8 +55,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       if (claims != null & jwtUtil.validateClaims(claims)) {
         String email = claims.getSubject();
         log.info("email : {} : ", email);
+        List<GrantedAuthority> grantedAuthorities = extractAuthorities(claims);
         Authentication authentication =
-            new UsernamePasswordAuthenticationToken(email, "", new ArrayList<>());
+            new UsernamePasswordAuthenticationToken(email, "", grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
 
@@ -64,5 +69,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       mapper.writeValue(response.getWriter(), errorDetails);
     }
     filterChain.doFilter(request, response);
+  }
+
+  private List<GrantedAuthority> extractAuthorities(Claims claims) {
+    List<String> roles = claims.get("roles", List.class);
+    if (roles == null) {
+      return Collections.emptyList();
+    }
+    return roles.stream()
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+        .collect(Collectors.toList());
   }
 }

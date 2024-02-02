@@ -46,7 +46,7 @@ public class JwtUtil {
         .setIssuer(TOKEN_ISSUER)
         .setAudience(TOKEN_AUDIENCE)
         .setSubject(user.getEmail())
-        .claim("rol", roles)
+        .claim("roles", roles)
         .claim("name", user.getUserName())
         .claim("preferred_username", user.getEmail())
         .claim("email", user.getEmail())
