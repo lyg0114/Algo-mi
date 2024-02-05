@@ -42,16 +42,13 @@ public class CommonConfig {
     return args -> {
       userInfoRepository.saveAll(
           List.of(
-              UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
-              .passwd(passwordEncoder.encode("password")).role("USER").build(),
-              UserInfo.builder().userId(2L).userName("jhone").email("jhone@example.com")
-                  .passwd(passwordEncoder.encode("password")).role("GUEST").build(),
-              UserInfo.builder().userId(3L).userName("lizzy").email("lizzy@example.com")
-                  .passwd(passwordEncoder.encode("password")).role("USER").build(),
-              UserInfo.builder().userId(4L).userName("tom").email("tom@example.com")
-                  .passwd(passwordEncoder.encode("password")).role("USER").build()
+              UserInfo.builder().userId(1L).userName("kyle").email("user@example.com").passwd(passwordEncoder.encode("password")).role("USER").build(),
+              UserInfo.builder().userId(2L).userName("jhone").email("jhone@example.com").passwd(passwordEncoder.encode("password")).role("GUEST").build(),
+              UserInfo.builder().userId(3L).userName("lizzy").email("lizzy@example.com").passwd(passwordEncoder.encode("password")).role("USER").build(),
+              UserInfo.builder().userId(4L).userName("tom").email("tom@example.com").passwd(passwordEncoder.encode("password")).role("USER").build()
           )
       );
+
 
       for (int i = 0; i < 20; i++) {
         questionRepository.save(

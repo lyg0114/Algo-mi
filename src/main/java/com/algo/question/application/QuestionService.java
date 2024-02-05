@@ -52,7 +52,7 @@ public class QuestionService {
   @Transactional
   public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
-    Question addQuestion = addQuestionRequest.converTnEntity(modelMapper);
+    Question addQuestion = addQuestionRequest.converTnEntity();
     addQuestion.setUserInfo(userInfo);
     return questionRepository
         .save(addQuestion)
@@ -62,7 +62,7 @@ public class QuestionService {
 
   @Transactional
   public QuestionResponse updateQuestion(long questionId, QuestionRequest QuestionRequest) {
-    Question question = QuestionRequest.converTnEntity(modelMapper);
+    Question question = QuestionRequest.converTnEntity();
     Question targetQuestion = null;
     try {
       targetQuestion = questionRepository.findById(questionId).orElseThrow();

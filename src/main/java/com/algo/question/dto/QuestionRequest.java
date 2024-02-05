@@ -33,7 +33,7 @@ public class QuestionRequest {
   private LocalDateTime fromDt;
   private LocalDateTime toDt;
 
-  public Question converTnEntity(ModelMapper modelMapper) {
+  public Question converTnEntity() {
     Question.QuestionBuilder builder = Question.builder();
     if (!StringUtils.isEmpty(this.title)) { builder.title(this.title); }
     if (!StringUtils.isEmpty(this.url)) { builder.url(this.url); }
