@@ -4,9 +4,10 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 import com.algo.auth.application.CustomUserDetailsService;
 import com.algo.auth.infrastructure.JwtAuthorizationFilter;
-import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +37,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @ConditionalOnProperty(name = "algomi.security.enable", havingValue = "true")
 public class AuthenticationConfig {
 
+  @Value("${cors.allowed-origins}")
+  private String allowedOrigins;
+
   private final CustomUserDetailsService userDetailsService;
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder)
@@ -66,9 +71,9 @@ public class AuthenticationConfig {
 
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080/"));
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTION"));
+    configuration.setAllowedOrigins(List.of(allowedOrigins));
+    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTION"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
