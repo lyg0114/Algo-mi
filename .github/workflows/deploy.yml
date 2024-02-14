@@ -45,7 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: user/app:latest
+          tags: whdnseowkd/algo-mi-api:latest-v6
 #          labels: test
 
 
