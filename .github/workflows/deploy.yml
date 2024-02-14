@@ -32,13 +32,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: whdnseowkd/algo-mi-api
+
       - name: Docker Image Build and push
         uses: docker/build-push-action@v5
         with:
-          image: whdnseowkd/algo-mi-api
           push: true
           tags: user/app:latest
-
 
   dependency-submission:
 
