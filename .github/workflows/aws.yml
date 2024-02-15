@@ -43,7 +43,8 @@ jobs:
           push: true
           tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v11
 
-  dependency-submission:
+  deploy:
+    needs: build-image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
