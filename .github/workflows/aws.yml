@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2 
+      - uses: actions/checkout@v4
       - name: Build & Deploy
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -23,7 +23,5 @@ jobs:
 
               # Now we have got the access of EC2 and we will start the deploy .
               echo ACCESS SUCCESS
-              pwd
               echo ACCESS SUCCESS
-              ./deploy.sh latest-v5
               '
