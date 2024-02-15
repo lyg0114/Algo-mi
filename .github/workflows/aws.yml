@@ -41,10 +41,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v10
+          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v11
 
-  deploy:
-    name: Deploy to EC2
+  dependency-submission:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -59,5 +58,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
               # Now we have got the access of EC2 and we will start the deploy .
               echo ACCESS SUCCESS
-              ./deploy.sh latest-v10
+              ./deploy.sh latest-v11
               '
