@@ -5,13 +5,13 @@ on:
     branches: [ dev ]
 
 jobs:
-  Deploy:
+
+  build-image:
     name: Deploy to EC2
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -41,19 +41,23 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v9
+          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v10
 
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Build & Deploy
         env:
-            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            HOSTNAME: ${{secrets.SSH_HOST}}
-            USER_NAME: ${{secrets.USER_NAME}}
-      
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{secrets.SSH_HOST}}
+          USER_NAME: ${{secrets.USER_NAME}}
+
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-
               # Now we have got the access of EC2 and we will start the deploy .
               echo ACCESS SUCCESS
-              ./deploy-api.sh latest-v9
+              ./deploy.sh latest-v10
               '
