@@ -25,4 +25,5 @@ jobs:
               echo ACCESS SUCCESS
               pwd
               echo ACCESS SUCCESS
+              ./deploy.sh latest-v5
               '
