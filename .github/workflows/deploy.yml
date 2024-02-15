@@ -1,8 +1,10 @@
-name: Deploy
+name: CI/CD Pipe
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ "deploy" ]
+  pull_request:
+    branches: [ "deploy" ]
 
 jobs:
 
