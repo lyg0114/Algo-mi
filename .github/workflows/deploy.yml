@@ -10,6 +10,9 @@ jobs:
   build-image:
     name: BUILD SPRING DOCKER IMANGE
     runs-on: ubuntu-latest
+    env:
+      DOCKER_USER_NAME: whdnseowkd
+      DOCKER_REPOSITORY_NAME: algo-mi-api
 
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }} # 추후 env 로 변경
+          images: ${{ env.DOCKER_USER_NAME }}/${{ env.DOCKER_REPOSITORY_NAME }}
 
       - name: DOCKER IMAGE BUILD AND PUSH
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
