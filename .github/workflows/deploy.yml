@@ -50,10 +50,12 @@ jobs:
 
       - name: DOCKER IMAGE BUILD AND PUSH
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        env:
+          TAG: ${DOCKER_TAG}
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_USER_NAME }}/${{ env.DOCKER_REPOSITORY_NAME }}:$DOCKER_TAG # 도커 테그 버전, 추후 env 로 변경
+          tags: ${{ env.DOCKER_USER_NAME }}/${{ env.DOCKER_REPOSITORY_NAME }}:$TAG # 도커 테그 버전, 추후 env 로 변경
 
   deploy-docker-image:
     needs: build-image # build-image 작업 이후에 실행
@@ -62,9 +64,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: DEPLOY TO EC2
         env:
-          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           HOSTNAME: ${{secrets.SSH_HOST}}
           USER_NAME: ${{secrets.USER_NAME}}
+          TAG: ${DOCKER_TAG}
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -73,5 +76,5 @@ jobs:
               echo ACCESS SUCCESS
               echo $DOCKER_TAG
               echo ACCESS SUCCESS
-              ./deploy-api.sh $DOCKER_TAG  # 도커 테그 버전, 추후 env 로 변경
+              ./deploy-api.sh $TAG  # 도커 테그 버전, 추후 env 로 변경
               '
