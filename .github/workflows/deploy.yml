@@ -19,6 +19,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create application-prod.properties
+        env:
+          APPLICATION_PROD_PROPERTIES_CONTENT: ${{ secrets.APPLICATION_PROD_PROPERTIES_CONTENT }}
+        run: echo "$APPLICATION_PROD_PROPERTIES_CONTENT" > ./src/main/resources/application-prod.properties
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a
 
@@ -42,7 +47,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v14 # 도커 테그 버전, 추후 env 로 변경
+          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v15 # 도커 테그 버전, 추후 env 로 변경
 
   deploy-docker-image:
     needs: build-image # build-image 작업 이후에 실행
@@ -60,5 +65,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
               # Now we have got the access of EC2 and we will start the deploy .
               echo ACCESS SUCCESS
-              ./deploy-api.sh latest-v14  # 도커 테그 버전, 추후 env 로 변경
+              ./deploy-api.sh latest-v15  # 도커 테그 버전, 추후 env 로 변경
               '
