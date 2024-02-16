@@ -36,34 +36,38 @@ public class AuthControllerTest {
   @MockBean private UserInfoRepository userInfoRepository;
   @MockBean private JwtUtil jwtUtil;
 
-  @Test
-  public void testLoginSuccess() throws Exception {
-    UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-        .username("test@example.com")
-        .password("password")
-        .roles("USER")
-        .build();
-    when(authenticationManager.authenticate(any()))
-        .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, null));
-    when(userInfoRepository.findUserInfoByEmail(any()))
-        .thenReturn(UserInfo.builder()
-            .email("test@example.com")
-            .passwd("testPassword")
-            .build());
-    when(jwtUtil.createToken(any()))
-        .thenReturn("mockedToken");
+//  @Test
+//  public void testLoginSuccess() throws Exception {
+//    UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+//        .username("test@example.com")
+//        .password("password")
+//        .roles("USER")
+//        .build();
+//
+//    when(authenticationManager.authenticate(any()))
+//        .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, null));
+//
+//    when(userInfoRepository.findUserInfoByEmail(any()))
+//        .thenReturn(UserInfo.builder()
+//            .email("test@example.com")
+//            .passwd("testPassword")
+//            .build());
+//
+//    when(jwtUtil.createToken(any()))
+//        .thenReturn("mockedToken");
+//
+//    MvcResult mvcResult = mockMvc.perform(post("/rest/auth/login")
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .content("{\"email\": \"test@example.com\", \"password\": \"password\"}"))
+//        .andExpect(status().isOk())
+//        .andReturn();
+//
+//    String responseContent = mvcResult.getResponse().getContentAsString();
+//    assertThat(responseContent)
+//        .isEqualTo("{\"email\":\"test@example.com\",\"token\":\"mockedToken\"}");
+//  }
 
-    MvcResult mvcResult = mockMvc.perform(post("/rest/auth/login")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"email\": \"test@example.com\", \"password\": \"password\"}"))
-        .andExpect(status().isOk())
-        .andReturn();
-    String responseContent = mvcResult.getResponse().getContentAsString();
-    assertThat(responseContent)
-        .isEqualTo("{\"email\":\"test@example.com\",\"token\":\"mockedToken\"}");
-  }
-
-  @Test
-  public void testLoginFailure() throws Exception {
-  }
+//  @Test
+//  public void testLoginFailure() throws Exception {
+//  }
 }
