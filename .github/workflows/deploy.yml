@@ -1,4 +1,4 @@
-name: CI/CD PIPE
+name: CI/CD PIPE-LINE
 
 on:
   push:
@@ -66,7 +66,6 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-              # Now we have got the access of EC2 and we will start the deploy .
               echo ACCESS SUCCESS
               ./deploy-api.sh latest-v17  # 도커 테그 버전, 추후 env 로 변경
               '
