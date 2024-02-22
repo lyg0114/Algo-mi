@@ -33,8 +33,8 @@ public class QuestionCustomRepository {
   private final JPAQueryFactory queryFactory;
   private final ModelMapper modelMapper;
 
-  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest,
-      Pageable pageable) {
+  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
+    QuestionRequest.bindSearchFrom();
     JPAQuery<Question> jpaQuery = findQuestions(QuestionRequest);
     long totalCount = getTotalCount(jpaQuery);
     return new PageImpl<>(
@@ -56,11 +56,11 @@ public class QuestionCustomRepository {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
     if (Objects.nonNull(qReq)) {
       if (Objects.nonNull(qReq.getFromDt()) && Objects.nonNull(qReq.getToDt())) { booleanBuilder.and(question.createdDt.between(qReq.getFromDt(), qReq.getToDt())); }
-      if (!StringUtils.isEmpty(qReq.getTitle())) { booleanBuilder.and(question.title.like("%" + qReq.getTitle() + "%")); }
-      if (!StringUtils.isEmpty(qReq.getUrl())) { booleanBuilder.and(question.url.like("%" + qReq.getUrl() + "%")); }
-      if (!StringUtils.isEmpty(qReq.getFromSource())) { booleanBuilder.and(question.fromSource.like("%" + qReq.getFromSource() + "%")); }
-      if (!StringUtils.isEmpty(qReq.getQuestionType())) { booleanBuilder.and( question.questionType.like("%" + qReq.getQuestionType() + "%")); }
-      if (qReq.getReviewCount() > 0) { booleanBuilder.and(question.reviewCount.eq(qReq.getReviewCount())); }
+      if (!StringUtils.isEmpty(qReq.getTitle())) { booleanBuilder.or(question.title.like("%" + qReq.getTitle() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getFromSource())) { booleanBuilder.or(question.fromSource.like("%" + qReq.getFromSource() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getQuestionType())) { booleanBuilder.or( question.questionType.like("%" + qReq.getQuestionType() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getUrl())) { booleanBuilder.or(question.url.like("%" + qReq.getUrl() + "%")); }
+      if (qReq.getReviewCount() > 0) { booleanBuilder.or(question.reviewCount.eq(qReq.getReviewCount())); }
     }
     return booleanBuilder;
   }

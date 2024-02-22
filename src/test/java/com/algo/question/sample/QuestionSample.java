@@ -5,6 +5,7 @@ import com.algo.auth.domain.UserInfoRepository;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author : iyeong-gyo
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class QuestionSample {
 
-  public static void createSamplefindPaginatedForQuestionsTest(
+  public static void createSamplefindPaginatedForQuestionsV1(
       QuestionRepository questionRepository, UserInfoRepository userInfoRepository
   ) {
     userInfoRepository.saveAll(List.of(
@@ -36,4 +37,39 @@ public class QuestionSample {
     );
   }
 
+  public static void createSamplefindPaginatedForQuestionsV2(
+      QuestionRepository questionRepository, UserInfoRepository userInfoRepository
+  ) {
+    userInfoRepository.saveAll(
+        List.of(
+            UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
+                .passwd("password").role("USER").build(),
+            UserInfo.builder().userId(2L).userName("jhone").email("jhone@example.com")
+                .passwd("password").role("GUEST").build(),
+            UserInfo.builder().userId(3L).userName("lizzy").email("lizzy@example.com")
+                .passwd("password").role("USER").build(),
+            UserInfo.builder().userId(4L).userName("tom").email("tom@example.com")
+                .passwd("password").role("USER").build()
+        )
+    );
+
+    Random random = new Random();
+    List<String> fromSources
+        = List.of("LEETCODE", "HACKERRANK", "CODILITY", "BAEKJOON", "PROGRAMMERS");
+    List<String> questionTypes = List.of("GREEDY", "DFS", "BFS");
+
+    for (int i = 0; i < 50; i++) {
+      questionRepository.save(
+          Question.builder()
+              .title("title-" + i)
+              .url("http://sample-url/" + i)
+              .reviewCount(3)
+              .fromSource(fromSources.get(random.nextInt(fromSources.size())))
+              .questionType(questionTypes.get(random.nextInt(questionTypes.size())))
+              .userInfo(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
+                  .passwd("password").role("ROLE_USER").build())
+              .build()
+      );
+    }
+  }
 }

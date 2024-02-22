@@ -26,6 +26,7 @@ public class QuestionRequest {
   private String title;
   private String url;
   private String fromSource;
+  private String searchTerm;
   @Builder.Default
   private Integer reviewCount = 0;
   private String questionType;
@@ -41,5 +42,12 @@ public class QuestionRequest {
     if (!StringUtils.isEmpty(this.questionType)) { builder.questionType(this.questionType); }
     if (this.reviewCount > 0) { builder.reviewCount(this.reviewCount); }
     return builder.build();
+  }
+
+  public void bindSearchFrom() {
+    if(StringUtils.isEmpty(this.searchTerm)) return;
+    this.title = searchTerm;
+    this.fromSource = searchTerm;
+    this.questionType = searchTerm;
   }
 }

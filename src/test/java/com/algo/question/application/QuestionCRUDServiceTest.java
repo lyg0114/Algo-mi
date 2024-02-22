@@ -33,7 +33,7 @@ class QuestionCRUDServiceTest {
   @Test
   public void shouldDeleteQuestion() {
     //given
-    QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository,
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository,
         userInfoRepository);
     QuestionResponse questionResponse = questionService
         .findPaginatedForQuestions(null, PageRequest.of(0, 1))
@@ -55,7 +55,7 @@ class QuestionCRUDServiceTest {
   @Test
   public void shouldUpdateQuestion() {
     //given
-    QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     long targetId = questionService
         .findPaginatedForQuestions(null, PageRequest.of(0, 1))
         .getContent()
@@ -82,7 +82,7 @@ class QuestionCRUDServiceTest {
 
   @Test
   public void shouldInsertQuestion() {
-    QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     //given
     QuestionRequest questionDto = QuestionRequest
         .builder()
@@ -110,7 +110,7 @@ class QuestionCRUDServiceTest {
   @Test
   public void shouldFindQuestion() {
     //given
-    QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(
         null, PageRequest.of(0, 10)
     );
