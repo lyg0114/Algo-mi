@@ -52,31 +52,15 @@ public class QuestionCustomRepository {
         ;
   }
 
-  private static BooleanBuilder getConditionBuilder(QuestionRequest QuestionRequest) {
+  private static BooleanBuilder getConditionBuilder(QuestionRequest qReq) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
-    if (Objects.nonNull(QuestionRequest)) {
-      if (Objects.nonNull(QuestionRequest.getFromDt()) && Objects.nonNull(
-          QuestionRequest.getToDt())) {
-        booleanBuilder.and(question.createdDt.between(
-            QuestionRequest.getFromDt(), QuestionRequest.getToDt())
-        );
-      }
-      if (!StringUtils.isEmpty(QuestionRequest.getTitle())) {
-        booleanBuilder.and(question.title.like("%" + QuestionRequest.getTitle() + "%"));
-      }
-      if (!StringUtils.isEmpty(QuestionRequest.getUrl())) {
-        booleanBuilder.and(question.url.like("%" + QuestionRequest.getUrl() + "%"));
-      }
-      if (!StringUtils.isEmpty(QuestionRequest.getFromSource())) {
-        booleanBuilder.and(question.fromSource.like("%" + QuestionRequest.getFromSource() + "%"));
-      }
-      if (!StringUtils.isEmpty(QuestionRequest.getQuestionType())) {
-        booleanBuilder.and(
-            question.questionType.like("%" + QuestionRequest.getQuestionType() + "%"));
-      }
-      if (QuestionRequest.getReviewCount() > 0) {
-        booleanBuilder.and(question.reviewCount.eq(QuestionRequest.getReviewCount()));
-      }
+    if (Objects.nonNull(qReq)) {
+      if (Objects.nonNull(qReq.getFromDt()) && Objects.nonNull(qReq.getToDt())) { booleanBuilder.and(question.createdDt.between(qReq.getFromDt(), qReq.getToDt())); }
+      if (!StringUtils.isEmpty(qReq.getTitle())) { booleanBuilder.and(question.title.like("%" + qReq.getTitle() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getUrl())) { booleanBuilder.and(question.url.like("%" + qReq.getUrl() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getFromSource())) { booleanBuilder.and(question.fromSource.like("%" + qReq.getFromSource() + "%")); }
+      if (!StringUtils.isEmpty(qReq.getQuestionType())) { booleanBuilder.and( question.questionType.like("%" + qReq.getQuestionType() + "%")); }
+      if (qReq.getReviewCount() > 0) { booleanBuilder.and(question.reviewCount.eq(qReq.getReviewCount())); }
     }
     return booleanBuilder;
   }
