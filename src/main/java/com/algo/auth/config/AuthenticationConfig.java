@@ -39,19 +39,15 @@ public class AuthenticationConfig {
 
   @Value("${cors.allowed-origins}")
   private String allowedOrigins;
-
   private final CustomUserDetailsService userDetailsService;
   private final JwtAuthorizationFilter jwtAuthorizationFilter;
-
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder)
       throws Exception {
-    AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
-        AuthenticationManagerBuilder.class);
-    authenticationManagerBuilder.userDetailsService(userDetailsService)
-        .passwordEncoder(encoder);
-    return authenticationManagerBuilder.build();
+    AuthenticationManagerBuilder authenticationBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    authenticationBuilder.userDetailsService(userDetailsService).passwordEncoder(encoder);
+    return authenticationBuilder.build();
   }
 
   @Bean
