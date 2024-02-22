@@ -26,12 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class QuestionCRUDServiceTest {
 
-  @Autowired private QuestionService questionService;
-  @Autowired protected QuestionRepository questionRepository;
-  @Autowired protected UserInfoRepository userInfoRepository;
+  @Autowired QuestionService questionService;
+  @Autowired QuestionRepository questionRepository;
+  @Autowired UserInfoRepository userInfoRepository;
 
   @Test
-  public void shouldDeleteQuestion() {
+  void shouldDeleteQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository,
         userInfoRepository);
@@ -53,7 +53,7 @@ class QuestionCRUDServiceTest {
   }
 
   @Test
-  public void shouldUpdateQuestion() {
+  void shouldUpdateQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     long targetId = questionService
@@ -81,7 +81,7 @@ class QuestionCRUDServiceTest {
   }
 
   @Test
-  public void shouldInsertQuestion() {
+  void shouldInsertQuestion() {
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     //given
     QuestionRequest questionDto = QuestionRequest
@@ -108,7 +108,7 @@ class QuestionCRUDServiceTest {
   }
 
   @Test
-  public void shouldFindQuestion() {
+  void shouldFindQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(

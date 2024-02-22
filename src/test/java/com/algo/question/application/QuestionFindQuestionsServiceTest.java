@@ -27,12 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class QuestionFindQuestionsServiceTest {
 
-  @Autowired
-  private QuestionService questionService;
-  @Autowired
-  protected QuestionRepository questionRepository;
-  @Autowired
-  protected UserInfoRepository userInfoRepository;
+  @Autowired QuestionService questionService;
+  @Autowired QuestionRepository questionRepository;
+  @Autowired UserInfoRepository userInfoRepository;
 
   @Test
   public void shouldFindQuestion() {

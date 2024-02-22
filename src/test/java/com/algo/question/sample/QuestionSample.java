@@ -5,7 +5,6 @@ import com.algo.auth.domain.UserInfoRepository;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author : iyeong-gyo
@@ -13,7 +12,6 @@ import java.util.Random;
  * @since : 08.01.24
  */
 public class QuestionSample {
-
   public static void createSamplefindPaginatedForQuestionsV1(
       QuestionRepository questionRepository, UserInfoRepository userInfoRepository
   ) {
