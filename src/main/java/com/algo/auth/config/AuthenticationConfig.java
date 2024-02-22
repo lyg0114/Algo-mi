@@ -62,6 +62,7 @@ public class AuthenticationConfig {
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
             .requestMatchers(antMatcher("/questions/**")).hasRole("USER")
+            .requestMatchers(antMatcher("/recovery/**")).hasRole("USER")
             .anyRequest()
             .authenticated()
         )
