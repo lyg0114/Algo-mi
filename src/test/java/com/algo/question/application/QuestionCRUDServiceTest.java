@@ -8,7 +8,6 @@ import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import com.algo.question.sample.QuestionSample;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-class QuestionServiceTest {
+class QuestionCRUDServiceTest {
 
   @Autowired private QuestionService questionService;
   @Autowired protected QuestionRepository questionRepository;
