@@ -32,22 +32,16 @@ public class AlgoMiApplication {
     return args -> {
       userInfoRepository.saveAll(
           List.of(
-              UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
-                  .passwd(encoder.encode("password")).role("USER").build(),
-              UserInfo.builder().userId(2L).userName("jhone").email("jhone@example.com")
-                  .passwd(encoder.encode("password")).role("GUEST").build(),
-              UserInfo.builder().userId(3L).userName("lizzy").email("lizzy@example.com")
-                  .passwd(encoder.encode("password")).role("USER").build(),
-              UserInfo.builder().userId(4L).userName("tom").email("tom@example.com")
-                  .passwd(encoder.encode("password")).role("USER").build()
+              UserInfo.builder().userId(1L).userName("kyle").email("user@example.com").passwd(encoder.encode("password")).role("USER").build(),
+              UserInfo.builder().userId(2L).userName("jhone").email("jhone@example.com").passwd(encoder.encode("password")).role("GUEST").build(),
+              UserInfo.builder().userId(3L).userName("lizzy").email("lizzy@example.com").passwd(encoder.encode("password")).role("USER").build(),
+              UserInfo.builder().userId(4L).userName("tom").email("tom@example.com").passwd(encoder.encode("password")).role("USER").build()
           )
       );
 
       Random random = new Random();
-      List<String> fromSources
-          = List.of("leetcode", "HACKERRANK", "CODILITY", "백준", "PROGRAMMERS");
+      List<String> fromSources = List.of("leetcode", "HACKERRANK", "CODILITY", "백준", "PROGRAMMERS");
       List<String> questionTypes = List.of("greedy", "dfs", "bfs");
-
       for (int i = 0; i < 50; i++) {
         questionRepository.save(
             Question.builder()
