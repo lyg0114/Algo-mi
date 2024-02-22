@@ -1,73 +1,66 @@
 package com.algo.auth.ui;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.auth.infrastructure.JwtUtil;
+import com.algo.question.domain.QuestionRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author : iyeong-gyo
  * @package : com.algo.auth.ui
  * @since : 06.01.24
  */
-@SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class AuthControllerTest {
 
   @Autowired private MockMvc mockMvc;
-  @MockBean private AuthenticationManager authenticationManager;
-  @MockBean private UserInfoRepository userInfoRepository;
-  @MockBean private JwtUtil jwtUtil;
+  @Autowired protected QuestionRepository questionRepository;
+  @Autowired protected UserInfoRepository userInfoRepository;
+  @Autowired protected PasswordEncoder encoder;
+  @Autowired protected JwtUtil jwtUtil;
+  @Autowired protected ObjectMapper mapper;
 
-//  @Test
-//  public void testLoginSuccess() throws Exception {
-//    UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-//        .username("test@example.com")
-//        .password("password")
-//        .roles("USER")
-//        .build();
-//
-//    when(authenticationManager.authenticate(any()))
-//        .thenReturn(new UsernamePasswordAuthenticationToken(userDetails, null));
-//
-//    when(userInfoRepository.findUserInfoByEmail(any()))
-//        .thenReturn(UserInfo.builder()
-//            .email("test@example.com")
-//            .passwd("testPassword")
-//            .build());
-//
-//    when(jwtUtil.createToken(any()))
-//        .thenReturn("mockedToken");
-//
-//    MvcResult mvcResult = mockMvc.perform(post("/rest/auth/login")
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .content("{\"email\": \"test@example.com\", \"password\": \"password\"}"))
-//        .andExpect(status().isOk())
-//        .andReturn();
-//
-//    String responseContent = mvcResult.getResponse().getContentAsString();
-//    assertThat(responseContent)
-//        .isEqualTo("{\"email\":\"test@example.com\",\"token\":\"mockedToken\"}");
-//  }
+  @BeforeEach
+  void init() {
+    userInfoRepository.save(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
+        .passwd(encoder.encode("password")).role("USER").build());
+  }
 
-//  @Test
-//  public void testLoginFailure() throws Exception {
-//  }
+  @Test
+  public void testLoginSuccess() throws Exception {
+    MvcResult mvcResult = mockMvc.perform(post("/rest/auth/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\": \"user@example.com\", \"password\": \"password\"}"))
+        .andExpect(status().isOk())
+        .andReturn();
+    Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
+    Claims claims = jwtUtil.parseJwtClaims((String) result.get("token"));
+    List roles = (List) claims.get("roles");
+    assertThat((String) roles.get(0)).isEqualTo("USER");
+    assertThat((String) claims.get("email")).isEqualTo("user@example.com");
+    assertThat((String) claims.get("name")).isEqualTo("kyle");
+  }
 }

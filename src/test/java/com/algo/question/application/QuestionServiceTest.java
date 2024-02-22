@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -23,19 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 class QuestionServiceTest {
 
   @Autowired private QuestionService questionService;
   @Autowired protected QuestionRepository questionRepository;
   @Autowired protected UserInfoRepository userInfoRepository;
 
-  @BeforeEach
-  void before() {
-    questionRepository.deleteAll();
-    userInfoRepository.deleteAll();
-  }
-
-  @Transactional
   @Test
   public void shouldDeleteQuestion() {
     //given
@@ -58,7 +53,6 @@ class QuestionServiceTest {
     assertThat(targetQuestion).isNull();
   }
 
-  @Transactional
   @Test
   public void shouldUpdateQuestion() {
     //given
@@ -87,7 +81,6 @@ class QuestionServiceTest {
     assertThat(updateResponse.getReviewCount()).isEqualTo(willUpdateQuestionDto.getReviewCount());
   }
 
-  @Transactional
   @Test
   public void shouldInsertQuestion() {
     QuestionSample.createSamplefindPaginatedForQuestionsTest(questionRepository, userInfoRepository);
