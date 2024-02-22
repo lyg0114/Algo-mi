@@ -1,14 +1,14 @@
 package com.algo.question.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.algo.auth.domain.UserInfoRepository;
-import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import com.algo.question.sample.QuestionSample;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,21 +36,16 @@ class QuestionFindQuestionsServiceTest {
 
   @Test
   public void shouldFindQuestion() {
-    //given
-    QuestionSample.createSamplefindPaginatedForQuestionsV2(questionRepository, userInfoRepository);
-
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     QuestionRequest questionRequest = new QuestionRequest();
-    questionRequest.setSearchTerm("BAEKJOON");
-
+    questionRequest.setSearchTerm("미로");
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(
-        questionRequest, PageRequest.of(0, 10)
+        questionRequest, PageRequest.of(0, 12)
     );
 
     List<QuestionResponse> content = responses.getContent();
-    System.out.println("##############################");
-    for (QuestionResponse questionResponse : content) {
-      System.out.println("questionResponse = " + questionResponse);
-    }
-    System.out.println("##############################");
+    assertThat(content.size()).isEqualTo(1);
+    QuestionResponse response = content.get(0);
+    assertThat(response.getTitle()).contains("미로");
   }
 }

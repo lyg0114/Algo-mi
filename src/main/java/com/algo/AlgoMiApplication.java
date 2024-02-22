@@ -45,8 +45,8 @@ public class AlgoMiApplication {
 
       Random random = new Random();
       List<String> fromSources
-          = List.of("LEETCODE", "HACKERRANK", "CODILITY", "BAEKJOON", "PROGRAMMERS");
-      List<String> questionTypes = List.of("GREEDY", "DFS", "BFS");
+          = List.of("leetcode", "HACKERRANK", "CODILITY", "백준", "PROGRAMMERS");
+      List<String> questionTypes = List.of("greedy", "dfs", "bfs");
 
       for (int i = 0; i < 50; i++) {
         questionRepository.save(
