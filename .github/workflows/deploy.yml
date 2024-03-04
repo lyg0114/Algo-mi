@@ -50,7 +50,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:latest-v17 # 도커 테그 버전, 추후 env 로 변경
+          tags: ${{ vars.DOCKER_USER_NAME }}/${{ vars.DOCKER_REPOSITORY_NAME }}:v1.0.0 # 도커 테그 버전, 추후 env 로 변경
 
   deploy-docker-image:
     needs: build-image # build-image 작업 이후에 실행
@@ -67,5 +67,5 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
               echo ACCESS SUCCESS
-              ./deploy-api.sh latest-v17  # 도커 테그 버전, 추후 env 로 변경
+              ./deploy-api.sh v1.0.0  # 도커 테그 버전, 추후 env 로 변경
               '
