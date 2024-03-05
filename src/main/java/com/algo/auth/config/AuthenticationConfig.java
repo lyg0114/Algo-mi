@@ -56,7 +56,10 @@ public class AuthenticationConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers(antMatcher("/rest/auth/**")).permitAll()
+            .requestMatchers(
+                antMatcher("/rest/auth/**"),
+                antMatcher("/actuator/**")
+            ).permitAll()
             .requestMatchers(antMatcher("/questions/**")).hasRole("USER")
             .requestMatchers(antMatcher("/recovery/**")).hasRole("USER")
             .anyRequest()
