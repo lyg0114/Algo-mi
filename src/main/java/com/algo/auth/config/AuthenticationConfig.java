@@ -57,11 +57,11 @@ public class AuthenticationConfig {
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(
-                antMatcher("/rest/auth/**"),
-                antMatcher("/actuator/**")
+                antMatcher("/api/rest/auth/**"),
+                antMatcher("/api/actuator/**")
             ).permitAll()
-            .requestMatchers(antMatcher("/questions/**")).hasRole("USER")
-            .requestMatchers(antMatcher("/recovery/**")).hasRole("USER")
+            .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER")
+            .requestMatchers(antMatcher("/api/recovery/**")).hasRole("USER")
             .anyRequest()
             .authenticated()
         )
