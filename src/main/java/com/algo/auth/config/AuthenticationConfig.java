@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,7 +46,8 @@ public class AuthenticationConfig {
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder encoder)
       throws Exception {
-    AuthenticationManagerBuilder authenticationBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    AuthenticationManagerBuilder authenticationBuilder = http.getSharedObject(
+        AuthenticationManagerBuilder.class);
     authenticationBuilder.userDetailsService(userDetailsService).passwordEncoder(encoder);
     return authenticationBuilder.build();
   }
@@ -57,6 +59,7 @@ public class AuthenticationConfig {
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(
+                antMatcher(HttpMethod.OPTIONS, "/api/**"),
                 antMatcher("/api/rest/auth/**"),
                 antMatcher("/api/actuator/**")
             ).permitAll()
@@ -71,7 +74,7 @@ public class AuthenticationConfig {
 
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of(allowedOrigins));
+    configuration.setAllowedOrigins(List.of("https://lizcalendal.com"));
     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTION"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
