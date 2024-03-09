@@ -59,7 +59,7 @@ public class AuthenticationConfig {
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(
-                antMatcher(HttpMethod.OPTIONS, "/api/**"),
+//                antMatcher(HttpMethod.OPTIONS, "/api/**"),
                 antMatcher("/api/rest/auth/**"),
                 antMatcher("/api/actuator/**")
             ).permitAll()
