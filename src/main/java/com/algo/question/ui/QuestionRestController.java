@@ -33,7 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/questions")
+@RequestMapping("/api/questions")
 public class QuestionRestController {
 
   private final JwtUtil jwtUtil;

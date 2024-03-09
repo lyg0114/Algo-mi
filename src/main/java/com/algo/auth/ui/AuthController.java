@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/rest/auth")
+@RequestMapping("/api")
 public class AuthController {
 
   private final AuthenticationManager authenticationManager;
@@ -29,7 +29,7 @@ public class AuthController {
   private final JwtUtil jwtUtil;
 
   @ResponseBody
-  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  @RequestMapping(value = "/rest/auth/login", method = RequestMethod.POST)
   public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
