@@ -59,7 +59,6 @@ public class AuthenticationConfig {
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(
-//                antMatcher(HttpMethod.OPTIONS, "/api/**"),
                 antMatcher("/api/rest/auth/**"),
                 antMatcher("/api/actuator/**")
             ).permitAll()
@@ -74,7 +73,7 @@ public class AuthenticationConfig {
 
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("https://lizcalendal.com"));
+    configuration.setAllowedOrigins(List.of(allowedOrigins));
     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTION"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
