@@ -19,11 +19,12 @@ import org.springframework.web.context.WebApplicationContext;
 public class RecoveryService {
 
   private final WebApplicationContext context;
+  public static final String CREATE_RECOVERY_TARGETS_BY_YESTER_DAY = "CreateRecoveryTargetsByYesterDay";
 
   public List<QuestionResponse> createRecoveryTargets() {
     CreateRecovery createRecovery = null;
     assert context != null;
-    createRecovery = context.getBean("CreateRecoveryTargetsByYesterDay", CreateRecovery.class);
+    createRecovery = context.getBean(CREATE_RECOVERY_TARGETS_BY_YESTER_DAY, CreateRecovery.class);
     return createRecovery.createRecoveryTargets();
   }
 

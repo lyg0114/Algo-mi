@@ -1,5 +1,7 @@
 package com.algo.recovery.application;
 
+import static com.algo.recovery.application.RecoveryService.CREATE_RECOVERY_TARGETS_BY_YESTER_DAY;
+
 import com.algo.question.domain.QuestionCustomRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @RequiredArgsConstructor
-@Service("CreateRecoveryTargetsByYesterDay")
+@Service(CREATE_RECOVERY_TARGETS_BY_YESTER_DAY)
 public class CreateRecoveryTargets implements CreateRecovery {
 
   private final QuestionCustomRepository questionCustomRepository;
