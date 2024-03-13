@@ -26,7 +26,7 @@ public class RecoveryRestController {
 
   @GetMapping
   public ResponseEntity<List<QuestionResponse>> getRecoverys() {
-    List<QuestionResponse> recoveryTargets = recoveryService.getRecoveryTargets();
+    List<QuestionResponse> recoveryTargets = recoveryService.createRecoveryTargets();
     return new ResponseEntity<>(recoveryTargets, HttpStatus.OK);
   }
 }

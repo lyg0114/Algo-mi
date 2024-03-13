@@ -1,18 +1,12 @@
 package com.algo.recovery.application;
 
-import com.algo.alert.application.EmailService;
-import com.algo.question.domain.QuestionCustomRepository;
-import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * @author : iyeong-gyo
@@ -24,21 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecoveryService {
 
-  private final QuestionCustomRepository questionCustomRepository;
-  private final ModelMapper modelMapper;
+  private final WebApplicationContext context;
 
-  public List<QuestionResponse> getRecoveryTargets() {
-    return questionCustomRepository
-        .findQuestions(
-            QuestionRequest.builder()
-                .fromDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MIDNIGHT))
-                .toDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MAX))
-                .build()
-        )
-        .fetch()
-        .stream()
-        .map(question -> question.converToDto(modelMapper))
-        .collect(Collectors.toList());
+  public List<QuestionResponse> createRecoveryTargets() {
+    CreateRecovery createRecovery = null;
+    assert context != null;
+    createRecovery = context.getBean("CreateRecoveryTargetsByYesterDay", CreateRecovery.class);
+    return createRecovery.createRecoveryTargets();
   }
 
   public String createTitle() {
@@ -47,7 +33,7 @@ public class RecoveryService {
   }
 
   public String createText() {
-    List<QuestionResponse> targets = getRecoveryTargets();
+    List<QuestionResponse> targets = createRecoveryTargets();
     StringBuffer sb = new StringBuffer();
     if (!targets.isEmpty()) {
       sb.append("######################\n");
