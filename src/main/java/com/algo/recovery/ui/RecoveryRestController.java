@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,11 +28,5 @@ public class RecoveryRestController {
   public ResponseEntity<List<QuestionResponse>> getRecoverys() {
     List<QuestionResponse> recoveryTargets = recoveryService.getRecoveryTargets();
     return new ResponseEntity<>(recoveryTargets, HttpStatus.OK);
-  }
-
-  @GetMapping("/send-user")
-  @Scheduled(cron = "0 0 13 * * ?")
-  public void sendRecoverys() {
-    recoveryService.getRecoveryTargetsAndNoteToUser();
   }
 }
