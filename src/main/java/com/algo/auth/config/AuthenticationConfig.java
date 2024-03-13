@@ -60,7 +60,6 @@ public class AuthenticationConfig {
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers(
                 antMatcher("/api/rest/auth/**"),
-                antMatcher("/email/test/**"),
                 antMatcher("/api/actuator/**")
             ).permitAll()
             .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER")
