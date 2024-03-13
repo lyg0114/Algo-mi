@@ -23,10 +23,11 @@ public class EmailService {
   private String from;
   @Value("${spring.mail.username}")
   private String to;
+
   private final JavaMailSender emailSender;
   private final RecoveryService recoveryService;
 
-  @Scheduled(cron = "0 0 14 * * ?")
+  @Scheduled(cron = "${cron.rule}", zone = "${time.zone}")
   public void sendSimpleMessage() {
     String text = recoveryService.createText();
     String title = recoveryService.createTitle();
