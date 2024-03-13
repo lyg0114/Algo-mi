@@ -33,9 +33,9 @@ public class QuestionCustomRepository {
   private final JPAQueryFactory queryFactory;
   private final ModelMapper modelMapper;
 
-  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest QuestionRequest, Pageable pageable) {
-    QuestionRequest.bindSearchFrom();
-    JPAQuery<Question> jpaQuery = findQuestions(QuestionRequest);
+  public Page<QuestionResponse> findPaginatedForQuestions(QuestionRequest questionRequest, Pageable pageable) {
+    questionRequest.bindSearchFrom();
+    JPAQuery<Question> jpaQuery = findQuestions(questionRequest);
     long totalCount = getTotalCount(jpaQuery);
     return new PageImpl<>(
         getQuestionRequestList(jpaQuery, pageable),

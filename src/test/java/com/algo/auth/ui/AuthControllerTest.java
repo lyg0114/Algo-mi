@@ -51,7 +51,7 @@ public class AuthControllerTest {
 
   @Test
   public void testLoginSuccess() throws Exception {
-    MvcResult mvcResult = mockMvc.perform(post("/rest/auth/login")
+    MvcResult mvcResult = mockMvc.perform(post("/api/rest/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"email\": \"user@example.com\", \"password\": \"password\"}"))
         .andExpect(status().isOk())
