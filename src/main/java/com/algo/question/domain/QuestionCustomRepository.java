@@ -49,6 +49,7 @@ public class QuestionCustomRepository {
         .select(question)
         .from(question)
         .where(getConditionBuilder(QuestionRequest))
+        .orderBy(question.createdDt.desc())
         ;
   }
 
