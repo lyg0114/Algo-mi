@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,22 +31,21 @@ public class AuthController {
 
   @ResponseBody
   @RequestMapping(value = "/rest/auth/login", method = RequestMethod.POST)
-  public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity login(@RequestBody LoginRequest req) {
     try {
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+      Authentication authentication = authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
       String email = authentication.getName();
       UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmail(email);
       String token = jwtUtil.createToken(userInfoByEmail);
       LoginResponse loginResponse = new LoginResponse(email, token);
       return ResponseEntity.ok(loginResponse);
-
-    } catch (BadCredentialsException e) {
-      ErrorRequest errorResponse = new ErrorRequest(HttpStatus.BAD_REQUEST,
-          "Invalid username or password");
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ErrorRequest(HttpStatus.BAD_REQUEST, "계정 정보를 확인해 주세요."));
     } catch (Exception e) {
-      ErrorRequest errorResponse = new ErrorRequest(HttpStatus.BAD_REQUEST, e.getMessage());
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(new ErrorRequest(HttpStatus.BAD_REQUEST, "관리자에게 문의하여 주세요"));
     }
   }
 }
