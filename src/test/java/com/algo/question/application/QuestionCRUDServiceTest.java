@@ -8,6 +8,7 @@ import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import com.algo.question.sample.QuestionSample;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @package : com.algo.question.application
  * @since : 08.01.24
  */
+@DisplayName("문제 조회,등록,수정,삭제 테스트")
 @Transactional
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -30,6 +32,7 @@ class QuestionCRUDServiceTest {
   @Autowired QuestionRepository questionRepository;
   @Autowired UserInfoRepository userInfoRepository;
 
+  @DisplayName("문제 삭제")
   @Test
   void shouldDeleteQuestion() {
     //given
@@ -51,6 +54,7 @@ class QuestionCRUDServiceTest {
     assertThat(targetQuestion).isNull();
   }
 
+  @DisplayName("문제 수정")
   @Test
   void shouldUpdateQuestion() {
     //given
@@ -68,6 +72,7 @@ class QuestionCRUDServiceTest {
         .url("http://localhost/sample/url/7")
         .fromSource("Codility")
         .reviewCount(10)
+        .content("### update contnet")
         .build();
     //when
     QuestionResponse updateResponse = questionService.updateQuestion(targetId, willUpdateQuestionDto);
@@ -77,8 +82,10 @@ class QuestionCRUDServiceTest {
     assertThat(updateResponse.getUrl()).isEqualTo(willUpdateQuestionDto.getUrl());
     assertThat(updateResponse.getFromSource()).isEqualTo(willUpdateQuestionDto.getFromSource());
     assertThat(updateResponse.getReviewCount()).isEqualTo(willUpdateQuestionDto.getReviewCount());
+    assertThat(updateResponse.getContent()).isEqualTo(willUpdateQuestionDto.getContent());
   }
 
+  @DisplayName("문제 등록")
   @Test
   void shouldInsertQuestion() {
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
@@ -90,6 +97,7 @@ class QuestionCRUDServiceTest {
         .url("http://localhost/sample/url/1")
         .fromSource("leetcode")
         .reviewCount(5)
+        .content("### content")
         .build();
     //when
     String email = "user@example.com";
@@ -104,8 +112,10 @@ class QuestionCRUDServiceTest {
     assertThat(byId.getReviewCount()).isEqualTo(questionDto.getReviewCount());
     assertThat(byId.getUserInfo().getEmail()).isEqualTo("user@example.com");
     assertThat(byId.getUserInfo().getUserName()).isEqualTo("kyle");
+    assertThat(byId.getContent()).isEqualTo("### content");
   }
 
+  @DisplayName("문제 단건 조회")
   @Test
   void shouldFindQuestion() {
     //given
@@ -122,5 +132,6 @@ class QuestionCRUDServiceTest {
     assertThat(question.getUrl()).isEqualTo(questionResponse.getUrl());
     assertThat(question.getFromSource()).isEqualTo(questionResponse.getFromSource());
     assertThat(question.getReviewCount()).isEqualTo(questionResponse.getReviewCount());
+    assertThat(question.getContent()).isEqualTo(questionResponse.getContent());
   }
 }

@@ -25,12 +25,12 @@ public class QuestionSample {
     UserInfo user2 = userInfos.get(1);
     questionRepository.saveAll(
         List.of(
-            Question.builder().questionId(1L).questionType("dfs").title("title-1").url("http://localhost/leetcode/url/1").fromSource("백준").reviewCount(4).userInfo(user1).build(),
-            Question.builder().questionId(2L).questionType("bfs").title("미로찾기-2").url("http://localhost/leetcode/url/2").fromSource("백준").reviewCount(0).userInfo(user1).build(),
-            Question.builder().questionId(3L).questionType("greedy").title("title-3").url("http://localhost/leetcode/url/3").fromSource("백준").reviewCount(0).userInfo(user1).build(),
-            Question.builder().questionId(4L).questionType("greedy").title("title-4").url("http://localhost/leetcode/url/4").fromSource("백준").reviewCount(0).userInfo(user2).build(),
-            Question.builder().questionId(5L).questionType("dp").title("title-5").url("http://localhost/leetcode/url/5").fromSource("leetcode").reviewCount(0).userInfo(user2).build(),
-            Question.builder().questionId(6L).questionType("bfs").title("title-6").url("http://localhost/leetcode/url/6").fromSource("leetcode").reviewCount(0).userInfo(user2).build()
+            Question.builder().content("content-1").questionId(1L).questionType("dfs").title("title-1").url("http://localhost/leetcode/url/1").fromSource("백준").reviewCount(4).userInfo(user1).build(),
+            Question.builder().content("content-2").questionId(2L).questionType("bfs").title("미로찾기-2").url("http://localhost/leetcode/url/2").fromSource("백준").reviewCount(0).userInfo(user1).build(),
+            Question.builder().content("content-3").questionId(3L).questionType("greedy").title("title-3").url("http://localhost/leetcode/url/3").fromSource("백준").reviewCount(0).userInfo(user1).build(),
+            Question.builder().content("content-4").questionId(4L).questionType("greedy").title("title-4").url("http://localhost/leetcode/url/4").fromSource("백준").reviewCount(0).userInfo(user2).build(),
+            Question.builder().content("content-5").questionId(5L).questionType("dp").title("title-5").url("http://localhost/leetcode/url/5").fromSource("leetcode").reviewCount(0).userInfo(user2).build(),
+            Question.builder().content("content-6").questionId(6L).questionType("bfs").title("title-6").url("http://localhost/leetcode/url/6").fromSource("leetcode").reviewCount(0).userInfo(user2).build()
         )
     );
   }

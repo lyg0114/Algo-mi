@@ -26,6 +26,7 @@ public class QuestionResponse {
   @Builder.Default
   private Integer reviewCount = 0;
   private String questionType;
+  private String content;
   private String registDt;
   private LocalDateTime fromDt;
   private LocalDateTime toDt;

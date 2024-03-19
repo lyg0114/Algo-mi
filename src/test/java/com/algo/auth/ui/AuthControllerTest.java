@@ -14,6 +14,7 @@ import io.jsonwebtoken.Claims;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @package : com.algo.auth.ui
  * @since : 06.01.24
  */
+@DisplayName("로그인 인증 관련 테스트")
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
@@ -49,6 +51,7 @@ public class AuthControllerTest {
         .passwd(encoder.encode("password")).role("USER").build());
   }
 
+  @DisplayName("로그인 성공")
   @Test
   public void testLoginSuccess() throws Exception {
     MvcResult mvcResult = mockMvc.perform(post("/api/rest/auth/login")

@@ -57,6 +57,10 @@ public class Question extends BaseEntity {
   @Column(name = "question_type")
   private String questionType;
 
+  @NotBlank
+  @Column(name = "content")
+  private String content;
+
   @NotNull
   @Builder.Default
   @Column(name = "review_count")
@@ -98,7 +102,9 @@ public class Question extends BaseEntity {
     if (willUpdateQuestion.getReviewCount() > 0) {
       this.reviewCount = willUpdateQuestion.getReviewCount();
     }
-
+    if (!StringUtils.isEmpty(willUpdateQuestion.getContent())) {
+      this.content = willUpdateQuestion.getContent();
+    }
   }
 
   @Override
@@ -109,6 +115,7 @@ public class Question extends BaseEntity {
         .append("url", this.getUrl())
         .append("fromSource", this.getFromSource())
         .append("reviewCount", this.getReviewCount())
+        .append("content", this.getContent())
         .append("user_id", getUserId())
         .toString();
   }

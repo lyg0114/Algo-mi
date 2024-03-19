@@ -49,6 +49,7 @@ public class AlgoMiApplication {
             Question.builder()
                 .title("title-" + i)
                 .url("http://sample-url/" + i)
+                .content("content-" + i)
                 .reviewCount(3)
                 .fromSource(fromSources.get(random.nextInt(fromSources.size())))
                 .questionType(questionTypes.get(random.nextInt(questionTypes.size())))
