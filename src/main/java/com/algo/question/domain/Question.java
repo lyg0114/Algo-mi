@@ -58,7 +58,7 @@ public class Question extends BaseEntity {
   private String questionType;
 
   @NotBlank
-  @Column(name = "content")
+  @Column(name = "content", columnDefinition = "TEXT")
   private String content;
 
   @NotNull
