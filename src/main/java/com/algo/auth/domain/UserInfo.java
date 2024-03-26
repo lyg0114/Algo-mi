@@ -49,12 +49,19 @@ public class UserInfo extends BaseEntity {
   @Column(name = "passwd", nullable = false)
   private String passwd;
 
+  @Column(name = "role")
+  private String role;
+
+  @Column(name = "is_activate")
+  private Boolean isActivate;
+
   @Default
   @OneToMany(mappedBy = "userInfo")
   private List<Question> questions = new ArrayList<>();
 
-  @Column(name = "role")
-  private String role;
+  @Default
+  @OneToMany(mappedBy = "userInfo")
+  private List<EmailCheck> checks = new ArrayList<>();
 
   @Override
   public String toString() {
