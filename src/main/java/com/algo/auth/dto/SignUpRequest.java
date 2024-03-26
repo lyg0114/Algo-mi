@@ -19,6 +19,7 @@ public class SignUpRequest {
         .email(this.email)
         .userName(this.userName)
         .passwd(encoder.encode(this.password))
+        .role("USER")
         .build();
   }
 }
