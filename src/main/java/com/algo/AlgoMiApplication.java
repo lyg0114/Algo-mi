@@ -25,7 +25,7 @@ public class AlgoMiApplication {
   }
 
   // 샘플데이터로 구동시 주석 해제
-  @Profile("local")
+  @Profile({"local","localprod" })
   @Bean
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository, QuestionRepository questionRepository,

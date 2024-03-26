@@ -9,6 +9,7 @@ import com.algo.auth.dto.ErrorRequest;
 import com.algo.auth.dto.LoginRequest;
 import com.algo.auth.dto.LoginResponse;
 import com.algo.auth.dto.SignUpRequest;
+import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -90,8 +91,9 @@ public class AuthController {
     EmailCheck savedEmailCheck = emailCheckRepository.save(emailCheck);
     emailService.sendSignUpEamil(savedEmailCheck);
 
+    //TODO : 사용자에게 전달할 안내 멘트는 프론트 쪽에서 작업할 수 있도록 하자.
     return ResponseEntity
-        .ok("회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요.");
+        .ok(new SignUpResponse(newUserInfo.getEmail(), "회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요."));
   }
 
   @ResponseBody
