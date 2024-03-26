@@ -61,13 +61,14 @@ public class AuthController {
     }
   }
 
-  /*
-    - 계정이 존재할 경우
-      - DB에서 계정 확인후 front에 응답
-    - 계정이 존재하지 않을 경우.
-      - 신규 계정정보 저장.
-      - 계정정보 기반으로 EmailCheck 생성 및 저장.
-      - 검증 url을 e-mail로 전송.
+  /**
+   * 회원가입을 처리하는 메서드.
+   *
+   * <p>계정이 존재하는 경우 DB에서 계정을 확인하고 front에 응답.
+   * 계정이 존재하지 않는 경우, 신규 계정 정보를 저장하고, 계정 정보를 기반으로 EmailCheck을 생성 및 저장한 후, 검증 URL을 이메일로 전송.
+   *
+   * @param req 회원가입 요청 정보를 담은 객체
+   * @return 회원가입 처리 결과에 따른 응답 {@link ResponseEntity}
    */
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)

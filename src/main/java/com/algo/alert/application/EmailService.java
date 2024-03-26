@@ -2,7 +2,6 @@ package com.algo.alert.application;
 
 import com.algo.auth.domain.EmailCheck;
 import com.algo.recovery.application.RecoveryService;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,24 +36,29 @@ public class EmailService {
     String title = recoveryService.createTitle();
     String text = recoveryService.createText();
     message.setFrom(from);
-    message.setTo(to);
+    message.setTo(to); //TODO : 설정파일을 읽어 가져오는 to 정보를 DB에서 불러와서 사용자별로 전송되도록 해야함.
     message.setSubject(title);
     message.setText(text);
     emailSender.send(message);
   }
 
   public void sendSignUpEamil(EmailCheck emailCheck) {
-    String token = UUID.randomUUID().toString();
-    String confirmUrl = host + "api/rest/auth/check-email/" + emailCheck.getCheckId();
-
-    StringBuffer sb = new StringBuffer();
+    String confirmUrl = host + "/api/rest/auth/check-email/" + emailCheck.getCheckId();
+    SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
-    message.setTo(to);
+    String email = emailCheck.getUserInfo().getEmail();
+    message.setTo(email);
     message.setSubject("[AGO-MI 회원가입 인증]");
 
-    sb.append("아래의 링크를 클릭하여 인증을 완료하여 주세요.\n");
-    sb.append(confirmUrl);
-    message.setText(sb.toString());
+    //TODO : 이메일 내용 CSS 개선 필요
+    String htmlContent = "<html><body>" +
+        "<p>아래의 링크를 클릭하여 인증을 완료하여 주세요.</p>" +
+        "<p><a href=\"" + confirmUrl + "\">인증 링크</a></p>" +
+        "<p>이 링크는 15분 동안 유효합니다. 만약 인증을 완료하지 못하셨다면 다시 시도해주세요.</p>" +
+        "<p>감사합니다.</p>" +
+        "</body></html>";
+
+    message.setText(htmlContent);
     emailSender.send(message);
   }
 }
