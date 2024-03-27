@@ -43,6 +43,14 @@ public class AuthController {
   private final EmailService emailService;
   private final JwtUtil jwtUtil;
 
+  /**
+   * 로그인을 처리하는 POST 요청을 처리하는 메소드.
+   *
+   * @param req 로그인 요청에 필요한 정보를 담은 객체
+   * @return 요청에 대한 ResponseEntity 객체.
+   *         - 로그인이 성공하면 인증된 사용자의 이메일과 JWT 토큰을 포함한 ResponseEntity를 반환.
+   *         - 잘못된 자격 증명이나 내부 인증 서비스 오류인 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
+   */
   @ResponseBody
   @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
   public ResponseEntity login(@RequestBody LoginRequest req) {
@@ -109,7 +117,6 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/check-email/{token}", method = RequestMethod.GET)
   public ResponseEntity eamilCheck(@PathVariable String token) {
-    // token 유효성 체크
     EmailCheck emailCheck = emailCheckRepository.findById(token).orElse(null);
     if (emailCheck == null) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("유효하지 않은 토큰입니다.");
