@@ -13,7 +13,6 @@ import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -82,8 +81,7 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
   public ResponseEntity signUp(@RequestBody SignUpRequest req) {
-    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
-        req.getEmail());
+    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(req.getEmail());
     if (Objects.nonNull(userInfoByEmail)) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorRequest(HttpStatus.CONFLICT, "이미 존재하는 계정 입니다."));
