@@ -21,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @package : com.algo.auth.ui
  * @since : 06.01.24
  */
+@ActiveProfiles("test")
 @DisplayName("로그인 인증 관련 테스트")
 @AutoConfigureMockMvc
 @Transactional
@@ -47,8 +49,13 @@ public class AuthControllerTest {
 
   @BeforeEach
   void init() {
-    userInfoRepository.save(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
-        .passwd(encoder.encode("password")).role("USER").build());
+    userInfoRepository.save(UserInfo
+        .builder()
+        .userId(1L)
+        .userName("kyle")
+        .email("user@example.com")
+        .passwd(encoder.encode("password"))
+        .role("USER").isActivate(true).build());
   }
 
   @DisplayName("로그인 성공")
@@ -65,5 +72,27 @@ public class AuthControllerTest {
     assertThat((String) roles.get(0)).isEqualTo("USER");
     assertThat((String) claims.get("email")).isEqualTo("user@example.com");
     assertThat((String) claims.get("name")).isEqualTo("kyle");
+  }
+
+
+  @DisplayName("회원가입 성공")
+  @Test
+  public void testSignUpSuccess() throws Exception {
+    MvcResult mvcResult = mockMvc.perform(post("/api/rest/auth/signup")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\": \"newUser@example.com\","
+                + " \"userName\": \"newUserName\","
+                + " \"password\": \"password\""
+                + "}"))
+        .andExpect(status().isOk())
+        .andReturn();
+    Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
+    assertThat((String) result.get("email")).isEqualTo("newUser@example.com");
+  }
+
+  //TODO : E-mail 체크 성공 테스트코드 작성
+  @DisplayName("E-mail 체크 성공")
+  @Test
+  public void testEmailCheckSuccess() throws Exception {
   }
 }

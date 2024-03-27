@@ -16,9 +16,9 @@ public class QuestionSample {
       QuestionRepository questionRepository, UserInfoRepository userInfoRepository
   ) {
     userInfoRepository.saveAll(List.of(
-        UserInfo.builder().userId(1L).userName("user-1").email("user-1@example.com").passwd("passowrd-1").role("ROLE_USER").build(),
-        UserInfo.builder().userId(2L).userName("user-2").email("user-2@example.com").passwd("passowrd-2").role("ROLE_USER").build(),
-        UserInfo.builder().userId(3L).userName("kyle").email("user@example.com").passwd("passowrd-3").role("ROLE_USER").build())
+        UserInfo.builder().userId(1L).userName("user-1").email("user-1@example.com").passwd("passowrd-1").role("ROLE_USER").isActivate(true).build(),
+        UserInfo.builder().userId(2L).userName("user-2").email("user-2@example.com").passwd("passowrd-2").role("ROLE_USER").isActivate(true).build(),
+        UserInfo.builder().userId(3L).userName("kyle").email("user@example.com").passwd("passowrd-3").role("ROLE_USER").isActivate(true).build())
     );
     List<UserInfo> userInfos = userInfoRepository.findUserInfos();
     UserInfo user1 = userInfos.get(0);

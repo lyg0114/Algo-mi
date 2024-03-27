@@ -1,13 +1,11 @@
 package com.algo.auth.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class LoginRequest {
-
+public class SignUpResponse {
   private String email;
-  private String password;
+  private String message;
 }
