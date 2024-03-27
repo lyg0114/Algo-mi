@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @package : com.algo.email.application
  * @since : 12.03.24
  */
-@Profile({"local", "prod", "localprod"})
+@Profile({"local", "prod", "dev" ,"localprod"})
 @Slf4j
 @RequiredArgsConstructor
 @Service
