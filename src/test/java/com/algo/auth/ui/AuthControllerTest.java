@@ -47,8 +47,13 @@ public class AuthControllerTest {
 
   @BeforeEach
   void init() {
-    userInfoRepository.save(UserInfo.builder().userId(1L).userName("kyle").email("user@example.com")
-        .passwd(encoder.encode("password")).role("USER").build());
+    userInfoRepository.save(UserInfo
+        .builder()
+        .userId(1L)
+        .userName("kyle")
+        .email("user@example.com")
+        .passwd(encoder.encode("password"))
+        .role("USER").isActivate(true).build());
   }
 
   @DisplayName("로그인 성공")

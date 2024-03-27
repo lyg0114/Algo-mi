@@ -51,7 +51,7 @@ public class QuestionService {
 
   @Transactional
   public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmail(email);
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
     Question addQuestion = addQuestionRequest.converTnEntity();
     addQuestion.setUserInfo(userInfo);
     return questionRepository

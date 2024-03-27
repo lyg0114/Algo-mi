@@ -18,5 +18,5 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, Long> {
   @Transactional(readOnly = true)
   List<UserInfo> findUserInfos();
 
-  UserInfo findUserInfoByEmail(String email);
+  UserInfo findUserInfoByEmailAndIsActivateTrue(String email);
 }

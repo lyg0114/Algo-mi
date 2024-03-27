@@ -43,7 +43,7 @@ public class EmailService {
   }
 
   public void sendSignUpEamil(EmailCheck emailCheck) {
-    String confirmUrl = host + "/api/rest/auth/check-email/" + emailCheck.getCheckId();
+    String confirmUrl = host + "/check-email/" + emailCheck.getCheckId();
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
     String email = emailCheck.getUserInfo().getEmail();

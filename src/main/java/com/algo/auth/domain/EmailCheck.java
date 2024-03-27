@@ -31,12 +31,17 @@ public class EmailCheck extends BaseEntity {
   @Column(name = "check_id", nullable = false)
   private String checkId;
 
-  @CreatedDate
   @Column(name = "validate_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
   private LocalDateTime validateDate;
+
+  @Column(name = "is_expire")
+  private Boolean isExpire;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
   private UserInfo userInfo;
 
+  public void expire() {
+    this.isExpire = true;
+  }
 }

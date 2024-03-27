@@ -74,4 +74,8 @@ public class UserInfo extends BaseEntity {
         ", role=" + role +
         '}';
   }
+
+  public void activate() {
+    this.isActivate = true;
+  }
 }

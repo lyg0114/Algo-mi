@@ -13,6 +13,7 @@ import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,10 +47,9 @@ public class AuthController {
   @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
   public ResponseEntity login(@RequestBody LoginRequest req) {
     try {
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
       String email = authentication.getName();
-      UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmail(email);
+      UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
       String token = jwtUtil.createToken(userInfoByEmail);
       LoginResponse loginResponse = new LoginResponse(email, token);
       return ResponseEntity.ok(loginResponse);
@@ -74,7 +74,8 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
   public ResponseEntity signUp(@RequestBody SignUpRequest req) {
-    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmail(req.getEmail());
+    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
+        req.getEmail());
     if (Objects.nonNull(userInfoByEmail)) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorRequest(HttpStatus.CONFLICT, "이미 존재하는 계정 입니다."));
@@ -87,22 +88,48 @@ public class AuthController {
         .checkId(UUID.nameUUIDFromBytes(req.getEmail().getBytes()).toString())
         .validateDate(LocalDateTime.now().plusMinutes(15L))
         .userInfo(savedUserInfo)
+        .isExpire(false)
         .build();
     EmailCheck savedEmailCheck = emailCheckRepository.save(emailCheck);
     emailService.sendSignUpEamil(savedEmailCheck);
 
-    //TODO : 사용자에게 전달할 안내 멘트는 프론트 쪽에서 작업할 수 있도록 하자.
+    //TODO : 사용자에게 전달할 안내 멘트는 프론트 쪽에서 작업할 수 있도록 하자. (프론트에는 상태코드만 전달하도록)
     return ResponseEntity
         .ok(new SignUpResponse(newUserInfo.getEmail(), "회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요."));
   }
 
+  /**
+   * 이메일 확인을 위한 GET 요청을 처리하는 메소드
+   *
+   * @param token 이메일 확인을 위한 토큰
+   * @return 요청에 대한 ResponseEntity 객체.
+   *         - 이메일 확인이 성공하면 회원가입 완료 메시지를 포함한 ResponseEntity를 반환.
+   *         - 유효하지 않은 토큰이거나 시간이 만료된 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
+   */
   @ResponseBody
-  @RequestMapping(value = "/auth/check-email/{uuid}", method = RequestMethod.GET)
-  public ResponseEntity eamilCheck(@PathVariable String uuid) {
-    //1. 사용자로부터 받은 요청이 유효한지 체크
-    //2. 해당 아이디로부터 token이 유효한지 확인
-    //3-1. 유효하다면 회원가입 완료
-    //3-2. 유효하지 않다면 DB에서 사용자정보 제거하고, 메일 재 전송 (유효시간이 지났습니다.)
-    return ResponseEntity.ok("");
+  @RequestMapping(value = "/auth/check-email/{token}", method = RequestMethod.GET)
+  public ResponseEntity eamilCheck(@PathVariable String token) {
+    // token 유효성 체크
+    EmailCheck emailCheck = emailCheckRepository.findById(token).orElse(null);
+    if (emailCheck == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("유효하지 않은 토큰입니다.");
+    }
+
+    UserInfo userInfo = emailCheck.getUserInfo();
+    LocalDateTime validateDate = emailCheck.getValidateDate();
+    LocalDateTime currentTime = LocalDateTime.now();
+
+    if (currentTime.isAfter(validateDate)) {
+      emailCheckRepository.deleteById(token);
+      userInfoRepository.delete(userInfo);
+      return ResponseEntity.ok(new SignUpResponse(userInfo.getEmail(), "시간이 만료되었습니다."));
+    }
+
+    userInfo.activate();
+    emailCheck.expire();
+    userInfoRepository.save(userInfo);
+    emailCheckRepository.save(emailCheck);
+
+    return ResponseEntity.ok(new SignUpResponse(userInfo.getEmail(), "회원가입이 완료되었습니다."));
   }
 }
