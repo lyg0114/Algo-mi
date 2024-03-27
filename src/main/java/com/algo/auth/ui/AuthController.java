@@ -127,7 +127,9 @@ public class AuthController {
     if (currentTime.isAfter(validateDate)) {
       emailCheckRepository.deleteById(token);
       userInfoRepository.delete(userInfo);
-      return ResponseEntity.ok(new SignUpResponse(userInfo.getEmail(), "시간이 만료되었습니다."));
+      return ResponseEntity
+          .status(HttpStatus.CONFLICT)
+          .body(new SignUpResponse(userInfo.getEmail(), "시간이 만료되었습니다."));
     }
 
     userInfo.activate();
@@ -135,6 +137,7 @@ public class AuthController {
     userInfoRepository.save(userInfo);
     emailCheckRepository.save(emailCheck);
 
-    return ResponseEntity.ok(new SignUpResponse(userInfo.getEmail(), "회원가입이 완료되었습니다."));
+    return ResponseEntity
+        .ok(new SignUpResponse(userInfo.getEmail(), "회원가입이 완료되었습니다."));
   }
 }
