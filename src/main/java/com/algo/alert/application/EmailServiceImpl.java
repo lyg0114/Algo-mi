@@ -47,7 +47,7 @@ public class EmailServiceImpl implements EmailService {
 
   @Override
   public void sendSignUpEamil(EmailCheck emailCheck) {
-    String confirmUrl = host + "/check-email/" + emailCheck.getCheckId();
+    String confirmUrl = host + "/check-email?token=" + emailCheck.getCheckId();
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
     String email = emailCheck.getUserInfo().getEmail();
