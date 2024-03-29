@@ -5,6 +5,7 @@ import com.algo.auth.domain.EmailCheck;
 import com.algo.auth.domain.EmailCheckRepository;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.dto.CheckEmailResponse;
 import com.algo.auth.dto.ErrorRequest;
 import com.algo.auth.dto.LoginRequest;
 import com.algo.auth.dto.LoginResponse;
@@ -47,14 +48,15 @@ public class AuthController {
    *
    * @param req 로그인 요청에 필요한 정보를 담은 객체
    * @return 요청에 대한 ResponseEntity 객체.
-   *         - 로그인이 성공하면 인증된 사용자의 이메일과 JWT 토큰을 포함한 ResponseEntity를 반환.
-   *         - 잘못된 자격 증명이나 내부 인증 서비스 오류인 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
+   *      - 로그인이 성공하면 인증된 사용자의 이메일과 JWT 토큰을 포함한 ResponseEntity를 반환.
+   *      - 잘못된 자격 증명이나 내부 인증 서비스 오류인 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
    */
   @ResponseBody
   @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
   public ResponseEntity login(@RequestBody LoginRequest req) {
     try {
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
+      Authentication authentication = authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
       String email = authentication.getName();
       UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
       String token = jwtUtil.createToken(userInfoByEmail);
@@ -81,7 +83,8 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
   public ResponseEntity signUp(@RequestBody SignUpRequest req) {
-    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(req.getEmail());
+    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
+        req.getEmail());
     if (Objects.nonNull(userInfoByEmail)) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorRequest(HttpStatus.CONFLICT, "이미 존재하는 계정 입니다."));
@@ -109,15 +112,16 @@ public class AuthController {
    *
    * @param token 이메일 확인을 위한 토큰
    * @return 요청에 대한 ResponseEntity 객체.
-   *         - 이메일 확인이 성공하면 회원가입 완료 메시지를 포함한 ResponseEntity를 반환.
-   *         - 유효하지 않은 토큰이거나 시간이 만료된 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
+   *      - 이메일 확인이 성공하면 회원가입 완료 메시지를 포함한 ResponseEntity를 반환.
+   *      - 유효하지 않은 토큰이거나 시간이 만료된 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
    */
   @ResponseBody
   @RequestMapping(value = "/auth/check-email/{token}", method = RequestMethod.GET)
-  public ResponseEntity eamilCheck(@PathVariable String token) {
+  public ResponseEntity checkEmail(@PathVariable String token) {
     EmailCheck emailCheck = emailCheckRepository.findById(token).orElse(null);
     if (emailCheck == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("유효하지 않은 토큰입니다.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(new CheckEmailResponse(token, "유효하지 않은 토큰입니다."));
     }
 
     UserInfo userInfo = emailCheck.getUserInfo();

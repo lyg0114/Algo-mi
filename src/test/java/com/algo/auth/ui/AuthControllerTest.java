@@ -2,6 +2,7 @@ package com.algo.auth.ui;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,7 +75,6 @@ public class AuthControllerTest {
     assertThat((String) claims.get("name")).isEqualTo("kyle");
   }
 
-
   @DisplayName("회원가입 성공")
   @Test
   public void testSignUpSuccess() throws Exception {
@@ -90,9 +90,16 @@ public class AuthControllerTest {
     assertThat((String) result.get("email")).isEqualTo("newUser@example.com");
   }
 
-  //TODO : E-mail 체크 성공 테스트코드 작성
-  @DisplayName("E-mail 체크 성공")
+  @DisplayName("E-mail 체크 실패 : 유효한 토큰이 아닌 경우")
   @Test
-  public void testEmailCheckSuccess() throws Exception {
+  public void testInValidateEmailCheckFail() throws Exception {
+    String inValidateToken = "in-validate-token";
+    MvcResult mvcResult = mockMvc.perform(get("/api/rest/auth/check-email/" + inValidateToken))
+        .andExpect(status().isNotFound())
+        .andReturn();
+    Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
+    assertThat((String) result.get("token")).isEqualTo(inValidateToken);
   }
+
+  //TODO : E-mail 체크 성공 테스트코드 작성
 }
