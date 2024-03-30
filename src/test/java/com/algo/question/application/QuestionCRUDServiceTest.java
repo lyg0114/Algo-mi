@@ -39,8 +39,10 @@ class QuestionCRUDServiceTest {
   void shouldDeleteQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
+    QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
     QuestionResponse questionResponse = questionService
-        .findPaginatedForQuestions(new QuestionRequest() , PageRequest.of(0, 1))
+        .findPaginatedForQuestions(questionRequest , PageRequest.of(0, 1))
         .getContent()
         .get(0);
     long targetId = questionResponse.getId();
@@ -61,8 +63,10 @@ class QuestionCRUDServiceTest {
   void shouldUpdateQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
+    QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
     long targetId = questionService
-        .findPaginatedForQuestions(new QuestionRequest(), PageRequest.of(0, 1))
+        .findPaginatedForQuestions(questionRequest, PageRequest.of(0, 1))
         .getContent()
         .get(0)
         .getId()
@@ -122,8 +126,10 @@ class QuestionCRUDServiceTest {
   void shouldFindQuestion() {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
+    QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(
-        new QuestionRequest(), PageRequest.of(0, 10)
+        questionRequest, PageRequest.of(0, 10)
     );
     QuestionResponse questionResponse = responses.getContent().get(0);
     //when

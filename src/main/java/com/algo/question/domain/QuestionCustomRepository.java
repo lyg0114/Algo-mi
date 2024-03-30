@@ -56,12 +56,14 @@ public class QuestionCustomRepository {
   private static BooleanBuilder getConditionBuilder(QuestionRequest qReq) {
     BooleanBuilder booleanBuilder = new BooleanBuilder();
     if (Objects.nonNull(qReq)) {
+      if (StringUtils.isEmpty(qReq.getEmail())){ throw new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."); }
       if (Objects.nonNull(qReq.getFromDt()) && Objects.nonNull(qReq.getToDt())) { booleanBuilder.and(question.createdDt.between(qReq.getFromDt(), qReq.getToDt())); }
       if (!StringUtils.isEmpty(qReq.getTitle())) { booleanBuilder.or(question.title.like("%" + qReq.getTitle() + "%")); }
       if (!StringUtils.isEmpty(qReq.getFromSource())) { booleanBuilder.or(question.fromSource.like("%" + qReq.getFromSource() + "%")); }
       if (!StringUtils.isEmpty(qReq.getQuestionType())) { booleanBuilder.or( question.questionType.like("%" + qReq.getQuestionType() + "%")); }
       if (!StringUtils.isEmpty(qReq.getUrl())) { booleanBuilder.or(question.url.like("%" + qReq.getUrl() + "%")); }
       if (qReq.getReviewCount() > 0) { booleanBuilder.or(question.reviewCount.eq(qReq.getReviewCount())); }
+      booleanBuilder.and(question.userInfo.email.eq(qReq.getEmail()));
     }
     return booleanBuilder;
   }

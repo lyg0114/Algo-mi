@@ -5,6 +5,7 @@ import com.algo.auth.domain.UserInfoRepository;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : iyeong-gyo
@@ -20,9 +21,11 @@ public class QuestionSample {
         UserInfo.builder().userId(2L).userName("user-2").email("user-2@example.com").passwd("passowrd-2").role("ROLE_USER").isActivate(true).build(),
         UserInfo.builder().userId(3L).userName("kyle").email("user@example.com").passwd("passowrd-3").role("ROLE_USER").isActivate(true).build())
     );
-    List<UserInfo> userInfos = userInfoRepository.findUserInfos();
-    UserInfo user1 = userInfos.get(0);
-    UserInfo user2 = userInfos.get(1);
+    
+    // 테스트별로 userId가 갱신되어 저장되므로 email을 통해 조회하도록 처리 
+    // ex) A 테스트 진행 -> userId(1, 2, 3) -> rollback -> userId(4, 5, 6) -> B 테스트 진행
+    UserInfo user1 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-1@example.com");
+    UserInfo user2 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-2@example.com");
     questionRepository.saveAll(
         List.of(
             Question.builder().content("content-1").questionId(1L).questionType("dfs").title("title-1").url("http://localhost/leetcode/url/1").fromSource("백준").reviewCount(4).userInfo(user1).build(),
