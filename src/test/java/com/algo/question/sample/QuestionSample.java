@@ -22,7 +22,7 @@ public class QuestionSample {
         UserInfo.builder().userId(3L).userName("kyle").email("user@example.com").passwd("passowrd-3").role("ROLE_USER").isActivate(true).build())
     );
     
-    // 테스트별로 userId가 갱신되어 저장되므로 email을 통해 조회하도록 처리
+    // 테스트별로 userId가 갱신되어 저장되므로 email을 통해 조회하도록 처리 
     // ex) A 테스트 진행 -> userId(1, 2, 3) -> rollback -> userId(4, 5, 6) -> B 테스트 진행
     UserInfo user1 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-1@example.com");
     UserInfo user2 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-2@example.com");
