@@ -1,10 +1,12 @@
 package com.algo.question.dto;
 
+import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.domain.Question;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.thymeleaf.util.StringUtils;
@@ -19,7 +21,8 @@ import org.thymeleaf.util.StringUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class QuestionRequest {
+@EqualsAndHashCode(callSuper=false)
+public class QuestionRequest extends UserInfoRequest {
 
   private Long id;
   private String title;
@@ -50,5 +53,13 @@ public class QuestionRequest {
     this.title = searchTerm;
     this.fromSource = searchTerm;
     this.questionType = searchTerm;
+  }
+
+  public void setEmail(String email){
+    super.setEmail(email);
+  }
+
+  public String getEmail(){
+    return super.getEmail();
   }
 }

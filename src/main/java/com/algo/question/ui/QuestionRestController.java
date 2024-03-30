@@ -48,7 +48,7 @@ public class QuestionRestController {
   ) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
-
+    request.setEmail(email);
     Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(request, pageable);
     if (questions != null && !questions.isEmpty()) {
       return new ResponseEntity<>(questions, HttpStatus.OK);

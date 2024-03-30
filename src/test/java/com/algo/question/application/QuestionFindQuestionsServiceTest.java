@@ -34,6 +34,20 @@ class QuestionFindQuestionsServiceTest {
   @Autowired QuestionRepository questionRepository;
   @Autowired UserInfoRepository userInfoRepository;
 
+  @DisplayName("사용자별 문제 조회")
+  @Test
+  public void shouldFindQuestionByUser() {
+    QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
+    QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
+    Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(questionRequest, PageRequest.of(0, 12));
+    List<QuestionResponse> content = responses.getContent();
+    System.out.println("content = " + content);
+    assertThat(content.size()).isEqualTo(3);
+    QuestionResponse response = content.get(0);
+    assertThat(response.getTitle()).contains("title-6");
+  }
+
   @DisplayName("조건에 따른 문제 조회")
   @Test
   public void shouldFindQuestionBySearchTerm() {
