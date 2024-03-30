@@ -1,8 +1,8 @@
 package com.algo.auth.ui;
 
 import com.algo.alert.application.EmailService;
-import com.algo.auth.domain.EmailCheck;
-import com.algo.auth.domain.EmailCheckRepository;
+import com.algo.auth.domain.CheckEmail;
+import com.algo.auth.domain.CheckEmailRepository;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.auth.dto.CheckEmailResponse;
@@ -38,7 +38,7 @@ public class AuthController {
 
   private final AuthenticationManager authenticationManager;
   private final UserInfoRepository userInfoRepository;
-  private final EmailCheckRepository emailCheckRepository;
+  private final CheckEmailRepository checkEmailRepository;
   private final PasswordEncoder passwordEncoder;
   private final EmailService emailService;
   private final JwtUtil jwtUtil;
@@ -92,15 +92,15 @@ public class AuthController {
 
     UserInfo newUserInfo = req.convertToUserInfo(passwordEncoder);
     UserInfo savedUserInfo = userInfoRepository.save(newUserInfo);
-    EmailCheck emailCheck = EmailCheck
+    CheckEmail checkEmail = CheckEmail
         .builder()
         .checkId(UUID.nameUUIDFromBytes(req.getEmail().getBytes()).toString())
         .validateDate(LocalDateTime.now().plusMinutes(15L))
         .userInfo(savedUserInfo)
         .isExpire(false)
         .build();
-    EmailCheck savedEmailCheck = emailCheckRepository.save(emailCheck);
-    emailService.sendSignUpEamil(savedEmailCheck);
+    CheckEmail savedCheckEmail = checkEmailRepository.save(checkEmail);
+    emailService.sendSignUpEamil(savedCheckEmail);
 
     //TODO : 사용자에게 전달할 안내 멘트는 프론트 쪽에서 작업할 수 있도록 하자. (프론트에는 상태코드만 전달하도록)
     return ResponseEntity
@@ -118,18 +118,18 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/check-email/{token}", method = RequestMethod.GET)
   public ResponseEntity checkEmail(@PathVariable String token) {
-    EmailCheck emailCheck = emailCheckRepository.findById(token).orElse(null);
-    if (emailCheck == null) {
+    CheckEmail checkEmail = checkEmailRepository.findById(token).orElse(null);
+    if (checkEmail == null) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(new CheckEmailResponse(token, "유효하지 않은 토큰입니다."));
     }
 
-    UserInfo userInfo = emailCheck.getUserInfo();
-    LocalDateTime validateDate = emailCheck.getValidateDate();
+    UserInfo userInfo = checkEmail.getUserInfo();
+    LocalDateTime validateDate = checkEmail.getValidateDate();
     LocalDateTime currentTime = LocalDateTime.now();
 
     if (currentTime.isAfter(validateDate)) {
-      emailCheckRepository.deleteById(token);
+      checkEmailRepository.deleteById(token);
       userInfoRepository.delete(userInfo);
       return ResponseEntity
           .status(HttpStatus.CONFLICT)
@@ -137,9 +137,9 @@ public class AuthController {
     }
 
     userInfo.activate();
-    emailCheck.expire();
+    checkEmail.expire();
     userInfoRepository.save(userInfo);
-    emailCheckRepository.save(emailCheck);
+    checkEmailRepository.save(checkEmail);
 
     return ResponseEntity
         .ok(new SignUpResponse(userInfo.getEmail(), "회원가입이 완료되었습니다 로그인해 주세요."));

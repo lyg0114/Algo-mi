@@ -61,7 +61,7 @@ public class UserInfo extends BaseEntity {
 
   @Default
   @OneToMany(mappedBy = "userInfo")
-  private List<EmailCheck> checks = new ArrayList<>();
+  private List<CheckEmail> checks = new ArrayList<>();
 
   @Override
   public String toString() {

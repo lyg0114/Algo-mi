@@ -1,6 +1,6 @@
 package com.algo.alert.application;
 
-import com.algo.auth.domain.EmailCheck;
+import com.algo.auth.domain.CheckEmail;
 import com.algo.recovery.application.RecoveryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,11 +46,11 @@ public class EmailServiceImpl implements EmailService {
   }
 
   @Override
-  public void sendSignUpEamil(EmailCheck emailCheck) {
-    String confirmUrl = host + "/check-email?token=" + emailCheck.getCheckId();
+  public void sendSignUpEamil(CheckEmail checkEmail) {
+    String confirmUrl = host + "/check-email?token=" + checkEmail.getCheckId();
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom(from);
-    String email = emailCheck.getUserInfo().getEmail();
+    String email = checkEmail.getUserInfo().getEmail();
     message.setTo(email);
     message.setSubject("[AGO-MI 회원가입 인증]");
 

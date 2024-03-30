@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @since : 26.03.24
  */
 @Repository
-public interface EmailCheckRepository extends CrudRepository<EmailCheck, String> {
+public interface CheckEmailRepository extends CrudRepository<CheckEmail, String> {
 }

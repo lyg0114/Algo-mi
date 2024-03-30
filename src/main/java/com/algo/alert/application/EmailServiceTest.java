@@ -1,6 +1,6 @@
 package com.algo.alert.application;
 
-import com.algo.auth.domain.EmailCheck;
+import com.algo.auth.domain.CheckEmail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +25,7 @@ public class EmailServiceTest implements EmailService{
   }
 
   @Override
-  public void sendSignUpEamil(EmailCheck emailCheck) {
+  public void sendSignUpEamil(CheckEmail checkEmail) {
     log.info("###########################");
     log.info("call sendSignUpEamil success");
     log.info("###########################");

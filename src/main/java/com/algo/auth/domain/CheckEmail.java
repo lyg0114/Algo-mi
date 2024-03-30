@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "email_check")
-public class EmailCheck extends BaseEntity {
+@Table(name = "check_email")
+public class CheckEmail extends BaseEntity {
 
   @Id
   @Column(name = "check_id", nullable = false)

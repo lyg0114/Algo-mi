@@ -1,6 +1,6 @@
 package com.algo.alert.application;
 
-import com.algo.auth.domain.EmailCheck;
+import com.algo.auth.domain.CheckEmail;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
@@ -13,5 +13,5 @@ public interface EmailService {
   @Scheduled(cron = "${cron.rule}", zone = "${time.zone}")
   void sendSimpleMessage();
 
-  void sendSignUpEamil(EmailCheck emailCheck);
+  void sendSignUpEamil(CheckEmail checkEmail);
 }
