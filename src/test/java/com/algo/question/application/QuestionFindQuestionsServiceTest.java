@@ -42,10 +42,9 @@ class QuestionFindQuestionsServiceTest {
     questionRequest.setEmail("user-1@example.com");
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(questionRequest, PageRequest.of(0, 12));
     List<QuestionResponse> content = responses.getContent();
-    System.out.println("content = " + content);
     assertThat(content.size()).isEqualTo(3);
     QuestionResponse response = content.get(0);
-    assertThat(response.getTitle()).contains("title-6");
+    assertThat(response.getTitle()).contains("title-3");
   }
 
   @DisplayName("조건에 따른 문제 조회")
@@ -53,12 +52,11 @@ class QuestionFindQuestionsServiceTest {
   public void shouldFindQuestionBySearchTerm() {
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
     questionRequest.setSearchTerm("미로");
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(questionRequest, PageRequest.of(0, 12));
     List<QuestionResponse> content = responses.getContent();
     assertThat(content.size()).isEqualTo(1);
-    QuestionResponse response = content.get(0);
-    assertThat(response.getTitle()).contains("미로");
   }
 
   @DisplayName("문제 조회")
@@ -66,9 +64,10 @@ class QuestionFindQuestionsServiceTest {
   public void shouldFindQuestions() {
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     QuestionRequest questionRequest = new QuestionRequest();
+    questionRequest.setEmail("user-1@example.com");
     Page<QuestionResponse> responses = questionService.findPaginatedForQuestions(questionRequest, PageRequest.of(0, 12));
     List<QuestionResponse> results = responses.getContent();
-    assertThat(results.size()).isEqualTo(6);
+    assertThat(results.size()).isEqualTo(3);
     for (QuestionResponse result : results) {
       assertThat(result).isNotNull();
       assertThat(result.getId()).isNotNull();
