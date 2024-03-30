@@ -15,6 +15,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +46,9 @@ public class QuestionRestController {
   public ResponseEntity<Page<QuestionResponse>> getQuestions(
       QuestionRequest request, @PageableDefault(size = 12) Pageable pageable
   ) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();
+
     Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(request, pageable);
     if (questions != null && !questions.isEmpty()) {
       return new ResponseEntity<>(questions, HttpStatus.OK);
