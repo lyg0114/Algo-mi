@@ -87,8 +87,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionRequest QuestionRequest
   ) {
-    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId,
-        QuestionRequest);
+    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, QuestionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

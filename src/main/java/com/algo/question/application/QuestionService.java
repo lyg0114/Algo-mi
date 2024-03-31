@@ -8,6 +8,7 @@ import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -52,6 +53,10 @@ public class QuestionService {
   @Transactional
   public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
+    if(Objects.isNull(userInfo)){
+      //TODO : ExceptionControllerAdvice 에서 예외를 받아서  처리해주는 코드 작성 필요.
+      throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
+    }
     Question addQuestion = addQuestionRequest.converTnEntity();
     addQuestion.setUserInfo(userInfo);
     return questionRepository
@@ -64,6 +69,7 @@ public class QuestionService {
   public QuestionResponse updateQuestion(long questionId, QuestionRequest QuestionRequest) {
     Question question = QuestionRequest.converTnEntity();
     Question targetQuestion = null;
+    //TODO : update 사용자 정보 핸들링하는 로직 필요
     try {
       targetQuestion = questionRepository.findById(questionId).orElseThrow();
       targetQuestion.update(question);
