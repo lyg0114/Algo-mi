@@ -81,6 +81,7 @@ public class QuestionService {
 
   @Transactional
   public void deleteQuestion(long questionId) {
+    //TODO : delete 사용자 정보 핸들링하는 로직 필요
     questionRepository.deleteById(questionId);
   }
 }
