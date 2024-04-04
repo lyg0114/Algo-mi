@@ -41,20 +41,19 @@ public class QuestionService {
 
   @Transactional(readOnly = true)
   public Question findQuestionById(long questionId) {
-    Question Queston = null;
+    Question question = null;
     try {
-      Queston = questionRepository.findById(questionId).orElseThrow();
+      question = questionRepository.findById(questionId).orElseThrow();
     } catch (NoSuchElementException e) {
       return null;
     }
-    return Queston;
+    return question;
   }
 
   @Transactional
   public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
     if(Objects.isNull(userInfo)){
-      //TODO : ExceptionControllerAdvice 에서 예외를 받아서  처리해주는 코드 작성 필요.
       throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
     }
     Question addQuestion = addQuestionRequest.converTnEntity();

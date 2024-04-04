@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since : 06.01.24
  */
 @ActiveProfiles("test")
-@DisplayName("로그인 인증 관련 테스트")
+@DisplayName("로그인 인증 REST-API 테스트")
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
@@ -42,11 +42,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthControllerTest {
 
   @Autowired private MockMvc mockMvc;
-  @Autowired protected QuestionRepository questionRepository;
-  @Autowired protected UserInfoRepository userInfoRepository;
-  @Autowired protected PasswordEncoder encoder;
-  @Autowired protected JwtUtil jwtUtil;
-  @Autowired protected ObjectMapper mapper;
+  @Autowired private QuestionRepository questionRepository;
+  @Autowired private UserInfoRepository userInfoRepository;
+  @Autowired private PasswordEncoder encoder;
+  @Autowired private JwtUtil jwtUtil;
+  @Autowired private ObjectMapper mapper;
 
   @BeforeEach
   void init() {
