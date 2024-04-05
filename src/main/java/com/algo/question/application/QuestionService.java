@@ -54,7 +54,7 @@ public class QuestionService {
   public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
     if(Objects.isNull(userInfo)){
-      throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
+      throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
     Question addQuestion = addQuestionRequest.converTnEntity();
     addQuestion.setUserInfo(userInfo);
