@@ -6,12 +6,12 @@ import com.algo.auth.domain.CheckEmailRepository;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.auth.dto.CheckEmailResponse;
-import com.algo.auth.dto.ErrorRequest;
 import com.algo.auth.dto.LoginRequest;
 import com.algo.auth.dto.LoginResponse;
 import com.algo.auth.dto.SignUpRequest;
 import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
+import com.algo.exception.dto.ExceptionResponse;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,7 +56,8 @@ public class AuthController {
   public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
     try {
       Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+          new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+              loginRequest.getPassword()));
       String email = authentication.getName();
       UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
       String token = jwtUtil.createToken(userInfoByEmail);
@@ -64,10 +65,10 @@ public class AuthController {
       return ResponseEntity.ok(loginResponse);
     } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new ErrorRequest(HttpStatus.BAD_REQUEST, "계정 정보를 확인해 주세요."));
+          .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "계정 정보를 확인해 주세요."));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new ErrorRequest(HttpStatus.BAD_REQUEST, "관리자에게 문의하여 주세요"));
+          .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "관리자에게 문의하여 주세요"));
     }
   }
 
@@ -87,7 +88,7 @@ public class AuthController {
         signUpRequest.getEmail());
     if (Objects.nonNull(userInfoByEmail)) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
-          .body(new ErrorRequest(HttpStatus.CONFLICT, "이미 존재하는 계정 입니다."));
+          .body(new ExceptionResponse(HttpStatus.CONFLICT.value(), "이미 존재하는 계정 입니다."));
     }
 
     UserInfo newUserInfo = signUpRequest.convertToUserInfo(passwordEncoder);
@@ -101,8 +102,6 @@ public class AuthController {
         .build();
     CheckEmail savedCheckEmail = checkEmailRepository.save(checkEmail);
     emailService.sendSignUpEamil(savedCheckEmail);
-
-    //TODO : 사용자에게 전달할 안내 멘트는 프론트 쪽에서 작업할 수 있도록 하자. (프론트에는 상태코드만 전달하도록)
     return ResponseEntity
         .ok(new SignUpResponse(newUserInfo.getEmail(), "회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요."));
   }
@@ -118,12 +117,8 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/check-email/{token}", method = RequestMethod.GET)
   public ResponseEntity checkEmail(@PathVariable String token) {
-    CheckEmail checkEmail = checkEmailRepository.findById(token).orElse(null);
-    if (checkEmail == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(new CheckEmailResponse(token, "유효하지 않은 토큰입니다."));
-    }
-
+    CheckEmail checkEmail = checkEmailRepository.findById(token)
+        .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
     UserInfo userInfo = checkEmail.getUserInfo();
     LocalDateTime validateDate = checkEmail.getValidateDate();
     LocalDateTime currentTime = LocalDateTime.now();
