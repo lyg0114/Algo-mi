@@ -69,12 +69,12 @@ public class QuestionRestController {
   }
 
   @PostMapping
-  public ResponseEntity<QuestionResponse> addQuestion(
-      HttpServletRequest request, @RequestBody QuestionRequest QuestionRequest
-  ) {
+  public ResponseEntity<QuestionResponse> addQuestion(@RequestBody QuestionRequest request) {
     HttpHeaders headers = new HttpHeaders();
-    String email = jwtUtil.getEmail(request);
-    QuestionResponse addQuestionResponse = questionService.addQuestion(email, QuestionRequest);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();
+    request.setEmail(email);
+    QuestionResponse addQuestionResponse = questionService.addQuestion(request);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
@@ -85,8 +85,11 @@ public class QuestionRestController {
 
   @PutMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> updateQuestion(
-      @PathVariable long questionId, @RequestBody QuestionRequest QuestionRequest
+      HttpServletRequest request,
+      @PathVariable long questionId,
+      @RequestBody QuestionRequest QuestionRequest
   ) {
+    QuestionRequest.setEmail(jwtUtil.getEmail(request));
     QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, QuestionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

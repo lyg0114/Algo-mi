@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since : 08.01.24
  */
 @ActiveProfiles("test")
-@DisplayName("문제 조회,등록,수정,삭제 테스트")
+@DisplayName("문제 조회, 등록, 수정, 삭제 테스트")
 @Transactional
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -42,7 +42,7 @@ class QuestionCRUDServiceTest {
     QuestionRequest questionRequest = new QuestionRequest();
     questionRequest.setEmail("user-1@example.com");
     QuestionResponse questionResponse = questionService
-        .findPaginatedForQuestions(questionRequest , PageRequest.of(0, 1))
+        .findPaginatedForQuestions(questionRequest, PageRequest.of(0, 1))
         .getContent()
         .get(0);
     long targetId = questionResponse.getId();
@@ -64,13 +64,13 @@ class QuestionCRUDServiceTest {
     //given
     QuestionSample.createSamplefindPaginatedForQuestionsV1(questionRepository, userInfoRepository);
     QuestionRequest questionRequest = new QuestionRequest();
-    questionRequest.setEmail("user-1@example.com");
+    String targetEmail = "user-1@example.com";
+    questionRequest.setEmail(targetEmail);
     long targetId = questionService
         .findPaginatedForQuestions(questionRequest, PageRequest.of(0, 1))
         .getContent()
         .get(0)
-        .getId()
-        ;
+        .getId();
     QuestionRequest willUpdateQuestionDto = QuestionRequest
         .builder()
         .title("Update new Question")
@@ -80,6 +80,8 @@ class QuestionCRUDServiceTest {
         .reviewCount(10)
         .content("### update contnet")
         .build();
+    willUpdateQuestionDto.setEmail(targetEmail);
+
     //when
     QuestionResponse updateResponse = questionService.updateQuestion(targetId, willUpdateQuestionDto);
     //then
@@ -107,7 +109,8 @@ class QuestionCRUDServiceTest {
         .build();
     //when
     String email = "user@example.com";
-    QuestionResponse savedResponse = questionService.addQuestion(email, questionDto);
+    questionDto.setEmail(email);
+    QuestionResponse savedResponse = questionService.addQuestion(questionDto);
     Long id = savedResponse.getId();
     Question byId = questionRepository.findById(id).get();
     //then

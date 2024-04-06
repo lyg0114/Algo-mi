@@ -51,12 +51,13 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionResponse addQuestion(String email, QuestionRequest addQuestionRequest) {
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
-    if(Objects.isNull(userInfo)){
+  public QuestionResponse addQuestion(QuestionRequest question) {
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
+        question.getEmail());
+    if (Objects.isNull(userInfo)) {
       throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
-    Question addQuestion = addQuestionRequest.converTnEntity();
+    Question addQuestion = question.converTnEntity();
     addQuestion.setUserInfo(userInfo);
     return questionRepository
         .save(addQuestion)
@@ -68,14 +69,17 @@ public class QuestionService {
   public QuestionResponse updateQuestion(long questionId, QuestionRequest QuestionRequest) {
     Question question = QuestionRequest.converTnEntity();
     Question targetQuestion = null;
-    //TODO : update 사용자 정보 핸들링하는 로직 필요
-    try {
-      targetQuestion = questionRepository.findById(questionId).orElseThrow();
-      targetQuestion.update(question);
-      return targetQuestion.converToDto(modelMapper);
-    } catch (NoSuchElementException e) {
-      return null;
+    targetQuestion = questionRepository.findById(questionId)
+        .orElseThrow(() -> new NoSuchElementException("잘못된 문제 정보 입니다."));
+    if (Objects.isNull(targetQuestion.getUserInfo())) {
+      throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
+    if (!targetQuestion.getUserInfo().getEmail().equals(QuestionRequest.getEmail())) {
+      throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
+    }
+
+    targetQuestion.update(question);
+    return targetQuestion.converToDto(modelMapper);
   }
 
   @Transactional
