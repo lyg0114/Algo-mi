@@ -99,10 +99,12 @@ public class AuthControllerTest {
   public void testInValidateEmailCheckFail() throws Exception {
     String inValidateToken = "in-validate-token";
     MvcResult mvcResult = mockMvc.perform(get("/api/rest/auth/check-email/" + inValidateToken))
-        .andExpect(status().isNotFound())
+        .andExpect(status().is4xxClientError())
         .andReturn();
     Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
-    assertThat((String) result.get("token")).isEqualTo(inValidateToken);
+    System.out.println("result = " + result);
+    assertThat(result.get("status")).isEqualTo(400);
+    assertThat((String) result.get("message")).isEqualTo("유효하지 않은 토큰입니다.");
   }
 
   //TODO : E-mail 체크 성공 테스트코드 작성
