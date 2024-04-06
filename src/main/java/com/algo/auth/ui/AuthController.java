@@ -10,7 +10,6 @@ import com.algo.auth.dto.LoginResponse;
 import com.algo.auth.dto.SignUpRequest;
 import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
-import com.algo.exception.dto.ExceptionResponse;
 import com.sun.jdi.request.DuplicateRequestException;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -19,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/rest")
 public class AuthController {
 
-  private final AuthenticationManager authenticationManager;
+  private final AuthenticationManager authManager;
   private final UserInfoRepository userInfoRepository;
   private final CheckEmailRepository checkEmailRepository;
   private final PasswordEncoder passwordEncoder;
@@ -54,23 +51,15 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
   public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-    try {
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-              loginRequest.getPassword()));
-      String email = authentication.getName();
-      UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email)
-          .orElseThrow(() -> new NoSuchElementException("회원정보를 찾을 수 없습니다."));
-      String token = jwtUtil.createToken(userInfoByEmail);
-      LoginResponse loginResponse = new LoginResponse(email, token);
-      return ResponseEntity.ok(loginResponse);
-    } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "계정 정보를 확인해 주세요."));
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), "관리자에게 문의하여 주세요"));
-    }
+    Authentication authentication = authManager.authenticate(
+        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+    );
+    String email = authentication.getName();
+    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email)
+        .orElseThrow(() -> new NoSuchElementException("회원정보를 찾을 수 없습니다."));
+    String token = jwtUtil.createToken(userInfoByEmail);
+    LoginResponse loginResponse = new LoginResponse(email, token);
+    return ResponseEntity.ok(loginResponse);
   }
 
   /**
@@ -85,8 +74,7 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
   public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) {
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
-            signUpRequest.getEmail())
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(signUpRequest.getEmail())
         .orElse(UserInfo.builder().email("empty").build());
     if (!userInfo.getEmail().equals("empty")) {
       throw new DuplicateRequestException("이미 존재하는 계정 입니다.");
@@ -129,7 +117,7 @@ public class AuthController {
       userInfoRepository.delete(userInfo);
       return ResponseEntity
           .status(HttpStatus.CONFLICT)
-          .body(new SignUpResponse(userInfo.getEmail(), "시간이 만료되었습니다."));
+          .body(new SignUpResponse(userInfo.getEmail(), "유효 시간이 만료되었습니다. 회원가입을 다시 진행해 주세요."));
     }
 
     userInfo.activate();
