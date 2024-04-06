@@ -41,13 +41,8 @@ public class QuestionService {
 
   @Transactional(readOnly = true)
   public Question findQuestionById(long questionId) {
-    Question question = null;
-    try {
-      question = questionRepository.findById(questionId).orElseThrow();
-    } catch (NoSuchElementException e) {
-      return null;
-    }
-    return question;
+    return questionRepository.findById(questionId)
+        .orElseThrow(() -> new NoSuchElementException("문제 정보를 찾을 수 없습니다."));
   }
 
   @Transactional
@@ -70,7 +65,7 @@ public class QuestionService {
     Question question = QuestionRequest.converTnEntity();
     Question targetQuestion = null;
     targetQuestion = questionRepository.findById(questionId)
-        .orElseThrow(() -> new NoSuchElementException("잘못된 문제 정보 입니다."));
+        .orElseThrow(() -> new NoSuchElementException("문제 정보를 찾을 수 없습니다."));
     if (Objects.isNull(targetQuestion.getUserInfo())) {
       throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
