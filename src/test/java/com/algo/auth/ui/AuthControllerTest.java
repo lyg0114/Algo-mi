@@ -92,6 +92,7 @@ public class AuthControllerTest {
         .andReturn();
     Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
     assertThat((String) result.get("email")).isEqualTo("newUser@example.com");
+    assertThat((String) result.get("message")).isEqualTo("회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요.");
   }
 
   @DisplayName("E-mail 체크 실패 : 유효한 토큰이 아닌 경우")

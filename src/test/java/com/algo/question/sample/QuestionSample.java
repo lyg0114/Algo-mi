@@ -24,8 +24,8 @@ public class QuestionSample {
     
     // 테스트별로 userId가 갱신되어 저장되므로 email을 통해 조회하도록 처리 
     // ex) A 테스트 진행 -> userId(1, 2, 3) -> rollback -> userId(4, 5, 6) -> B 테스트 진행
-    UserInfo user1 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-1@example.com");
-    UserInfo user2 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-2@example.com");
+    UserInfo user1 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-1@example.com").get();
+    UserInfo user2 = userInfoRepository.findUserInfoByEmailAndIsActivateTrue("user-2@example.com").get();
     questionRepository.saveAll(
         List.of(
             Question.builder().content("content-1").questionId(1L).questionType("dfs").title("title-1").url("http://localhost/leetcode/url/1").fromSource("백준").reviewCount(4).userInfo(user1).build(),

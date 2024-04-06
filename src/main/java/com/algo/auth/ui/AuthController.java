@@ -5,15 +5,15 @@ import com.algo.auth.domain.CheckEmail;
 import com.algo.auth.domain.CheckEmailRepository;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
-import com.algo.auth.dto.CheckEmailResponse;
 import com.algo.auth.dto.LoginRequest;
 import com.algo.auth.dto.LoginResponse;
 import com.algo.auth.dto.SignUpRequest;
 import com.algo.auth.dto.SignUpResponse;
 import com.algo.auth.infrastructure.JwtUtil;
 import com.algo.exception.dto.ExceptionResponse;
+import com.sun.jdi.request.DuplicateRequestException;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -59,7 +59,8 @@ public class AuthController {
           new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
               loginRequest.getPassword()));
       String email = authentication.getName();
-      UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
+      UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email)
+          .orElseThrow(() -> new NoSuchElementException("회원정보를 찾을 수 없습니다."));
       String token = jwtUtil.createToken(userInfoByEmail);
       LoginResponse loginResponse = new LoginResponse(email, token);
       return ResponseEntity.ok(loginResponse);
@@ -84,11 +85,11 @@ public class AuthController {
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
   public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) {
-    UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
-        signUpRequest.getEmail());
-    if (Objects.nonNull(userInfoByEmail)) {
-      return ResponseEntity.status(HttpStatus.CONFLICT)
-          .body(new ExceptionResponse(HttpStatus.CONFLICT.value(), "이미 존재하는 계정 입니다."));
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
+            signUpRequest.getEmail())
+        .orElse(UserInfo.builder().email("empty").build());
+    if (!userInfo.getEmail().equals("empty")) {
+      throw new DuplicateRequestException("이미 존재하는 계정 입니다.");
     }
 
     UserInfo newUserInfo = signUpRequest.convertToUserInfo(passwordEncoder);
