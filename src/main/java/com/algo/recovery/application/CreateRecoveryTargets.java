@@ -33,7 +33,7 @@ public class CreateRecoveryTargets implements CreateRecovery {
     return questionCustomRepository
         .findQuestions(
             QuestionRequest.builder()
-                .fromDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MIDNIGHT))
+                .fromDt(LocalDateTime.of(LocalDate.now().minusDays(3L), LocalTime.MIDNIGHT))
                 .toDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MAX))
                 .build()
         )

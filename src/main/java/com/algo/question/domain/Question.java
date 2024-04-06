@@ -79,6 +79,7 @@ public class Question extends BaseEntity {
   public QuestionResponse converToDto(ModelMapper modelMapper) {
     QuestionResponse result = modelMapper.map(this, QuestionResponse.class);
     result.setId(this.questionId);
+    result.setContent(this.userInfo.getEmail());
     result.setRegistDt(this.getCreatedDt().format(DateTimeFormatter
         .ofPattern("yyyy-MM-dd")));
     return result;

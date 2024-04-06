@@ -3,6 +3,8 @@ package com.algo.alert.application;
 import com.algo.auth.domain.CheckEmail;
 import com.algo.exception.custom.SignUpFailException;
 import com.algo.recovery.application.RecoveryService;
+import com.algo.recovery.dto.RecoveryContents;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +27,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
   @Value("${spring.mail.username}")
-  private String from;
+  private String officialEmail;
   @Value("${spring.mail.username}")
   private String to;
   @Value("${cors.allowed-origins}")
@@ -38,13 +40,14 @@ public class EmailServiceImpl implements EmailService {
   @Override
   @Scheduled(cron = "${cron.rule}", zone = "${time.zone}")
   public void sendSimpleMessage() {
-    String title = recoveryService.createTitle();
-    String content = recoveryService.createText();
-    message.setFrom(from);
-    message.setTo(to); //TODO : 설정파일을 읽어 가져오는 to 정보를 DB에서 불러와서 사용자별로 전송되도록 해야함.
-    message.setSubject(title);
-    message.setText(content);
-    emailSender.send(message);
+    List<RecoveryContents> contents = recoveryService.createContents();
+    for (RecoveryContents content : contents) {
+      message.setFrom(officialEmail);
+      message.setTo(content.getEmail());
+      message.setSubject(recoveryService.createTitle());
+      message.setText(content.getContents());
+      emailSender.send(message);
+    }
   }
 
   @Override
@@ -52,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
     try {
       String confirmUrl = host + "/check-email?token=" + checkEmail.getCheckId();
       SimpleMailMessage message = new SimpleMailMessage();
-      message.setFrom(from);
+      message.setFrom(officialEmail);
       String email = checkEmail.getUserInfo().getEmail();
       message.setTo(email);
       message.setSubject("[AGO-MI 회원가입 인증]");

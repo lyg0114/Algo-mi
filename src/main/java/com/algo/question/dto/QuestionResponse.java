@@ -20,6 +20,7 @@ import lombok.ToString;
 public class QuestionResponse {
 
   private Long id;
+  private String email;
   private String title;
   private String url;
   private String fromSource;
