@@ -46,17 +46,17 @@ public class AuthController {
   /**
    * 로그인을 처리하는 POST 요청을 처리하는 메소드.
    *
-   * @param req 로그인 요청에 필요한 정보를 담은 객체
+   * @param loginRequest 로그인 요청에 필요한 정보를 담은 객체
    * @return 요청에 대한 ResponseEntity 객체.
    *      - 로그인이 성공하면 인증된 사용자의 이메일과 JWT 토큰을 포함한 ResponseEntity를 반환.
    *      - 잘못된 자격 증명이나 내부 인증 서비스 오류인 경우에는 적절한 상태 코드와 메시지를 포함한 ResponseEntity를 반환.
    */
   @ResponseBody
   @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
-  public ResponseEntity login(@RequestBody LoginRequest req) {
+  public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
     try {
       Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
+          new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
       String email = authentication.getName();
       UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email);
       String token = jwtUtil.createToken(userInfoByEmail);
@@ -77,24 +77,24 @@ public class AuthController {
    * <p>계정이 존재하는 경우 DB에서 계정을 확인하고 front에 응답.
    * 계정이 존재하지 않는 경우, 신규 계정 정보를 저장하고, 계정 정보를 기반으로 EmailCheck을 생성 및 저장한 후, 검증 URL을 이메일로 전송.
    *
-   * @param req 회원가입 요청 정보를 담은 객체
+   * @param signUpRequest 회원가입 요청 정보를 담은 객체
    * @return 회원가입 처리 결과에 따른 응답 {@link ResponseEntity}
    */
   @ResponseBody
   @RequestMapping(value = "/auth/signup", method = RequestMethod.POST)
-  public ResponseEntity signUp(@RequestBody SignUpRequest req) {
+  public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) {
     UserInfo userInfoByEmail = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(
-        req.getEmail());
+        signUpRequest.getEmail());
     if (Objects.nonNull(userInfoByEmail)) {
       return ResponseEntity.status(HttpStatus.CONFLICT)
           .body(new ErrorRequest(HttpStatus.CONFLICT, "이미 존재하는 계정 입니다."));
     }
 
-    UserInfo newUserInfo = req.convertToUserInfo(passwordEncoder);
+    UserInfo newUserInfo = signUpRequest.convertToUserInfo(passwordEncoder);
     UserInfo savedUserInfo = userInfoRepository.save(newUserInfo);
     CheckEmail checkEmail = CheckEmail
         .builder()
-        .checkId(UUID.nameUUIDFromBytes(req.getEmail().getBytes()).toString())
+        .checkId(UUID.nameUUIDFromBytes(signUpRequest.getEmail().getBytes()).toString())
         .validateDate(LocalDateTime.now().plusMinutes(15L))
         .userInfo(savedUserInfo)
         .isExpire(false)

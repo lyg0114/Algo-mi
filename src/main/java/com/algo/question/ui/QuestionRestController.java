@@ -86,12 +86,12 @@ public class QuestionRestController {
 
   @PutMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> updateQuestion(
-      @PathVariable long questionId, @RequestBody QuestionRequest request
+      @PathVariable long questionId, @RequestBody QuestionRequest questionRequest
   ) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
-    request.setEmail(email);
-    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, request);
+    questionRequest.setEmail(email);
+    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, questionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
