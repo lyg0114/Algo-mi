@@ -8,8 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.dto.LoginRequest;
+import com.algo.auth.dto.SignUpRequest;
 import com.algo.auth.infrastructure.JwtUtil;
-import com.algo.question.domain.QuestionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import java.util.List;
@@ -42,7 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthControllerTest {
 
   @Autowired private MockMvc mockMvc;
-  @Autowired private QuestionRepository questionRepository;
   @Autowired private UserInfoRepository userInfoRepository;
   @Autowired private PasswordEncoder encoder;
   @Autowired private JwtUtil jwtUtil;
@@ -64,7 +64,10 @@ public class AuthControllerTest {
   public void testLoginSuccess() throws Exception {
     MvcResult mvcResult = mockMvc.perform(post("/api/rest/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"email\": \"user@example.com\", \"password\": \"password\"}"))
+            .content(mapper.writeValueAsString(LoginRequest.builder()
+                .email("user@example.com")
+                .password("password")
+                .build())))
         .andExpect(status().isOk())
         .andReturn();
     Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
@@ -80,10 +83,11 @@ public class AuthControllerTest {
   public void testSignUpSuccess() throws Exception {
     MvcResult mvcResult = mockMvc.perform(post("/api/rest/auth/signup")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"email\": \"newUser@example.com\","
-                + " \"userName\": \"newUserName\","
-                + " \"password\": \"password\""
-                + "}"))
+            .content(mapper.writeValueAsString(SignUpRequest.builder()
+                .email("newUser@example.com")
+                .userName("newUserName")
+                .password("password")
+                .build())))
         .andExpect(status().isOk())
         .andReturn();
     Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);

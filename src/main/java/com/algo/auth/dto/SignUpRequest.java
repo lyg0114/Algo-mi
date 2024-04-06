@@ -2,9 +2,11 @@ package com.algo.auth.dto;
 
 import com.algo.auth.domain.UserInfo;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Builder
 @AllArgsConstructor
 @Data
 public class SignUpRequest {

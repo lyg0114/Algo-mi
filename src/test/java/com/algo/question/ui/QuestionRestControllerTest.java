@@ -1,12 +1,13 @@
 package com.algo.question.ui;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.auth.infrastructure.JwtUtil;
+import com.algo.question.domain.Question;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,17 +57,17 @@ class QuestionRestControllerTest {
   @DisplayName("문제 등록시 사용자 정보가 존재하지 않는 경우")
   @Test
   public void addQuestionWhenUserInformationDoesntExist() throws Exception {
-    String token = jwtUtil.createToken(
-        UserInfo.builder().email("test@example.com").role("USER").build()
-    );
+    String token = jwtUtil.createToken(UserInfo.builder().email("test@example.com").role("USER").build());
     MvcResult mvcResult = mockMvc.perform(post("/api/questions")
             .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"title\": \"sample-title\","
-                + " \"fromSource\": \"smaple-fromSource\","
-                + " \"questionType\": \"smaple-questionType\","
-                + " \"content\": \"smaple-content\","
-                + " \"url\": \"smaple-url\"}"))
+            .content(mapper.writeValueAsString(Question.builder()
+                .title("sample-title")
+                .fromSource("smaple-fromSource")
+                .questionType("smaple-questionType")
+                .content("smaple-content")
+                .url("smaple-url")
+                .build())))
         .andExpect(status().is4xxClientError())
         .andReturn();
 
