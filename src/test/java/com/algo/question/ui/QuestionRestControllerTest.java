@@ -55,7 +55,7 @@ class QuestionRestControllerTest {
 
   @DisplayName("문제 등록시 사용자 정보가 존재하지 않는 경우")
   @Test
-  public void testLoginSuccess() throws Exception {
+  public void addQuestionWhenUserInformationDoesntExist() throws Exception {
     String token = jwtUtil.createToken(
         UserInfo.builder().email("test@example.com").role("USER").build()
     );
