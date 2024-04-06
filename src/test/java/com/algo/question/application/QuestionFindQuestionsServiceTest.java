@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since : 08.01.24
  */
 @ActiveProfiles("test")
-@DisplayName("문제조회 관련 테스트")
+@DisplayName("조검검색에 따른 문제조회 테스트")
 @Transactional
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")

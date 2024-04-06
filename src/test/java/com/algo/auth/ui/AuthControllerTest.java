@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.algo.auth.domain.CheckEmail;
+import com.algo.auth.domain.CheckEmailRepository;
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.auth.dto.LoginRequest;
@@ -13,6 +15,7 @@ import com.algo.auth.dto.SignUpRequest;
 import com.algo.auth.infrastructure.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,10 +50,13 @@ public class AuthControllerTest {
   @Autowired private PasswordEncoder encoder;
   @Autowired private JwtUtil jwtUtil;
   @Autowired private ObjectMapper mapper;
+  @Autowired private CheckEmailRepository checkEmailRepository;
+
+  private UserInfo userInfo = null;
 
   @BeforeEach
   void init() {
-    userInfoRepository.save(UserInfo
+    userInfo = userInfoRepository.save(UserInfo
         .builder()
         .userId(1L)
         .userName("kyle")
@@ -97,16 +103,33 @@ public class AuthControllerTest {
 
   @DisplayName("E-mail 체크 실패 : 유효한 토큰이 아닌 경우")
   @Test
-  public void testInValidateEmailCheckFail() throws Exception {
+  public void testInValidateEmailCheck() throws Exception {
     String inValidateToken = "in-validate-token";
     MvcResult mvcResult = mockMvc.perform(get("/api/rest/auth/check-email/" + inValidateToken))
         .andExpect(status().is4xxClientError())
         .andReturn();
     Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
-    System.out.println("result = " + result);
     assertThat(result.get("status")).isEqualTo(400);
     assertThat((String) result.get("message")).isEqualTo("유효하지 않은 토큰입니다.");
   }
 
-  //TODO : E-mail 체크 성공 테스트코드 작성
+  @DisplayName("E-mail 체크 성공")
+  @Test
+  public void testValidateEmailCheck() throws Exception {
+    String validateToken = "validate-token";
+    checkEmailRepository.save(
+        CheckEmail.builder()
+            .checkId(validateToken)
+            .validateDate(LocalDateTime.now().plusMinutes(15L))
+            .userInfo(userInfo)
+            .isExpire(false)
+            .build()
+    );
+    MvcResult mvcResult = mockMvc.perform(get("/api/rest/auth/check-email/" + validateToken))
+        .andExpect(status().is2xxSuccessful())
+        .andReturn();
+    Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
+    assertThat((String) result.get("email")).isEqualTo("user@example.com");
+    assertThat((String) result.get("message")).isEqualTo("회원가입이 완료되었습니다 로그인해 주세요.");
+  }
 }
