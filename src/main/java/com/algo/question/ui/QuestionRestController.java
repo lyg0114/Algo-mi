@@ -1,11 +1,11 @@
 package com.algo.question.ui;
 
 import com.algo.auth.infrastructure.JwtUtil;
+import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.application.QuestionService;
 import com.algo.question.domain.Question;
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -44,12 +44,13 @@ public class QuestionRestController {
 
   @GetMapping
   public ResponseEntity<Page<QuestionResponse>> getQuestions(
-      QuestionRequest request, @PageableDefault(size = 12) Pageable pageable
+      QuestionRequest questionRequest, @PageableDefault(size = 12) Pageable pageable
   ) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
-    request.setEmail(email);
-    Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(request, pageable);
+    questionRequest.setEmail(email);
+    Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(questionRequest,
+        pageable);
     if (questions != null && !questions.isEmpty()) {
       return new ResponseEntity<>(questions, HttpStatus.OK);
     } else {
@@ -62,19 +63,19 @@ public class QuestionRestController {
     Question question = questionService.findQuestionById(questionId);
     if (question != null) {
       return new ResponseEntity<>(
-          question.converToDto(modelMapper), HttpStatus.OK)
-          ;
+          question.converToDto(modelMapper), HttpStatus.OK);
     }
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @PostMapping
-  public ResponseEntity<QuestionResponse> addQuestion(@RequestBody QuestionRequest request) {
+  public ResponseEntity<QuestionResponse> addQuestion(
+      @RequestBody QuestionRequest questionRequest) {
     HttpHeaders headers = new HttpHeaders();
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String email = authentication.getName();
-    request.setEmail(email);
-    QuestionResponse addQuestionResponse = questionService.addQuestion(request);
+    questionRequest.setEmail(email);
+    QuestionResponse addQuestionResponse = questionService.addQuestion(questionRequest);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
         .path("/question/{id}")
@@ -85,12 +86,12 @@ public class QuestionRestController {
 
   @PutMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> updateQuestion(
-      HttpServletRequest request,
-      @PathVariable long questionId,
-      @RequestBody QuestionRequest QuestionRequest
+      @PathVariable long questionId, @RequestBody QuestionRequest request
   ) {
-    QuestionRequest.setEmail(jwtUtil.getEmail(request));
-    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, QuestionRequest);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();
+    request.setEmail(email);
+    QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, request);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -99,11 +100,8 @@ public class QuestionRestController {
 
   @DeleteMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> deleteQuestion(@PathVariable long questionId) {
-    Question question = questionService.findQuestionById(questionId);
-    if (question == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-    questionService.deleteQuestion(questionId);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    questionService.deleteQuestion(questionId, new UserInfoRequest(authentication.getName()));
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

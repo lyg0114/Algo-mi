@@ -3,6 +3,7 @@ package com.algo.question.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
 import com.algo.question.dto.QuestionRequest;
@@ -47,7 +48,7 @@ class QuestionCRUDServiceTest {
         .get(0);
     long targetId = questionResponse.getId();
     //when
-    questionService.deleteQuestion(targetId);
+    questionService.deleteQuestion(targetId, new UserInfoRequest("user-1@example.com"));
     //then
     Question targetQuestion;
     try {

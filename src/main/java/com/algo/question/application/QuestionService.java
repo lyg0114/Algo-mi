@@ -2,6 +2,7 @@ package com.algo.question.application;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionCustomRepository;
 import com.algo.question.domain.QuestionRepository;
@@ -61,15 +62,15 @@ public class QuestionService {
   }
 
   @Transactional
-  public QuestionResponse updateQuestion(long questionId, QuestionRequest QuestionRequest) {
-    Question question = QuestionRequest.converTnEntity();
+  public QuestionResponse updateQuestion(long questionId, QuestionRequest questionRequest) {
+    Question question = questionRequest.converTnEntity();
     Question targetQuestion = null;
     targetQuestion = questionRepository.findById(questionId)
         .orElseThrow(() -> new NoSuchElementException("문제 정보를 찾을 수 없습니다."));
     if (Objects.isNull(targetQuestion.getUserInfo())) {
       throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
-    if (!targetQuestion.getUserInfo().getEmail().equals(QuestionRequest.getEmail())) {
+    if (!targetQuestion.getUserInfo().getEmail().equals(questionRequest.getEmail())) {
       throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
     }
 
@@ -78,8 +79,16 @@ public class QuestionService {
   }
 
   @Transactional
-  public void deleteQuestion(long questionId) {
-    //TODO : delete 사용자 정보 핸들링하는 로직 필요
+  public void deleteQuestion(long questionId, UserInfoRequest userInfoRequest) {
+    Question targetQuestion = questionRepository.findById(questionId)
+        .orElseThrow(() -> new NoSuchElementException("문제 정보를 찾을 수 없습니다."));
+    if (Objects.isNull(targetQuestion.getUserInfo())) {
+      throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
+    }
+    if (!targetQuestion.getUserInfo().getEmail().equals(userInfoRequest.getEmail())) {
+      throw new NoSuchElementException("존재하지 않는 사용자 입니다.");
+    }
+
     questionRepository.deleteById(questionId);
   }
 }
