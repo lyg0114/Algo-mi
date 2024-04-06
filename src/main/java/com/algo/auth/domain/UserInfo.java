@@ -47,8 +47,9 @@ public class UserInfo extends BaseEntity {
 
   @JsonIgnore
   @Column(name = "passwd", nullable = false)
-  private String passwd;
+private String passwd;
 
+  //TODO : List를 사용해서 여러 권한을 처리할 수 있도록 개선
   @Column(name = "role")
   private String role;
 

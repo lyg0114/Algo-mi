@@ -38,8 +38,8 @@ public class RecoveryService {
   }
 
   public List<RecoveryContents> createContents() {
-    List<QuestionResponse> targets = createRecoveryTargets();
-    Map<String, List<QuestionResponse>> collect = targets.stream()
+    Map<String, List<QuestionResponse>> collect = createRecoveryTargets()
+        .stream()
         .collect(Collectors.groupingBy(QuestionResponse::getEmail));
 
     List<RecoveryContents> recoveryContents = new ArrayList<>();
@@ -47,10 +47,10 @@ public class RecoveryService {
       StringBuffer sb = new StringBuffer();
       List<QuestionResponse> questionResponses = collect.get(email);
       if (!questionResponses.isEmpty()) {
-        sb.append("######################\n");
+        sb.append("\n######################\n");
         sb.append("## 오늘 복습할 문제 ##\n");
         sb.append("######################\n");
-        for (QuestionResponse target : targets) {
+        for (QuestionResponse target : questionResponses) {
           sb.append(target.getTitle())
               .append(" : ")
               .append(target.getUrl())

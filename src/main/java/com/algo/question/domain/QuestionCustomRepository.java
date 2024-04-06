@@ -2,6 +2,7 @@ package com.algo.question.domain;
 
 
 import static com.algo.question.domain.QQuestion.question;
+import static com.algo.recovery.application.CreateRecoveryTargets.SCHEDULE;
 
 import com.algo.question.dto.QuestionRequest;
 import com.algo.question.dto.QuestionResponse;
@@ -63,7 +64,7 @@ public class QuestionCustomRepository {
       if (!StringUtils.isEmpty(qReq.getQuestionType())) { booleanBuilder.or( question.questionType.like("%" + qReq.getQuestionType() + "%")); }
       if (!StringUtils.isEmpty(qReq.getUrl())) { booleanBuilder.or(question.url.like("%" + qReq.getUrl() + "%")); }
       if (qReq.getReviewCount() > 0) { booleanBuilder.or(question.reviewCount.eq(qReq.getReviewCount())); }
-      booleanBuilder.and(question.userInfo.email.eq(qReq.getEmail()));
+      if (!qReq.getEmail().equals(SCHEDULE)) { booleanBuilder.and(question.userInfo.email.eq(qReq.getEmail())); }
     }
     return booleanBuilder;
   }

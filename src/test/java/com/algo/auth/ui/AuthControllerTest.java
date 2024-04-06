@@ -101,7 +101,7 @@ public class AuthControllerTest {
     assertThat((String) result.get("message")).isEqualTo("회원가입 신청이 완료되었습니다. 이메일을 확인해 주세요.");
   }
 
-  @DisplayName("E-mail 체크 실패 : 유효한 토큰이 아닌 경우")
+  @DisplayName("e-mail 체크 실패 : 유효한 토큰이 아닌 경우")
   @Test
   public void testInValidateEmailCheck() throws Exception {
     String inValidateToken = "in-validate-token";
@@ -113,7 +113,7 @@ public class AuthControllerTest {
     assertThat((String) result.get("message")).isEqualTo("유효하지 않은 토큰입니다.");
   }
 
-  @DisplayName("E-mail 체크 성공")
+  @DisplayName("e-mail 체크 성공")
   @Test
   public void testValidateEmailCheck() throws Exception {
     String validateToken = "validate-token";

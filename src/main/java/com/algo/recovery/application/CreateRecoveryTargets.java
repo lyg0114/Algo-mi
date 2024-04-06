@@ -25,18 +25,19 @@ import org.springframework.stereotype.Service;
 @Service(CREATE_RECOVERY_TARGETS_BY_YESTER_DAY)
 public class CreateRecoveryTargets implements CreateRecovery {
 
+  public static final String SCHEDULE = "SCHEDUE";
   private final QuestionCustomRepository questionCustomRepository;
   private final ModelMapper modelMapper;
 
   @Override
   public List<QuestionResponse> createRecoveryTargets() {
+    QuestionRequest questionRequest = QuestionRequest.builder()
+        .fromDt(LocalDateTime.of(LocalDate.now().minusDays(3L), LocalTime.MIDNIGHT))
+        .toDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MAX))
+        .build();
+    questionRequest.setEmail(SCHEDULE);
     return questionCustomRepository
-        .findQuestions(
-            QuestionRequest.builder()
-                .fromDt(LocalDateTime.of(LocalDate.now().minusDays(3L), LocalTime.MIDNIGHT))
-                .toDt(LocalDateTime.of(LocalDate.now().minusDays(1L), LocalTime.MAX))
-                .build()
-        )
+        .findQuestions(questionRequest)
         .fetch()
         .stream()
         .map(question -> question.converToDto(modelMapper))

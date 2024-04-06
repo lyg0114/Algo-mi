@@ -20,7 +20,7 @@ public class BaseEntity implements Serializable {
 
   @CreatedDate
   @JsonIgnore
-  @Column(name = "created_dt", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+  @Column(name = "created_dt", nullable = false, columnDefinition = "TIMESTAMP")
   private LocalDateTime createdDt = LocalDateTime.now();
 
   @LastModifiedBy

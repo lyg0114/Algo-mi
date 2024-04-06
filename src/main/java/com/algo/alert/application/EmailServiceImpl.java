@@ -28,8 +28,6 @@ public class EmailServiceImpl implements EmailService {
 
   @Value("${spring.mail.username}")
   private String officialEmail;
-  @Value("${spring.mail.username}")
-  private String to;
   @Value("${cors.allowed-origins}")
   private String host;
 
