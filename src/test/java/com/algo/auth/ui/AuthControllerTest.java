@@ -57,11 +57,7 @@ public class AuthControllerTest {
   @BeforeEach
   void init() {
     userInfo = userInfoRepository.save(UserInfo
-        .builder()
-        .userId(1L)
-        .userName("kyle")
-        .email("user@example.com")
-        .passwd(encoder.encode("password"))
+        .builder().userId(1L).userName("kyle").email("user@example.com").passwd(encoder.encode("password"))
         .role("USER").isActivate(true).build());
   }
 
