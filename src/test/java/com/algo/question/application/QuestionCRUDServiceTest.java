@@ -47,8 +47,10 @@ class QuestionCRUDServiceTest {
         .getContent()
         .get(0);
     long targetId = questionResponse.getId();
+
     //when
     questionService.deleteQuestion(targetId, new UserInfoRequest("user-1@example.com"));
+
     //then
     Question targetQuestion;
     try {
@@ -85,6 +87,7 @@ class QuestionCRUDServiceTest {
 
     //when
     QuestionResponse updateResponse = questionService.updateQuestion(targetId, willUpdateQuestionDto);
+
     //then
     assertThat(updateResponse).isNotNull();
     assertThat(updateResponse.getTitle()).isEqualTo(willUpdateQuestionDto.getTitle());
@@ -108,12 +111,14 @@ class QuestionCRUDServiceTest {
         .reviewCount(5)
         .content("### content")
         .build();
+
     //when
     String email = "user@example.com";
     questionDto.setEmail(email);
     QuestionResponse savedResponse = questionService.addQuestion(questionDto);
     Long id = savedResponse.getId();
     Question byId = questionRepository.findById(id).get();
+
     //then
     assertThat(byId).isNotNull();
     assertThat(byId.getTitle()).isEqualTo(questionDto.getTitle());
@@ -136,8 +141,10 @@ class QuestionCRUDServiceTest {
         questionRequest, PageRequest.of(0, 10)
     );
     QuestionResponse questionResponse = responses.getContent().get(0);
+
     //when
     Question question = questionService.findQuestionById(questionResponse.getId());
+
     //then
     assertThat(question).isNotNull();
     assertThat(question.getTitle()).isEqualTo(questionResponse.getTitle());
