@@ -7,7 +7,7 @@
 개발자의 알고리즘 공부를 도와주는 프로젝트 입니다.
 - [ALGO-ME Live](https://lizcalendal.com/)
 
-## 프로젝트 구성도
+## 시스템 구성
 ![arch](/assets/arch.jpg)
 
 ## 실행 
