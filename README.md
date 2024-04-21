@@ -3,11 +3,14 @@
 <p align="middle">
 <br>
 
-## 💡 소개 
+## 소개 
 개발자의 알고리즘 공부를 도와주는 프로젝트 입니다.
 - [ALGO-ME Live](https://lizcalendal.com/)
 
-## 💡 실행 
+## 프로젝트 구성도
+![arch](/assets/arch.jpg)
+
+## 실행 
 ```shell
 # api 실행
 git clone https://github.com/lyg0114/algo-mi-backend.git
@@ -24,5 +27,5 @@ cd algo-mi-frontend
 |----|------------------|
 | pw | password         |
 
-##  💡 Link
+## Link
 - [ALGO-ME-FONTEND](https://github.com/lyg0114/algo-mi-frontend)
