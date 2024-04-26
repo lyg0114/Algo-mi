@@ -62,6 +62,7 @@ public class AuthenticationConfig {
             ).permitAll()
             .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER")
             .requestMatchers(antMatcher("/api/recovery/**")).hasRole("USER")
+            .requestMatchers(antMatcher("/api/profile/**")).hasRole("USER")
             .anyRequest()
             .authenticated()
         )
