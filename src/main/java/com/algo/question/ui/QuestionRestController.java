@@ -1,6 +1,5 @@
 package com.algo.question.ui;
 
-import com.algo.auth.infrastructure.JwtUtil;
 import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.application.QuestionService;
 import com.algo.question.domain.Question;
@@ -38,7 +37,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/api/questions")
 public class QuestionRestController {
 
-  private final JwtUtil jwtUtil;
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
 
