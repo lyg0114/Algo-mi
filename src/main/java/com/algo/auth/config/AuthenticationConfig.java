@@ -4,11 +4,13 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 import com.algo.auth.application.CustomUserDetailsService;
 import com.algo.auth.infrastructure.JwtAuthorizationFilter;
+import jakarta.servlet.MultipartConfigElement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,9 +22,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.multipart.support.MultipartFilter;
 
 
 /**
@@ -66,6 +70,7 @@ public class AuthenticationConfig {
             .anyRequest()
             .authenticated()
         )
+        .addFilterBefore(multipartFilter(), UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
@@ -83,5 +88,20 @@ public class AuthenticationConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public MultipartFilter multipartFilter() {
+    return new MultipartFilter();
+  }
+
+  // 파일 업로드 설정 추가
+  @Bean
+  public MultipartConfigElement multipartConfigElement() {
+    MultipartConfigFactory factory = new MultipartConfigFactory();
+    // 파일 크기 제한 설정 (10MB로 설정)
+    factory.setMaxFileSize(DataSize.ofBytes(1024L * 1000));
+    factory.setMaxRequestSize(DataSize.ofBytes(1024L * 1000));
+    return factory.createMultipartConfig();
   }
 }
