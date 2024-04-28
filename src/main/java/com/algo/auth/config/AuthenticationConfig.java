@@ -26,7 +26,6 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.multipart.support.MultipartFilter;
 
 
 /**
@@ -70,7 +69,6 @@ public class AuthenticationConfig {
             .anyRequest()
             .authenticated()
         )
-        .addFilterBefore(multipartFilter(), UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
@@ -90,18 +88,12 @@ public class AuthenticationConfig {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  public MultipartFilter multipartFilter() {
-    return new MultipartFilter();
-  }
-
-  // 파일 업로드 설정 추가
+  // 파일 업로드 관련 설정
   @Bean
   public MultipartConfigElement multipartConfigElement() {
     MultipartConfigFactory factory = new MultipartConfigFactory();
-    // 파일 크기 제한 설정 (10MB로 설정)
-    factory.setMaxFileSize(DataSize.ofBytes(1024L * 1000));
-    factory.setMaxRequestSize(DataSize.ofBytes(1024L * 1000));
+    factory.setMaxFileSize(DataSize.ofBytes(1024L * 1024L * 300)); // 파일 크기 제한 설정 (500MB로 설정)
+    factory.setMaxRequestSize(DataSize.ofBytes(1024L * 1024L * 300)); // 파일 크기 제한 설정 (500MB로 설정)
     return factory.createMultipartConfig();
   }
 }

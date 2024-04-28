@@ -48,7 +48,7 @@ public class AlgoMiApplication {
       Random random = new Random();
       List<String> fromSources = List.of("leetcode", "HACKERRANK", "CODILITY", "백준", "PROGRAMMERS");
       List<String> questionTypes = List.of("greedy", "dfs", "bfs");
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 10; i++) {
         questionRepository.save(
             Question.builder()
                 .title("title-" + i)

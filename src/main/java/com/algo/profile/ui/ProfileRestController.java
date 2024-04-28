@@ -22,10 +22,11 @@ public class ProfileRestController {
 
   private final StorageService storageService;
 
+  //TODO : 반환값 String 에서 ResponseEntity로 개선
   @PostMapping("/upload")
   public String uploadFile(@RequestParam("file") MultipartFile file) {
     storageService.store(file);
+    log.info("file upload success");
     return "SUCCESS";
   }
-
 }
