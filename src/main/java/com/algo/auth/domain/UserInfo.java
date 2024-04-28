@@ -72,6 +72,14 @@ private String passwd;
   @JoinColumn(name = "file_id")
   private FileDetail profile;
 
+  public void activate() {
+    this.isActivate = true;
+  }
+
+  public void updateProfile(FileDetail profile) {
+    this.profile = profile;
+  }
+
   @Override
   public String toString() {
     return "UserInfo{" +
@@ -82,9 +90,5 @@ private String passwd;
         ", questions=" + questions +
         ", role=" + role +
         '}';
-  }
-
-  public void activate() {
-    this.isActivate = true;
   }
 }

@@ -22,7 +22,8 @@ class FileSystemStorageServiceTest {
   @BeforeEach
   public void init() {
     properties.setLocation("build/files/" + Math.abs(new Random().nextLong()));
-    service = new FileSystemStorageService(properties);
+    //TODO : 파일업로드관련 작업 후 FileSystemStorageService 클래스 생성시 의존성 고려하기
+    service = new FileSystemStorageService(properties, null, null);
     service.init();
   }
 
