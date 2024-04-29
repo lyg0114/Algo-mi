@@ -2,6 +2,7 @@ package com.algo.storage;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.infrastructure.AuthenticationUtil;
 import com.algo.storage.domain.FileDetail;
 import com.algo.storage.domain.FileRepository;
 import java.io.IOException;
@@ -11,14 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
@@ -51,9 +48,8 @@ public class FileSystemStorageService implements StorageService {
       if (file.isEmpty()) { throw new StorageException("Failed to store empty file."); }
 
       // 파일정보 DB에 저장
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      String email = authentication.getName();
-      UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email).orElseThrow();
+      UserInfo userInfo = userInfoRepository
+          .findUserInfoByEmailAndIsActivateTrue(AuthenticationUtil.getEmail()).orElseThrow();
       //TODO : FileDetail 클래스에 필요한 정보를 맾핑하고 DB에 저장하도록 수정 필요
       FileDetail fileDetail = FileDetail
           .builder()

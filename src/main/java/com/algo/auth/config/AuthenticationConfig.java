@@ -59,11 +59,11 @@ public class AuthenticationConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers(
+            .requestMatchers( // 모두 접근 가능한 영역
                 antMatcher("/api/rest/auth/**"),
                 antMatcher("/api/actuator/**")
             ).permitAll()
-            .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER")
+            .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER") // 권한이 필요한 영역
             .requestMatchers(antMatcher("/api/recovery/**")).hasRole("USER")
             .requestMatchers(antMatcher("/api/profile/**")).hasRole("USER")
             .anyRequest()
