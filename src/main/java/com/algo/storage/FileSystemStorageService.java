@@ -44,14 +44,41 @@ public class FileSystemStorageService implements StorageService {
   @Transactional
   @Override
   public FileDetail store(MultipartFile file) {
+    FileDetail savedProfile;
     try {
-      if (file.isEmpty()) {
-        throw new StorageException("Failed to store empty file.");
-      }
-      Path destinationFile = this.rootLocation.resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename()))).normalize().toAbsolutePath();
-      if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+      // file 존재유무 검증
+      if (file.isEmpty()) { throw new StorageException("Failed to store empty file."); }
+
+      // 파일정보 DB에 저장
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      String email = authentication.getName();
+      UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email).orElseThrow();
+      //TODO : FileDetail 클래스에 필요한 정보를 맾핑하고 DB에 저장하도록 수정 필요
+      FileDetail fileDetail = FileDetail
+          .builder()
+          .fileSize(file.getSize())
+          .fileUploader(userInfo)
+          .build();
+      savedProfile = fileRepository.save(fileDetail);
+      userInfo.updateProfile(savedProfile);
+
+      //디렉토리 생성
+      String directoryPath = userInfo.getUserId() + "/" + savedProfile.getFileId();
+      Path directory = Paths.get(rootLocation.toString(), directoryPath);
+      Files.createDirectories(directory);
+
+      // 파일 저장
+      Path destinationFile = this.rootLocation
+          .resolve(Paths.get(directoryPath + "/" + file.getOriginalFilename()))
+          .normalize()
+          .toAbsolutePath(); // 경로 생성
+
+      // rootLocation 검증
+      if (!destinationFile.getParent().getParent().getParent().equals(this.rootLocation.toAbsolutePath())) {
         throw new StorageException("Cannot store file outside current directory.");
       }
+
+      // 파일 저장
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
       }
@@ -59,17 +86,7 @@ public class FileSystemStorageService implements StorageService {
       throw new StorageException("Failed to store file.", e);
     }
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String email = authentication.getName();
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email).orElseThrow();
-
-    //TODO : FileDetail 클래스에 필요한 정보를 맾핑하고 DB에 저장하도록 수정 필요
-    FileDetail fileDetail = FileDetail
-        .builder()
-        .fileSize(file.getSize())
-        .fileUploader(userInfo)
-        .build();
-    return fileRepository.save(fileDetail);
+    return savedProfile;
   }
 
   @Override
