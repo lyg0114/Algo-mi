@@ -69,7 +69,7 @@ private String passwd;
   private List<CheckEmail> checks = new ArrayList<>();
 
   @OneToOne
-  @JoinColumn(name = "file_id")
+  @JoinColumn(name = "profile_file_id")
   private FileDetail profile;
 
   public void activate() {
