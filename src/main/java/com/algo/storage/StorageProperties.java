@@ -5,13 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-  private String location = "upload-dir";
+  public static String LOCATION = "src/main/resources/static/images";
 
   public String getLocation() {
-    return location;
+    return LOCATION;
   }
 
   public void setLocation(String location) {
-    this.location = location;
+    this.LOCATION = location;
   }
 }

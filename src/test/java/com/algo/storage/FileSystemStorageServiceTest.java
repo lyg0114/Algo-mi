@@ -5,15 +5,8 @@ import static org.mockito.Mockito.when;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
-import com.algo.question.sample.QuestionSample;
 import com.algo.storage.domain.FileDetail;
 import com.algo.storage.domain.FileRepository;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
@@ -31,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * @author : iyeong-gyo
@@ -56,7 +46,7 @@ class FileSystemStorageServiceTest {
   @BeforeEach
   public void init() {
     MockitoAnnotations.initMocks(this);
-    properties.setLocation("build/files/" + Math.abs(new Random().nextLong()));
+    properties.setLocation(StorageProperties.LOCATION + Math.abs(new Random().nextLong()));
     service = new FileSystemStorageService(properties, fileRepository, userInfoRepository);
     service.init();
   }
