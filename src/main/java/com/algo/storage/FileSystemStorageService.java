@@ -117,9 +117,7 @@ public class FileSystemStorageService implements StorageService {
       if (resource.exists() || resource.isReadable()) {
         return resource;
       } else {
-        throw new StorageFileNotFoundException(
-            "Could not read fileId: " + fileId);
-
+        throw new StorageFileNotFoundException("Could not read fileId: " + fileId);
       }
     } catch (MalformedURLException e) {
       throw new StorageFileNotFoundException("Could not read fileId: " + fileId, e);
