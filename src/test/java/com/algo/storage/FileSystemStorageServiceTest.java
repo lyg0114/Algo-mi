@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
@@ -50,7 +51,6 @@ class FileSystemStorageServiceTest {
   public void init() {
     MockitoAnnotations.initMocks(this);
     properties.setLocation("build/files/" + Math.abs(new Random().nextLong()));
-//    properties.setLocation("build/files/");
     service = new FileSystemStorageService(properties, fileRepository, userInfoRepository);
     service.init();
   }
@@ -70,12 +70,10 @@ class FileSystemStorageServiceTest {
             "Hello, Algo".getBytes())
     );
 
-    UserInfo userInfo = userInfoRepository.findById(1L).get();
-
-    FileDetail profileFromUserInfo = userInfo.getProfile();
-    assertThat(profileFromUserInfo).isNotNull();
-    assertThat(savedProfile.getFileUploader().getUserId()).isEqualTo(userInfo.getUserId());
-
-//    assertThat(service.load("foo.txt")).exists();
+    UserInfo upLoader = userInfoRepository.findById(1L).get();
+    UserInfo fileUploader = savedProfile.getFileUploader();
+    assertThat(fileUploader.getUserId()).isEqualTo(upLoader.getUserId());
+    assertThat(service.load(savedProfile.getFileId())).exists();
+    assertThat(service.loadAsResource(savedProfile.getFileId())).isNotNull();
   }
 }

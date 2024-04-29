@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.nio.file.Path;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,4 +49,8 @@ public class FileDetail extends BaseEntity {
   @OneToOne
   @JoinColumn(name = "uesr_id")
   private UserInfo fileUploader;
+
+  public void updateFileUri(Path fileUri) {
+    this.fileUri = fileUri.toString();
+  }
 }

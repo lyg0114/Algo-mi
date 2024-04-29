@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -60,18 +61,19 @@ public class FileSystemStorageService implements StorageService {
           .fileUploader(userInfo)
           .build();
       savedProfile = fileRepository.save(fileDetail);
-      userInfo.updateProfile(savedProfile);
 
       //디렉토리 생성
       String directoryPath = userInfo.getUserId() + "/" + savedProfile.getFileId();
       Path directory = Paths.get(rootLocation.toString(), directoryPath);
       Files.createDirectories(directory);
 
-      // 파일 저장
+      // 파일 저장 경로 계산
+      Path fileUri = Paths.get(directoryPath, file.getOriginalFilename());
       Path destinationFile = this.rootLocation
-          .resolve(Paths.get(directoryPath + "/" + file.getOriginalFilename()))
+          .resolve(fileUri)
           .normalize()
-          .toAbsolutePath(); // 경로 생성
+          .toAbsolutePath();
+      savedProfile.updateFileUri(fileUri);
 
       // rootLocation 검증
       if (!destinationFile.getParent().getParent().getParent().equals(this.rootLocation.toAbsolutePath())) {
@@ -102,24 +104,25 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public Path load(String filename) {
-    return rootLocation.resolve(filename);
+  public Path load(Long fileId) {
+    FileDetail fileDetail = fileRepository.findById(fileId).orElseThrow();
+    return rootLocation.resolve(fileDetail.getFileUri());
   }
 
   @Override
-  public Resource loadAsResource(String filename) {
+  public Resource loadAsResource(Long fileId) {
     try {
-      Path file = load(filename);
+      Path file = load(fileId);
       Resource resource = new UrlResource(file.toUri());
       if (resource.exists() || resource.isReadable()) {
         return resource;
       } else {
         throw new StorageFileNotFoundException(
-            "Could not read file: " + filename);
+            "Could not read fileId: " + fileId);
 
       }
     } catch (MalformedURLException e) {
-      throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+      throw new StorageFileNotFoundException("Could not read fileId: " + fileId, e);
     }
   }
 
