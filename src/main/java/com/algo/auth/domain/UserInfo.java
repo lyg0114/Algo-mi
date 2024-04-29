@@ -2,13 +2,17 @@ package com.algo.auth.domain;
 
 import com.algo.common.domain.BaseEntity;
 import com.algo.question.domain.Question;
+import com.algo.storage.domain.FileDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -64,6 +68,18 @@ private String passwd;
   @OneToMany(mappedBy = "userInfo")
   private List<CheckEmail> checks = new ArrayList<>();
 
+  @OneToOne
+  @JoinColumn(name = "profile_file_id")
+  private FileDetail profile;
+
+  public void activate() {
+    this.isActivate = true;
+  }
+
+  public void updateProfile(FileDetail profile) {
+    this.profile = profile;
+  }
+
   @Override
   public String toString() {
     return "UserInfo{" +
@@ -74,9 +90,5 @@ private String passwd;
         ", questions=" + questions +
         ", role=" + role +
         '}';
-  }
-
-  public void activate() {
-    this.isActivate = true;
   }
 }
