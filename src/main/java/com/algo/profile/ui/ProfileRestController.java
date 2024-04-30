@@ -39,7 +39,7 @@ public class ProfileRestController {
   }
 
   //TODO : ResponseEntity에서 공통된 부분을 추출할 수 있도록 개선 필요
-  //TODO : 테스트코드 작성, 예외처리
+  //TODO : 테스트코드 작성, 예외처리, 유효성 처리
   @PostMapping("/upload")
   public ResponseEntity<ProfileResponse> uploadThumNailFile(@RequestParam("file") MultipartFile file) {
     profileService.storeProfile(file);
