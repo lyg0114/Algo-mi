@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: CREATE UPLOAD DIRECTORY # 도커 내부에 파일마운트를위한 디렉토리 생성
-        run: mkdir -p /path/to/upload/directory
+        run: mkdir -p /app/upload
 
       - name: TAGS FOR DOCKER
         id: meta
