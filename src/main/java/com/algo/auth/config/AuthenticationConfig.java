@@ -61,7 +61,8 @@ public class AuthenticationConfig {
         .authorizeHttpRequests((authorize) -> authorize
             .requestMatchers( // 모두 접근 가능한 영역
                 antMatcher("/api/rest/auth/**"),
-                antMatcher("/api/actuator/**")
+                antMatcher("/api/actuator/**"),
+                antMatcher("/static/images/**") // static 자원은 바로 접근할 수 있도록
             ).permitAll()
             .requestMatchers(antMatcher("/api/questions/**")).hasRole("USER") // 권한이 필요한 영역
             .requestMatchers(antMatcher("/api/recovery/**")).hasRole("USER")
