@@ -8,8 +8,6 @@ import com.algo.storage.domain.FileDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +24,7 @@ public class ProfileService {
 
   private final StorageService storageService;
   private final UserInfoRepository userInfoRepository;
+  private final AuthenticationUtil authenticationUtil;
 
   //TODO : 테스트코드 작성
   //TODO : 썸네일 파일 저장시 파일 사이즈 작게 처리
@@ -41,8 +40,7 @@ public class ProfileService {
   }
 
   public Resource getImage() {
-    UserInfo userInfo = userInfoRepository
-        .findUserInfoByEmailAndIsActivateTrue(AuthenticationUtil.getEmail()).orElseThrow();
+    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(authenticationUtil.getEmail()).orElseThrow();
     Long fileId = userInfo.getProfile().getFileId();
     return storageService.loadAsResource(fileId);
   }

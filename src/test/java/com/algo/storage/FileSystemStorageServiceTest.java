@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.infrastructure.AuthenticationUtilMcok;
 import com.algo.storage.domain.FileDetail;
 import com.algo.storage.domain.FileRepository;
 import java.util.Random;
@@ -47,7 +48,7 @@ class FileSystemStorageServiceTest {
   public void init() {
     MockitoAnnotations.initMocks(this);
     properties.setLocation(StorageProperties.LOCATION + Math.abs(new Random().nextLong()));
-    service = new FileSystemStorageService(properties, fileRepository, userInfoRepository);
+    service = new FileSystemStorageService(properties, fileRepository, userInfoRepository, new AuthenticationUtilMcok());
     service.init();
   }
 

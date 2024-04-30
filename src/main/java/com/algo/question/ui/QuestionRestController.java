@@ -1,6 +1,7 @@
 package com.algo.question.ui;
 
 import com.algo.auth.infrastructure.AuthenticationUtil;
+import com.algo.auth.infrastructure.AuthenticationUtilImpl;
 import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.application.QuestionService;
 import com.algo.question.domain.Question;
@@ -15,8 +16,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,12 +39,13 @@ public class QuestionRestController {
 
   private final QuestionService questionService;
   private final ModelMapper modelMapper;
+  private final AuthenticationUtil authenticationUtil;
 
   @GetMapping
   public ResponseEntity<Page<QuestionResponse>> getQuestions(
       QuestionRequest questionRequest, @PageableDefault(size = 12) Pageable pageable
   ) {
-    questionRequest.setEmail(AuthenticationUtil.getEmail());
+    questionRequest.setEmail(authenticationUtil.getEmail());
     Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(questionRequest, pageable);
     if (questions != null && !questions.isEmpty()) {
       return new ResponseEntity<>(questions, HttpStatus.OK);
@@ -68,7 +68,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> addQuestion(
       @RequestBody QuestionRequest questionRequest) {
     HttpHeaders headers = new HttpHeaders();
-    questionRequest.setEmail(AuthenticationUtil.getEmail());
+    questionRequest.setEmail(authenticationUtil.getEmail());
     QuestionResponse addQuestionResponse = questionService.addQuestion(questionRequest);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
@@ -82,7 +82,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionRequest questionRequest
   ) {
-    questionRequest.setEmail(AuthenticationUtil.getEmail());
+    questionRequest.setEmail(authenticationUtil.getEmail());
     QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, questionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,7 +92,7 @@ public class QuestionRestController {
 
   @DeleteMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> deleteQuestion(@PathVariable long questionId) {
-    questionService.deleteQuestion(questionId, new UserInfoRequest(AuthenticationUtil.getEmail()));
+    questionService.deleteQuestion(questionId, new UserInfoRequest(authenticationUtil.getEmail()));
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

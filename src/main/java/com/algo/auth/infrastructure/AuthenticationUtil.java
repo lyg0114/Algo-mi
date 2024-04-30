@@ -1,17 +1,10 @@
 package com.algo.auth.infrastructure;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 /**
  * @author : iyeong-gyo
- * @package : com.algo.config.security
- * @since : 03.12.23
+ * @package : com.algo.auth.infrastructure
+ * @since : 30.04.24
  */
-public class AuthenticationUtil {
-
-  public static String getEmail() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication.getName();
-  }
+public interface AuthenticationUtil {
+  String getEmail();
 }

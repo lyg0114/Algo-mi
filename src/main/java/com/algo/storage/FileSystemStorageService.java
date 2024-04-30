@@ -27,16 +27,22 @@ public class FileSystemStorageService implements StorageService {
   private final Path rootLocation;
   private final FileRepository fileRepository;
   private final UserInfoRepository userInfoRepository;
+  private final AuthenticationUtil authenticationUtil;
 
   @Autowired
   public FileSystemStorageService(
-      StorageProperties properties, FileRepository fileRepository, UserInfoRepository userInfoRepository) {
+      StorageProperties properties,
+      FileRepository fileRepository,
+      UserInfoRepository userInfoRepository,
+      AuthenticationUtil authenticationUtil
+  ) {
     if (properties.getLocation().trim().isEmpty()) {
       throw new StorageException("File upload location can not be Empty.");
     }
     this.rootLocation = Paths.get(properties.getLocation());
     this.fileRepository = fileRepository;
     this.userInfoRepository = userInfoRepository;
+    this.authenticationUtil = authenticationUtil;
   }
 
   @Transactional
@@ -49,7 +55,7 @@ public class FileSystemStorageService implements StorageService {
 
       // 파일정보 DB에 저장
       UserInfo userInfo = userInfoRepository
-          .findUserInfoByEmailAndIsActivateTrue(AuthenticationUtil.getEmail()).orElseThrow();
+          .findUserInfoByEmailAndIsActivateTrue(authenticationUtil.getEmail()).orElseThrow();
       //TODO : FileDetail 클래스에 필요한 정보를 맾핑하고 DB에 저장하도록 수정 필요
       FileDetail fileDetail = FileDetail
           .builder()
