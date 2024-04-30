@@ -28,7 +28,6 @@ public class ProfileService {
   private final UserInfoRepository userInfoRepository;
   private final AuthenticationUtil authenticationUtil;
 
-  //TODO : 테스트코드 작성
   //TODO : 썸네일 파일 저장시 파일 사이즈 작게 처리
   @Transactional
   public void storeProfile(MultipartFile file) {
