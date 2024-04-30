@@ -1,5 +1,6 @@
 package com.algo.question.ui;
 
+import com.algo.auth.infrastructure.AuthenticationUtil;
 import com.algo.common.dto.UserInfoRequest;
 import com.algo.question.application.QuestionService;
 import com.algo.question.domain.Question;
@@ -44,9 +45,7 @@ public class QuestionRestController {
   public ResponseEntity<Page<QuestionResponse>> getQuestions(
       QuestionRequest questionRequest, @PageableDefault(size = 12) Pageable pageable
   ) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String email = authentication.getName();
-    questionRequest.setEmail(email);
+    questionRequest.setEmail(AuthenticationUtil.getEmail());
     Page<QuestionResponse> questions = questionService.findPaginatedForQuestions(questionRequest, pageable);
     if (questions != null && !questions.isEmpty()) {
       return new ResponseEntity<>(questions, HttpStatus.OK);
@@ -69,9 +68,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> addQuestion(
       @RequestBody QuestionRequest questionRequest) {
     HttpHeaders headers = new HttpHeaders();
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String email = authentication.getName();
-    questionRequest.setEmail(email);
+    questionRequest.setEmail(AuthenticationUtil.getEmail());
     QuestionResponse addQuestionResponse = questionService.addQuestion(questionRequest);
     headers.setLocation(UriComponentsBuilder
         .newInstance()
@@ -85,9 +82,7 @@ public class QuestionRestController {
   public ResponseEntity<QuestionResponse> updateQuestion(
       @PathVariable long questionId, @RequestBody QuestionRequest questionRequest
   ) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String email = authentication.getName();
-    questionRequest.setEmail(email);
+    questionRequest.setEmail(AuthenticationUtil.getEmail());
     QuestionResponse updateQuestionResponse = questionService.updateQuestion(questionId, questionRequest);
     if (updateQuestionResponse == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -97,8 +92,7 @@ public class QuestionRestController {
 
   @DeleteMapping("/{questionId}")
   public ResponseEntity<QuestionResponse> deleteQuestion(@PathVariable long questionId) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    questionService.deleteQuestion(questionId, new UserInfoRequest(authentication.getName()));
+    questionService.deleteQuestion(questionId, new UserInfoRequest(AuthenticationUtil.getEmail()));
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
