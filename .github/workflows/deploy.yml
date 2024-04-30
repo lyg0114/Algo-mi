@@ -39,9 +39,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: CREATE UPLOAD DIRECTORY # 도커 내부에 파일마운트를위한 디렉토리 생성
-        run: mkdir -p /app/upload
-
       - name: TAGS FOR DOCKER
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7

@@ -9,7 +9,7 @@ public class StorageProperties {
 //  public static String LOCATION = "src/main/resources/static/images";
 
   // 도커환경에서
-  public static String LOCATION = "/app/upload";
+  public static String LOCATION = "/home";
 
   public String getLocation() {
     return LOCATION;
