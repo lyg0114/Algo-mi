@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
+  // TODO : profile 옵션에따라 다르게 동작하도록 처리 해야함.
   // 실제물리환경에서
 //  public static String LOCATION = "src/main/resources/static/images";
 
