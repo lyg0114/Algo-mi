@@ -4,11 +4,14 @@ import com.algo.auth.domain.UserInfo;
 import com.algo.auth.domain.UserInfoRepository;
 import com.algo.question.domain.Question;
 import com.algo.question.domain.QuestionRepository;
+import com.algo.storage.StorageProperties;
+import com.algo.storage.StorageService;
 import java.util.List;
 import java.util.Random;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
+@EnableConfigurationProperties(StorageProperties.class)
 public class AlgoMiApplication {
 
   public static void main(String[] args) {
@@ -25,8 +29,8 @@ public class AlgoMiApplication {
   }
 
   // 샘플데이터로 구동시 주석 해제
-  @Profile({"local","localprod" })
-  @Bean
+  @Profile({"local", "dev", "localprod"})
+  @Bean(name = "initDataRunner")
   public CommandLineRunner initData(
       UserInfoRepository userInfoRepository, QuestionRepository questionRepository,
       PasswordEncoder encoder
@@ -44,7 +48,7 @@ public class AlgoMiApplication {
       Random random = new Random();
       List<String> fromSources = List.of("leetcode", "HACKERRANK", "CODILITY", "백준", "PROGRAMMERS");
       List<String> questionTypes = List.of("greedy", "dfs", "bfs");
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < 10; i++) {
         questionRepository.save(
             Question.builder()
                 .title("title-" + i)
@@ -58,6 +62,13 @@ public class AlgoMiApplication {
                 .build()
         );
       }
+    };
+  }
+
+  @Bean(name = "initFileHandlerRunner")
+  public CommandLineRunner fileInit(StorageService storageService) {
+    return args -> {
+      storageService.init();
     };
   }
 }
