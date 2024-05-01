@@ -3,8 +3,8 @@ HELP.md
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
-!**/src/main/**/static/images/
 !**/src/test/**/build/
+src/main/resources/static/images/
 
 ### STS ###
 .apt_generated
