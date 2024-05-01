@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +41,7 @@ public class ProfileRestController {
 
   //TODO : 테스트코드 작성, 예외처리
   @PutMapping("/info")
-  public ResponseEntity<ProfileResponse> getProfileInfo(ProfileRequest profileRequest) {
+  public ResponseEntity<ProfileResponse> updateProfileInfo(@RequestBody ProfileRequest profileRequest) {
     ProfileResponse profileResponse = profileService.updateProfileInfo(profileRequest);
 
     if (profileResponse == null) {
