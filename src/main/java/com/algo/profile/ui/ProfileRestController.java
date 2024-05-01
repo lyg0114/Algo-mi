@@ -27,8 +27,16 @@ public class ProfileRestController {
 
   private final ProfileService profileService;
 
+  @GetMapping("/info")
+  public ResponseEntity<ProfileResponse> getProfileInfo() {
+    return new ResponseEntity<>(
+        profileService.getProfileInfo(),
+        HttpStatus.OK
+    );
+  }
+
   //TODO : 테스트코드 작성, 예외처리
-  @GetMapping
+  @GetMapping("/thumnail")
   public ResponseEntity<Resource> getProfileImage() {
     Resource resource = profileService.getImage();
     if (resource.exists() && resource.isReadable()) {
@@ -49,4 +57,7 @@ public class ProfileRestController {
         ProfileResponse.builder().build(), HttpStatus.CREATED
     );
   }
+
+  //TODO : 프로필 정보 수정 로직 추가 필요
+  //TODO : 썸네일 수정, 삭제 로직 추가 필요
 }

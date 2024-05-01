@@ -1,10 +1,10 @@
 package com.algo.auth.domain;
 
 import com.algo.common.domain.BaseEntity;
+import com.algo.profile.dto.ProfileResponse;
 import com.algo.question.domain.Question;
 import com.algo.storage.domain.FileDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +51,7 @@ public class UserInfo extends BaseEntity {
 
   @JsonIgnore
   @Column(name = "passwd", nullable = false)
-private String passwd;
+  private String passwd;
 
   //TODO : List를 사용해서 여러 권한을 처리할 수 있도록 개선
   @Column(name = "role")
@@ -78,6 +78,14 @@ private String passwd;
 
   public void updateProfile(FileDetail profile) {
     this.profile = profile;
+  }
+
+  public ProfileResponse converToProfileResponse() {
+    return ProfileResponse
+        .builder()
+        .email(this.email)
+        .userName(this.userName)
+        .build();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.algo.profile.application;
 
+import com.algo.profile.dto.ProfileResponse;
 import java.util.Objects;
 import org.springframework.http.MediaType;
 import com.algo.auth.domain.UserInfo;
@@ -53,5 +54,12 @@ public class ProfileService {
         .orElseThrow();
     Long fileId = userInfo.getProfile().getFileId();
     return storageService.loadAsResource(fileId);
+  }
+
+  public ProfileResponse getProfileInfo() {
+    return userInfoRepository
+        .findUserInfoByEmailAndIsActivateTrue(authenticationUtil.getEmail())
+        .orElseThrow()
+        .converToProfileResponse();
   }
 }
