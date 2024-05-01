@@ -44,7 +44,6 @@ class ProfileServiceTest {
   public void init() {
     MockitoAnnotations.initMocks(this);
     properties.setLocation("build/static/images/" + Math.abs(new Random().nextLong()));
-    properties.setLocation(StorageProperties.LOCATION + Math.abs(new Random().nextLong()));
     profileService = new ProfileService(
         new FileSystemStorageService(properties, fileRepository, userInfoRepository, authenticationUtil),
         userInfoRepository, authenticationUtil
