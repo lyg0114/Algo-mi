@@ -1,6 +1,7 @@
 package com.algo.profile.ui;
 
 import com.algo.profile.application.ProfileService;
+import com.algo.profile.dto.ProfileRequest;
 import com.algo.profile.dto.ProfileResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,12 +29,24 @@ public class ProfileRestController {
 
   private final ProfileService profileService;
 
+  //TODO : 테스트코드 작성, 예외처리
   @GetMapping("/info")
   public ResponseEntity<ProfileResponse> getProfileInfo() {
     return new ResponseEntity<>(
         profileService.getProfileInfo(),
         HttpStatus.OK
     );
+  }
+
+  //TODO : 테스트코드 작성, 예외처리
+  @PutMapping("/info")
+  public ResponseEntity<ProfileResponse> getProfileInfo(ProfileRequest profileRequest) {
+    ProfileResponse profileResponse = profileService.updateProfileInfo(profileRequest);
+
+    if (profileResponse == null) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(profileResponse, HttpStatus.CREATED);
   }
 
   //TODO : 테스트코드 작성, 예외처리

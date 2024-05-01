@@ -1,6 +1,7 @@
 package com.algo.auth.domain;
 
 import com.algo.common.domain.BaseEntity;
+import com.algo.profile.dto.ProfileRequest;
 import com.algo.profile.dto.ProfileResponse;
 import com.algo.question.domain.Question;
 import com.algo.storage.domain.FileDetail;
@@ -22,6 +23,7 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * @author : iyeong-gyo
@@ -76,7 +78,7 @@ public class UserInfo extends BaseEntity {
     this.isActivate = true;
   }
 
-  public void updateProfile(FileDetail profile) {
+  public void updateProfileImage(FileDetail profile) {
     this.profile = profile;
   }
 
@@ -86,6 +88,15 @@ public class UserInfo extends BaseEntity {
         .email(this.email)
         .userName(this.userName)
         .build();
+  }
+
+  public void updateProfileInfo(ProfileRequest profileRequest) {
+    if(!StringUtils.isEmpty(profileRequest.getEmail())){
+      this.email = profileRequest.getEmail();
+    }
+    if(!StringUtils.isEmpty(profileRequest.getUserName())){
+      this.userName = profileRequest.getUserName();
+    }
   }
 
   @Override

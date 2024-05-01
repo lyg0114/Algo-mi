@@ -1,5 +1,6 @@
 package com.algo.profile.application;
 
+import com.algo.profile.dto.ProfileRequest;
 import com.algo.profile.dto.ProfileResponse;
 import java.util.Objects;
 import org.springframework.http.MediaType;
@@ -40,7 +41,7 @@ public class ProfileService {
 
     // 사용자의 썸네일 정보 업데이트
     UserInfo userInfo = fileDetail.getFileUploader();
-    userInfo.updateProfile(fileDetail);
+    userInfo.updateProfileImage(fileDetail);
     userInfoRepository.save(userInfo);
   }
 
@@ -61,5 +62,14 @@ public class ProfileService {
         .findUserInfoByEmailAndIsActivateTrue(authenticationUtil.getEmail())
         .orElseThrow()
         .converToProfileResponse();
+  }
+
+  @Transactional
+  public ProfileResponse updateProfileInfo(ProfileRequest profileRequest) {
+    UserInfo userInfo = userInfoRepository
+        .findUserInfoByEmailAndIsActivateTrue(authenticationUtil.getEmail())
+        .orElseThrow();
+    userInfo.updateProfileInfo(profileRequest);
+    return userInfo.converToProfileResponse();
   }
 }
