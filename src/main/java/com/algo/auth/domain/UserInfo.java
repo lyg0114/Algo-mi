@@ -8,6 +8,7 @@ import com.algo.storage.domain.FileDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -63,14 +64,14 @@ public class UserInfo extends BaseEntity {
   private Boolean isActivate;
 
   @Default
-  @OneToMany(mappedBy = "userInfo")
+  @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY)
   private List<Question> questions = new ArrayList<>();
 
   @Default
-  @OneToMany(mappedBy = "userInfo")
+  @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY)
   private List<CheckEmail> checks = new ArrayList<>();
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_file_id")
   private FileDetail profile;
 
