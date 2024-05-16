@@ -53,7 +53,9 @@ class FileSystemStorageServiceTest {
   @Test
   public void saveAndLoad() {
     String email = authenticationUtilMcok.getEmail();
-    userInfoRepository.save(UserInfo.builder().userId(1L).userName("user-1").email(email).passwd("passowrd-1").role("ROLE_USER").isActivate(true).build());
+    UserInfo savedUser = userInfoRepository.save(
+        UserInfo.builder().userName("user-1").email(email).passwd("passowrd-1").role("ROLE_USER")
+            .isActivate(true).build());
     FileDetail savedProfile = fileSystemStorageService.store(
         new MockMultipartFile("foo",
             "foo.txt",
@@ -61,7 +63,7 @@ class FileSystemStorageServiceTest {
             "Hello, Algo".getBytes())
     );
 
-    UserInfo upLoader = userInfoRepository.findById(1L).get();
+    UserInfo upLoader = userInfoRepository.findById(savedUser.getUserId()).get();
     UserInfo fileUploader = savedProfile.getFileUploader();
     assertThat(fileUploader.getUserId()).isEqualTo(upLoader.getUserId());
     assertThat(fileSystemStorageService.load(savedProfile.getFileId())).exists();

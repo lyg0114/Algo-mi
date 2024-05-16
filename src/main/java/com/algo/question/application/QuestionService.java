@@ -51,6 +51,7 @@ public class QuestionService {
     UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(question.getEmail())
         .orElseThrow(() -> new NoSuchElementException("존재하지 않는 사용자 입니다."));
     Question addQuestion = question.converTnEntity();
+
     addQuestion.setUserInfo(userInfo);
     return questionRepository
         .save(addQuestion)
