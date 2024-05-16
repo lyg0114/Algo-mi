@@ -57,7 +57,8 @@ class QuestionRestControllerTest {
   @DisplayName("문제 등록시 사용자 정보가 존재하지 않는 경우")
   @Test
   public void addQuestionWhenUserInformationDoesntExist() throws Exception {
-    String token = jwtUtil.createToken(UserInfo.builder().email("test@example.com").role("USER").build());
+    String token = jwtUtil.createToken(
+        UserInfo.builder().email("noexist@example.com").role("USER").build());
     MvcResult mvcResult = mockMvc.perform(post("/api/questions")
             .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
