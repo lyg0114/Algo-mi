@@ -17,6 +17,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 public class ProfileResponse {
-  private String email;
-  private String userName;
+	private String email;
+	private String userName;
 }

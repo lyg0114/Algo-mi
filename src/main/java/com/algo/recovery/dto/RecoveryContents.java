@@ -16,6 +16,6 @@ import lombok.ToString;
 @Data
 public class RecoveryContents {
 
-  private String email;
-  private String contents;
+	private String email;
+	private String contents;
 }

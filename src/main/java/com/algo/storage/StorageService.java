@@ -1,23 +1,25 @@
 package com.algo.storage;
 
-import com.algo.storage.domain.FileDetail;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.algo.storage.domain.FileDetail;
+
 public interface StorageService {
 
-  void init();
+	void init();
 
-  FileDetail store(MultipartFile file);
+	FileDetail store(MultipartFile file);
 
-  Stream<Path> loadAll();
+	Stream<Path> loadAll();
 
-  Path load(Long fileId);
+	Path load(Long fileId);
 
-  Resource loadAsResource(Long fileId);
+	Resource loadAsResource(Long fileId);
 
-  void deleteAll();
+	void deleteAll();
 
 }

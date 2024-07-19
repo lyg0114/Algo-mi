@@ -6,6 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class CheckEmailResponse {
-  private String token;
-  private String message;
+	private String token;
+	private String message;
 }

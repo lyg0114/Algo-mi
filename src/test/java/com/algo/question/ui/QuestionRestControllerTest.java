@@ -1,15 +1,11 @@
 package com.algo.question.ui;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.algo.auth.domain.UserInfo;
-import com.algo.auth.domain.UserInfoRepository;
-import com.algo.auth.infrastructure.JwtUtil;
-import com.algo.question.domain.Question;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algo.auth.domain.UserInfo;
+import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.infrastructure.JwtUtil;
+import com.algo.question.domain.Question;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author : iyeong-gyo
  * @package : com.algo.question.ui
@@ -37,43 +39,43 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class QuestionRestControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-  @Autowired private ObjectMapper mapper;
-  @Autowired private JwtUtil jwtUtil;
-  @Autowired private UserInfoRepository userInfoRepository;
-  @Autowired private PasswordEncoder encoder;
+	@Autowired private MockMvc mockMvc;
+	@Autowired private ObjectMapper mapper;
+	@Autowired private JwtUtil jwtUtil;
+	@Autowired private UserInfoRepository userInfoRepository;
+	@Autowired private PasswordEncoder encoder;
 
-  @BeforeEach
-  void init() {
-    userInfoRepository.save(UserInfo
-        .builder()
-        .userId(1L)
-        .userName("kyle")
-        .email("user@example.com")
-        .passwd(encoder.encode("password"))
-        .role("USER").isActivate(true).build());
-  }
+	@BeforeEach
+	void init() {
+		userInfoRepository.save(UserInfo
+			.builder()
+			.userId(1L)
+			.userName("kyle")
+			.email("user@example.com")
+			.passwd(encoder.encode("password"))
+			.role("USER").isActivate(true).build());
+	}
 
-  @DisplayName("문제 등록시 사용자 정보가 존재하지 않는 경우")
-  @Test
-  public void addQuestionWhenUserInformationDoesntExist() throws Exception {
-    String token = jwtUtil.createToken(
-        UserInfo.builder().email("noexist@example.com").role("USER").build());
-    MvcResult mvcResult = mockMvc.perform(post("/api/questions")
-            .header("Authorization", "Bearer " + token)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(Question.builder()
-                .title("sample-title")
-                .fromSource("smaple-fromSource")
-                .questionType("smaple-questionType")
-                .content("smaple-content")
-                .url("smaple-url")
-                .build())))
-        .andExpect(status().is4xxClientError())
-        .andReturn();
+	@DisplayName("문제 등록시 사용자 정보가 존재하지 않는 경우")
+	@Test
+	public void addQuestionWhenUserInformationDoesntExist() throws Exception {
+		String token = jwtUtil.createToken(
+			UserInfo.builder().email("noexist@example.com").role("USER").build());
+		MvcResult mvcResult = mockMvc.perform(post("/api/questions")
+				.header("Authorization", "Bearer " + token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(Question.builder()
+					.title("sample-title")
+					.fromSource("smaple-fromSource")
+					.questionType("smaple-questionType")
+					.content("smaple-content")
+					.url("smaple-url")
+					.build())))
+			.andExpect(status().is4xxClientError())
+			.andReturn();
 
-    Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
-    assertThat(result.get("status")).isEqualTo(400);
-    assertThat(result.get("message")).isEqualTo("존재하지 않는 사용자 입니다.");
-  }
+		Map result = mapper.readValue(mvcResult.getResponse().getContentAsString(), Map.class);
+		assertThat(result.get("status")).isEqualTo(400);
+		assertThat(result.get("message")).isEqualTo("존재하지 않는 사용자 입니다.");
+	}
 }

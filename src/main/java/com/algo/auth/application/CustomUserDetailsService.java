@@ -1,14 +1,17 @@
 package com.algo.auth.application;
 
-import com.algo.auth.domain.UserInfo;
-import com.algo.auth.domain.UserInfoRepository;
 import java.util.NoSuchElementException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.algo.auth.domain.UserInfo;
+import com.algo.auth.domain.UserInfoRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author : iyeong-gyo
@@ -22,16 +25,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private final UserInfoRepository userInfoRepository;
+	private final UserInfoRepository userInfoRepository;
 
-  @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email)
-        .orElseThrow(() -> new NoSuchElementException("회원정보를 찾을 수 없습니다."));
-    return org.springframework.security.core.userdetails.User.builder()
-        .username(userInfo.getEmail())
-        .password(userInfo.getPasswd())
-        .roles(userInfo.getRole())
-        .build();
-  }
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		UserInfo userInfo = userInfoRepository.findUserInfoByEmailAndIsActivateTrue(email)
+			.orElseThrow(() -> new NoSuchElementException("회원정보를 찾을 수 없습니다."));
+		return org.springframework.security.core.userdetails.User.builder()
+			.username(userInfo.getEmail())
+			.password(userInfo.getPasswd())
+			.roles(userInfo.getRole())
+			.build();
+	}
 }

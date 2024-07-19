@@ -1,13 +1,9 @@
 package com.algo.storage;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
-import com.algo.auth.domain.UserInfo;
-import com.algo.auth.domain.UserInfoRepository;
-import com.algo.auth.infrastructure.AuthenticationUtil;
-import com.algo.storage.domain.FileDetail;
-import com.algo.storage.domain.FileRepository;
 import java.util.Random;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +15,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.algo.auth.domain.UserInfo;
+import com.algo.auth.domain.UserInfoRepository;
+import com.algo.auth.infrastructure.AuthenticationUtil;
+import com.algo.storage.domain.FileDetail;
+import com.algo.storage.domain.FileRepository;
 
 /**
  * @author : iyeong-gyo
@@ -32,41 +34,41 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource(locations = "classpath:application-test.properties")
 class FileSystemStorageServiceTest {
 
-  private StorageProperties properties = new StorageProperties();
+	private StorageProperties properties = new StorageProperties();
 
-  @Autowired private FileRepository fileRepository;
-  @Autowired private UserInfoRepository userInfoRepository;
-  @Autowired private FileSystemStorageService fileSystemStorageService;
-  @Autowired private AuthenticationUtil authenticationUtilMcok;
+	@Autowired private FileRepository fileRepository;
+	@Autowired private UserInfoRepository userInfoRepository;
+	@Autowired private FileSystemStorageService fileSystemStorageService;
+	@Autowired private AuthenticationUtil authenticationUtilMcok;
 
-  @BeforeEach
-  public void init() {
-    MockitoAnnotations.initMocks(this);
-    properties.setLocation("build/static/images" + Math.abs(new Random().nextLong()));
-    fileSystemStorageService = new FileSystemStorageService(
-        properties, fileRepository, userInfoRepository, authenticationUtilMcok
-    );
-    fileSystemStorageService.init();
-  }
+	@BeforeEach
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		properties.setLocation("build/static/images" + Math.abs(new Random().nextLong()));
+		fileSystemStorageService = new FileSystemStorageService(
+			properties, fileRepository, userInfoRepository, authenticationUtilMcok
+		);
+		fileSystemStorageService.init();
+	}
 
-  @DisplayName("파일 저장 테스트")
-  @Test
-  public void saveAndLoad() {
-    String email = authenticationUtilMcok.getEmail();
-    UserInfo savedUser = userInfoRepository.save(
-        UserInfo.builder().userName("user-1").email(email).passwd("passowrd-1").role("ROLE_USER")
-            .isActivate(true).build());
-    FileDetail savedProfile = fileSystemStorageService.store(
-        new MockMultipartFile("foo",
-            "foo.txt",
-            MediaType.TEXT_PLAIN_VALUE,
-            "Hello, Algo".getBytes())
-    );
+	@DisplayName("파일 저장 테스트")
+	@Test
+	public void saveAndLoad() {
+		String email = authenticationUtilMcok.getEmail();
+		UserInfo savedUser = userInfoRepository.save(
+			UserInfo.builder().userName("user-1").email(email).passwd("passowrd-1").role("ROLE_USER")
+				.isActivate(true).build());
+		FileDetail savedProfile = fileSystemStorageService.store(
+			new MockMultipartFile("foo",
+				"foo.txt",
+				MediaType.TEXT_PLAIN_VALUE,
+				"Hello, Algo".getBytes())
+		);
 
-    UserInfo upLoader = userInfoRepository.findById(savedUser.getUserId()).get();
-    UserInfo fileUploader = savedProfile.getFileUploader();
-    assertThat(fileUploader.getUserId()).isEqualTo(upLoader.getUserId());
-    assertThat(fileSystemStorageService.load(savedProfile.getFileId())).exists();
-    assertThat(fileSystemStorageService.loadAsResource(savedProfile.getFileId())).isNotNull();
-  }
+		UserInfo upLoader = userInfoRepository.findById(savedUser.getUserId()).get();
+		UserInfo fileUploader = savedProfile.getFileUploader();
+		assertThat(fileUploader.getUserId()).isEqualTo(upLoader.getUserId());
+		assertThat(fileSystemStorageService.load(savedProfile.getFileId())).exists();
+		assertThat(fileSystemStorageService.loadAsResource(savedProfile.getFileId())).isNotNull();
+	}
 }

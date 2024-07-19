@@ -7,7 +7,7 @@ package com.algo.exception.custom;
  */
 public class SignUpFailException extends RuntimeException {
 
-  public SignUpFailException(String message) {
-    super(message);
-  }
+	public SignUpFailException(String message) {
+		super(message);
+	}
 }

@@ -1,7 +1,8 @@
 package com.algo.recovery.application;
 
-import com.algo.question.dto.QuestionResponse;
 import java.util.List;
+
+import com.algo.question.dto.QuestionResponse;
 
 /**
  * @author : iyeong-gyo
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface CreateRecovery {
 
-  List<QuestionResponse> createRecoveryTargets();
+	List<QuestionResponse> createRecoveryTargets();
 }

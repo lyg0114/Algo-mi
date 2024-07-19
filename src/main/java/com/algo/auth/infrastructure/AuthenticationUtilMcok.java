@@ -15,15 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationUtilMcok implements AuthenticationUtil {
 
-  public String getEmail() {
-    SecurityContext context = SecurityContextHolder.getContext();
-    if (context == null) {
-      return "user@example.com";
-    }
-    if (context.getAuthentication() == null) {
-      return "user@example.com";
-    }
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication.getName();
-  }
+	public String getEmail() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null) {
+			return "user@example.com";
+		}
+		if (context.getAuthentication() == null) {
+			return "user@example.com";
+		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
+	}
 }

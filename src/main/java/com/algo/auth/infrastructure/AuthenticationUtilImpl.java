@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationUtilImpl implements AuthenticationUtil {
 
-  public String getEmail() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication.getName();
-  }
+	public String getEmail() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
+	}
 }

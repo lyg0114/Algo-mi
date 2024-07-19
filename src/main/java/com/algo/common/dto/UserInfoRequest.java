@@ -18,6 +18,6 @@ import lombok.ToString;
 @Data
 public class UserInfoRequest {
 
-  private String email;
+	private String email;
 }
 
